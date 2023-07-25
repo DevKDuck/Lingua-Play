@@ -10,6 +10,7 @@
 		8C44C4722A6E4CA700044068 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8C44C4712A6E4CA700044068 /* Alamofire */; };
 		8C44C4742A6F6C1A00044068 /* PaPago.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C44C4732A6F6C1A00044068 /* PaPago.swift */; };
 		8C44C4762A6F6C5000044068 /* ChckNorrisJokeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C44C4752A6F6C5000044068 /* ChckNorrisJokeResponse.swift */; };
+		8C44C4782A6F88C000044068 /* ImageGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C44C4772A6F88C000044068 /* ImageGameViewController.swift */; };
 		8C5CAF002A6E2F4F00107EDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5CAEFF2A6E2F4F00107EDB /* AppDelegate.swift */; };
 		8C5CAF022A6E2F4F00107EDB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5CAF012A6E2F4F00107EDB /* SceneDelegate.swift */; };
 		8C5CAF042A6E2F4F00107EDB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5CAF032A6E2F4F00107EDB /* ViewController.swift */; };
@@ -21,6 +22,7 @@
 /* Begin PBXFileReference section */
 		8C44C4732A6F6C1A00044068 /* PaPago.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaPago.swift; sourceTree = "<group>"; };
 		8C44C4752A6F6C5000044068 /* ChckNorrisJokeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChckNorrisJokeResponse.swift; sourceTree = "<group>"; };
+		8C44C4772A6F88C000044068 /* ImageGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGameViewController.swift; sourceTree = "<group>"; };
 		8C5CAEFC2A6E2F4F00107EDB /* ChuckNorrisJoke.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChuckNorrisJoke.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C5CAEFF2A6E2F4F00107EDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8C5CAF012A6E2F4F00107EDB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 		8C5CAEFE2A6E2F4F00107EDB /* ChuckNorrisJoke */ = {
 			isa = PBXGroup;
 			children = (
+				8C44C4772A6F88C000044068 /* ImageGameViewController.swift */,
 				8C5CAEFF2A6E2F4F00107EDB /* AppDelegate.swift */,
 				8C5CAF012A6E2F4F00107EDB /* SceneDelegate.swift */,
 				8C5CAF032A6E2F4F00107EDB /* ViewController.swift */,
@@ -156,6 +159,7 @@
 				8C5CAF002A6E2F4F00107EDB /* AppDelegate.swift in Sources */,
 				8C5CAF022A6E2F4F00107EDB /* SceneDelegate.swift in Sources */,
 				8C44C4762A6F6C5000044068 /* ChckNorrisJokeResponse.swift in Sources */,
+				8C44C4782A6F88C000044068 /* ImageGameViewController.swift in Sources */,
 				8C44C4742A6F6C1A00044068 /* PaPago.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

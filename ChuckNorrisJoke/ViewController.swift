@@ -114,6 +114,13 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    @IBAction func tapNextGameButton(_ sender: UIButton) {
+        
+        let vc = ImageGameViewController()
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+        
+    }
     
 }
 
