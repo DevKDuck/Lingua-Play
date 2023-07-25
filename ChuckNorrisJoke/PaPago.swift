@@ -32,3 +32,9 @@ struct PaPagoMessage: Codable{
         case result
     }
 }
+
+
+struct Storage {
+    let naverClientID: String = "NOF8K4RW0LrxN29ZrU71"
+    let naverClientSecret: String = "FNnU3OtxYD"
+}

@@ -66,8 +66,8 @@ class ViewController: UIViewController {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/x-www-form-urlencoded; charset=UTF-8", forHTTPHeaderField: "Content-Type")
-        request.addValue("NOF8K4RW0LrxN29ZrU71", forHTTPHeaderField: "X-Naver-Client-Id")
-        request.addValue("FNnU3OtxYD", forHTTPHeaderField: "X-Naver-Client-Secret")
+        request.addValue(Storage().naverClientID, forHTTPHeaderField: "X-Naver-Client-Id")
+        request.addValue(Storage().naverClientSecret, forHTTPHeaderField: "X-Naver-Client-Secret")
         
         let param = "source=en&target=ko&text=\(str)"
         
