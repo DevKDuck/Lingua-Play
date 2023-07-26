@@ -113,18 +113,8 @@ class ImageGameViewController: UIViewController{
                 }.resume()
             }
 
-            //
-            //                let d = try? JSONSerialization.jsonObject(with: data)
-            //                print(d)
-            //
-            //            guard let output = try? JSONDecoder().decode(PaPago.self,from: data) else{
-            //                print("PaPago JSON Parsing failed")
-            //                return
-            //            }
-            
         }.resume()
         
-        //        사이온 나서스 애쉬 아크샨  세주아니 자르반 리산 아지르
     }
     
     private func setConstraints(){

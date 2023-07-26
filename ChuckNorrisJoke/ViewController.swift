@@ -24,35 +24,54 @@ class ViewController: UIViewController {
             return
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        AF.request(url,
+                   method: .get,
+                   parameters: nil,
+                   encoding:URLEncoding.default)
+            .validate(statusCode: 200..<300)
+            .responseDecodable(of:Response.self){ response in
+                switch response.result{
+                case .success(let data):
+                    self.change(str: data.value)
+                    
+                case .failure(_):
+                    print("Alamofire GET ChckNorrisJoke Data Decoding fail")
+                }
+                
+                
+            }
+                
         
-        
-        URLSession.shared.dataTask(with: request){ data, response, error in
-            guard error == nil else{
-                print("Error: error calling GET")
-                return
-            }
-            guard let data = data else{
-                print("Error: Did not recieve data")
-                return
-            }
-            guard let response = response as? HTTPURLResponse, (200 ..< 300) ~= response.statusCode else {
-                print("Error: HTTP request failed")
-                return
-            }
-            guard let output = try? JSONDecoder().decode(Response.self, from: data) else{
-                print("Error: JSON Data Parsing failed")
-                return
-            }
-            
+        //MARK: URLSession을 이용하여 ChuckNorrisJoke API에서 GET형식으로 받아오는 로직
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "GET"
+//
+//
+//        URLSession.shared.dataTask(with: request){ data, response, error in
+//            guard error == nil else{
+//                print("Error: error calling GET")
+//                return
+//            }
+//            guard let data = data else{
+//                print("Error: Did not recieve data")
+//                return
+//            }
+//            guard let response = response as? HTTPURLResponse, (200 ..< 300) ~= response.statusCode else {
+//                print("Error: HTTP request failed")
+//                return
+//            }
+//            guard let output = try? JSONDecoder().decode(Response.self, from: data) else{
+//                print("Error: JSON Data Parsing failed")
+//                return
+//            }
+//
 //            DispatchQueue.main.async {
 //                self.jokeLabel.text = output.value
 //            }
-            self.change(str: output.value)
-            
-        }.resume()
-        
+//            self.change(str: output.value)
+//            
+//        }.resume()
+//
     }
     
     func change(str: String){
