@@ -11,14 +11,17 @@ import Alamofire
 
 class ViewController: UIViewController {
     
+    var jokeLabelENG:String = ""
+    
     @IBOutlet weak var jokeLabel: UILabel!
+    @IBOutlet weak var jokeLabelKOR: UILabel!
     
     @IBAction func nextButton(_ sender: UIButton) {
-        let url = "https://api.chucknorris.io/jokes/random"
-        getData(url: url)
+        chuckNorrisJokeGetData()
     }
     
-    func getData(url: String){
+    func chuckNorrisJokeGetData(){
+        let url = "https://api.chucknorris.io/jokes/random"
         guard let url = URL(string: url) else {
             print("Error: cannot create URL")
             return
@@ -32,7 +35,10 @@ class ViewController: UIViewController {
             .responseDecodable(of:Response.self){ response in
                 switch response.result{
                 case .success(let data):
-                    self.change(str: data.value)
+                    self.jokeLabelENG = data.value
+                    DispatchQueue.main.async {
+                        self.jokeLabel.text = data.value
+                    }
                     
                 case .failure(_):
                     print("Alamofire GET ChckNorrisJoke Data Decoding fail")
@@ -69,9 +75,13 @@ class ViewController: UIViewController {
 //                self.jokeLabel.text = output.value
 //            }
 //            self.change(str: output.value)
-//            
+//
 //        }.resume()
 //
+    }
+    
+    @IBAction func translateButton(_ sender: UIButton) {
+        change(str: jokeLabel.text ?? "")
     }
     
     func change(str: String){
@@ -117,7 +127,7 @@ class ViewController: UIViewController {
             }
                 
             DispatchQueue.main.async {
-                self.jokeLabel.text = output.message.result.translatedText
+                self.jokeLabelKOR.text = output.message.result.translatedText
             }
             
         }.resume()
@@ -129,7 +139,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = .white
-        jokeLabel.text = "Button Click"
+        jokeLabel.text = "Next Joke Button Click"
         // Do any additional setup after loading the view.
     }
     
