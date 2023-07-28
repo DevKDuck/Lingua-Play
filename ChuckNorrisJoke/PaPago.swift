@@ -38,3 +38,8 @@ struct Storage {
     let naverClientID: String = "NOF8K4RW0LrxN29ZrU71"
     let naverClientSecret: String = "FNnU3OtxYD"
 }
+
+struct RapidKey{
+    let rapidAPIKey: String = "c7951e6ed2msh07f75879a9d74d8p16e9d5jsn4ab031dd49c5"
+    let rapidAPIHost: String = "random-words5.p.rapidapi.com"
+}

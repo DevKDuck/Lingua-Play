@@ -6,14 +6,71 @@
 //
 
 import UIKit
+import Alamofire
 
 class ImageGameViewController: UIViewController{
+    
     
     let imageView: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleToFill
         return image
     }()
+    
+    let randomLabel: UILabel = {
+        let label = UILabel()
+        label.text = "RANDOM LABEL"
+        label.textColor = .white
+        label.textAlignment = .center
+        return label
+    }()
+    
+    
+    lazy var randomButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("다음 단어", for: .normal)
+        button.backgroundColor = .black
+        button.setTitleColor(.white, for: .normal)
+        button.addTarget(self, action: #selector(tapRandomButton(_:)), for: .touchUpInside)
+        return button
+        
+    }()
+    
+    @objc func tapRandomButton(_ sender: UIButton){
+        let url = "https://random-words5.p.rapidapi.com/getRandom"
+        
+        guard let url = URL(string: url) else {
+            print("Error: cannot create URL")
+            return
+        }
+        
+        let headers: HTTPHeaders = [
+            "X-RapidAPI-Key": RapidKey().rapidAPIKey,
+            "X-RapidAPI-Host": RapidKey().rapidAPIHost
+        ]
+
+        
+        AF.request(url,
+                   method: .get,
+                   headers: headers)
+        .validate(statusCode: 200..<300)
+        .response{ r in
+            switch r.result{
+            case .success(let data):
+                if let data = data{
+                    if let str = String(data: data, encoding: .utf8){
+                        print(str)
+                    }
+                }
+            case .failure(let error):
+                print(error)
+            }
+            
+        }
+      
+    }
+    
+    
     
     
     let textField: UITextField = {
@@ -112,7 +169,7 @@ class ImageGameViewController: UIViewController{
                     }
                 }.resume()
             }
-
+            
         }.resume()
         
     }
@@ -121,9 +178,14 @@ class ImageGameViewController: UIViewController{
         self.view.addSubview(imageView)
         self.view.addSubview(textField)
         self.view.addSubview(fixImageButton)
+        self.view.addSubview(randomLabel)
+        self.view.addSubview(randomButton)
+
         
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        randomLabel.translatesAutoresizingMaskIntoConstraints = false
+        randomButton.translatesAutoresizingMaskIntoConstraints = false
         textField.translatesAutoresizingMaskIntoConstraints = false
         fixImageButton.translatesAutoresizingMaskIntoConstraints = false
         
@@ -131,30 +193,43 @@ class ImageGameViewController: UIViewController{
             
             
             imageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            imageView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 20),
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             //            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
             //            imageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
             imageView.heightAnchor.constraint(equalToConstant: 150),
             imageView.widthAnchor.constraint(equalToConstant: 150),
             
             
-            
             textField.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             textField.heightAnchor.constraint(equalToConstant: 44),
             textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
             textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            textField.topAnchor.constraint(equalToSystemSpacingBelow: imageView.bottomAnchor, multiplier: 20),
+            textField.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 50),
             
             
             
             
             fixImageButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             
-            fixImageButton.topAnchor.constraint(equalToSystemSpacingBelow: textField.bottomAnchor, multiplier: 10),
+            fixImageButton.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 10),
             fixImageButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
             fixImageButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
             
-            fixImageButton.heightAnchor.constraint(equalToConstant: 44)
+            fixImageButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            
+            randomLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            randomLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            randomLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            randomLabel.heightAnchor.constraint(equalToConstant: 44),
+            randomLabel.topAnchor.constraint(equalTo: fixImageButton.bottomAnchor, constant: 10),
+            
+            
+            randomButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            randomButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            randomButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            randomButton.heightAnchor.constraint(equalToConstant: 44),
+            randomButton.topAnchor.constraint(equalTo: randomLabel.bottomAnchor, constant: 10),
             
         ])
     }
