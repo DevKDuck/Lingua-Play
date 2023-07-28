@@ -17,14 +17,29 @@ class ImageGameViewController: UIViewController{
         return image
     }()
     
-    let randomLabel: UILabel = {
+    let randomLabel1: UILabel = {
         let label = UILabel()
-        label.text = "RANDOM LABEL"
+        label.text = "RANDOM LABEL1"
         label.textColor = .white
         label.textAlignment = .center
         return label
     }()
     
+    let randomLabel2: UILabel = {
+        let label = UILabel()
+        label.text = "RANDOM LABEL2"
+        label.textColor = .white
+        label.textAlignment = .center
+        return label
+    }()
+    
+    let randomLabel3: UILabel = {
+        let label = UILabel()
+        label.text = "RANDOM LABEL3"
+        label.textColor = .white
+        label.textAlignment = .center
+        return label
+    }()
     
     lazy var randomButton: UIButton = {
         let button = UIButton()
@@ -37,7 +52,7 @@ class ImageGameViewController: UIViewController{
     }()
     
     @objc func tapRandomButton(_ sender: UIButton){
-        let url = "https://random-words5.p.rapidapi.com/getRandom"
+        let url = "https://random-words5.p.rapidapi.com/getMultipleRandom?count=3"
         
         guard let url = URL(string: url) else {
             print("Error: cannot create URL")
@@ -48,7 +63,7 @@ class ImageGameViewController: UIViewController{
             "X-RapidAPI-Key": RapidKey().rapidAPIKey,
             "X-RapidAPI-Host": RapidKey().rapidAPIHost
         ]
-
+        
         
         AF.request(url,
                    method: .get,
@@ -58,16 +73,32 @@ class ImageGameViewController: UIViewController{
             switch r.result{
             case .success(let data):
                 if let data = data{
-                    if let str = String(data: data, encoding: .utf8){
-                        print(str)
+                    if var str = String(data: data, encoding: .utf8){
+                        str = str.trimmingCharacters(in: ["["])
+                        str = str.trimmingCharacters(in: ["]"])
+                        
+                        let strArray = str.components(separatedBy: ",")
+                        
+                        var randomNum = [0,1,2]
+                        
+                        DispatchQueue.main.async {
+                            self.randomLabel1.text = strArray[0]
+                            self.randomLabel2.text = strArray[1]
+                            self.randomLabel3.text = strArray[2]
+                            
+                            
+                            
+//                            self.getImage(str: str)
+//                        }
                     }
                 }
+            }
             case .failure(let error):
                 print(error)
             }
             
         }
-      
+        
     }
     
     
@@ -90,16 +121,17 @@ class ImageGameViewController: UIViewController{
     }()
     
     @objc func tapButton(_ sender: UIButton){
-        guard let text = textField.text else{
-            return
-        }
-        getImage(str: text)
+        //        guard let text = textField.text else{
+        //            return
+        //        }
+        
+        //        getImage(str: text)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBlue
+        view.backgroundColor = .systemTeal
         setConstraints()
         hideKeyBoard()
         
@@ -178,13 +210,17 @@ class ImageGameViewController: UIViewController{
         self.view.addSubview(imageView)
         self.view.addSubview(textField)
         self.view.addSubview(fixImageButton)
-        self.view.addSubview(randomLabel)
+        self.view.addSubview(randomLabel1)
+        self.view.addSubview(randomLabel2)
+        self.view.addSubview(randomLabel3)
         self.view.addSubview(randomButton)
-
+        
         
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        randomLabel.translatesAutoresizingMaskIntoConstraints = false
+        randomLabel1.translatesAutoresizingMaskIntoConstraints = false
+        randomLabel2.translatesAutoresizingMaskIntoConstraints = false
+        randomLabel3.translatesAutoresizingMaskIntoConstraints = false
         randomButton.translatesAutoresizingMaskIntoConstraints = false
         textField.translatesAutoresizingMaskIntoConstraints = false
         fixImageButton.translatesAutoresizingMaskIntoConstraints = false
@@ -218,18 +254,30 @@ class ImageGameViewController: UIViewController{
             fixImageButton.heightAnchor.constraint(equalToConstant: 44),
             
             
-            randomLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            randomLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            randomLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            randomLabel.heightAnchor.constraint(equalToConstant: 44),
-            randomLabel.topAnchor.constraint(equalTo: fixImageButton.bottomAnchor, constant: 10),
+            randomLabel1.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            randomLabel1.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            randomLabel1.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            randomLabel1.heightAnchor.constraint(equalToConstant: 44),
+            randomLabel1.topAnchor.constraint(equalTo: fixImageButton.bottomAnchor, constant: 10),
+            
+            randomLabel2.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            randomLabel2.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            randomLabel2.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            randomLabel2.heightAnchor.constraint(equalToConstant: 44),
+            randomLabel2.topAnchor.constraint(equalTo: randomLabel1.bottomAnchor, constant: 10),
+            
+            randomLabel3.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            randomLabel3.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            randomLabel3.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            randomLabel3.heightAnchor.constraint(equalToConstant: 44),
+            randomLabel3.topAnchor.constraint(equalTo: randomLabel2.bottomAnchor, constant: 10),
             
             
             randomButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             randomButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
             randomButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
             randomButton.heightAnchor.constraint(equalToConstant: 44),
-            randomButton.topAnchor.constraint(equalTo: randomLabel.bottomAnchor, constant: 10),
+            randomButton.topAnchor.constraint(equalTo: randomLabel3.bottomAnchor, constant: 10),
             
         ])
     }
