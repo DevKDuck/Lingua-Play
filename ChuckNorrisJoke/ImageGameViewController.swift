@@ -10,6 +10,7 @@ import Alamofire
 
 class ImageGameViewController: UIViewController{
     
+    var answer:String?
     
     let imageView: UIImageView = {
         let image = UIImageView()
@@ -38,6 +39,16 @@ class ImageGameViewController: UIViewController{
         label.text = "RANDOM LABEL3"
         label.textColor = .white
         label.textAlignment = .center
+        return label
+    }()
+    
+    let answerMeanLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.textAlignment = .center
+        label.numberOfLines = 0
+
+        
         return label
     }()
     
@@ -74,23 +85,34 @@ class ImageGameViewController: UIViewController{
             case .success(let data):
                 if let data = data{
                     if var str = String(data: data, encoding: .utf8){
+                        
+                        
+                        
                         str = str.trimmingCharacters(in: ["["])
                         str = str.trimmingCharacters(in: ["]"])
                         
+                        str = String(str.filter { $0 != "\"" })
+
                         let strArray = str.components(separatedBy: ",")
-                        
-                        var randomNum = [0,1,2]
+                        print(strArray)
+
+                        let randomNumArray = [0,1,2]
+                        guard let randomNum = randomNumArray.randomElement()else{
+                            return
+                        }
+
+                        self.answer = strArray[randomNum]
                         
                         DispatchQueue.main.async {
                             self.randomLabel1.text = strArray[0]
                             self.randomLabel2.text = strArray[1]
                             self.randomLabel3.text = strArray[2]
                             
-                            
-                            
-//                            self.getImage(str: str)
 //                        }
                     }
+                        self.getWordMeans(query: strArray[randomNum])
+                        self.getImage(str: strArray[randomNum])
+                        
                 }
             }
             case .failure(let error):
@@ -101,6 +123,48 @@ class ImageGameViewController: UIViewController{
         
     }
     
+    func getWordMeans(query: String){
+        let urlString = "https://openapi.naver.com/v1/search/encyc.json?query=\(query)"
+        guard let url = URL(string:urlString) else {
+            print("String -> URL fail")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue(Storage().naverClientID, forHTTPHeaderField: "X-Naver-Client-Id")
+        request.addValue(Storage().naverClientSecret, forHTTPHeaderField: "X-Naver-Client-Secret")
+        
+        
+        URLSession.shared.dataTask(with: request){ data, response, error in
+            guard error == nil else{
+                print("Error: error calling GET")
+                return
+            }
+            guard let data = data else{
+                print("Error: Did not recieve data")
+                return
+            }
+            
+            
+            guard let response = response as? HTTPURLResponse, (200 ..< 300) ~= response.statusCode else {
+                if let res = response as? HTTPURLResponse, (400 ..< 500) ~= res.statusCode{
+                    print(res.statusCode.description)
+                }
+                
+                print("Error: HTTP request failed")
+                return
+            }
+            guard let mean = try? JSONDecoder().decode(NaverDic.self, from: data) else{
+                return
+            }
+            DispatchQueue.main.async {
+                self.answerMeanLabel.text = mean.items[0].description
+            }
+            
+            
+        }.resume()
+    }
     
     
     
@@ -111,21 +175,42 @@ class ImageGameViewController: UIViewController{
         return textField
     }()
     
-    lazy var fixImageButton: UIButton = {
+    lazy var confirmButton: UIButton = {
         let button = UIButton()
-        button.setTitle("이미지 갱신 버튼", for: .normal)
+        button.setTitle("정답 확인 하기", for: .normal)
         button.backgroundColor = .systemGreen
         button.setTitleColor(.darkGray, for: .normal)
-        button.addTarget(self, action: #selector(tapButton(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(confirmTapButton(_:)), for: .touchUpInside)
         return button
     }()
     
-    @objc func tapButton(_ sender: UIButton){
-        //        guard let text = textField.text else{
-        //            return
-        //        }
+    @objc func confirmTapButton(_ sender: UIButton){
+        guard let text = textField.text else{
+            return
+        }
         
-        //        getImage(str: text)
+        if text.isEmpty{
+            let alert = UIAlertController(title: "빈칸입니다", message: "정답을 적어주세요", preferredStyle: .alert)
+            let confirm = UIAlertAction(title: "확인", style: .cancel)
+            alert.addAction(confirm)
+            present(alert, animated: false)
+        }
+        else{
+            if text == answer{
+                let alert = UIAlertController(title: "정답", message: "정답입니다.", preferredStyle: .alert)
+                let confirm = UIAlertAction(title: "확인", style: .cancel)
+                alert.addAction(confirm)
+                present(alert, animated: false)
+            }
+            else{
+                let alert = UIAlertController(title: "오답", message: "다시 생각해보세요.", preferredStyle: .alert)
+                let confirm = UIAlertAction(title: "확인", style: .cancel)
+                alert.addAction(confirm)
+                present(alert, animated: false)
+            }
+        }
+        
+        
     }
     
     override func viewDidLoad() {
@@ -209,11 +294,12 @@ class ImageGameViewController: UIViewController{
     private func setConstraints(){
         self.view.addSubview(imageView)
         self.view.addSubview(textField)
-        self.view.addSubview(fixImageButton)
+        self.view.addSubview(confirmButton)
         self.view.addSubview(randomLabel1)
         self.view.addSubview(randomLabel2)
         self.view.addSubview(randomLabel3)
         self.view.addSubview(randomButton)
+        self.view.addSubview(answerMeanLabel)
         
         
         
@@ -223,42 +309,33 @@ class ImageGameViewController: UIViewController{
         randomLabel3.translatesAutoresizingMaskIntoConstraints = false
         randomButton.translatesAutoresizingMaskIntoConstraints = false
         textField.translatesAutoresizingMaskIntoConstraints = false
-        fixImageButton.translatesAutoresizingMaskIntoConstraints = false
+        confirmButton.translatesAutoresizingMaskIntoConstraints = false
+        answerMeanLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             
             
             imageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
             //            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
             //            imageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            imageView.heightAnchor.constraint(equalToConstant: 150),
-            imageView.widthAnchor.constraint(equalToConstant: 150),
+            imageView.heightAnchor.constraint(equalToConstant: 200),
+            imageView.widthAnchor.constraint(equalToConstant: 200),
+            
+            answerMeanLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            answerMeanLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            answerMeanLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            answerMeanLabel.heightAnchor.constraint(equalToConstant: 100),
+            answerMeanLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
             
             
-            textField.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            textField.heightAnchor.constraint(equalToConstant: 44),
-            textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            textField.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 50),
-            
-            
-            
-            
-            fixImageButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            
-            fixImageButton.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 10),
-            fixImageButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            fixImageButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            
-            fixImageButton.heightAnchor.constraint(equalToConstant: 44),
             
             
             randomLabel1.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             randomLabel1.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
             randomLabel1.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
             randomLabel1.heightAnchor.constraint(equalToConstant: 44),
-            randomLabel1.topAnchor.constraint(equalTo: fixImageButton.bottomAnchor, constant: 10),
+            randomLabel1.topAnchor.constraint(equalTo: answerMeanLabel.bottomAnchor, constant: 20),
             
             randomLabel2.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             randomLabel2.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
@@ -278,6 +355,22 @@ class ImageGameViewController: UIViewController{
             randomButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
             randomButton.heightAnchor.constraint(equalToConstant: 44),
             randomButton.topAnchor.constraint(equalTo: randomLabel3.bottomAnchor, constant: 10),
+            
+            
+            
+            textField.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            textField.heightAnchor.constraint(equalToConstant: 44),
+            textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            textField.topAnchor.constraint(equalTo: randomButton.bottomAnchor, constant: 20),
+            
+            
+            confirmButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            confirmButton.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 10),
+            confirmButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            confirmButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            
+            confirmButton.heightAnchor.constraint(equalToConstant: 44),
             
         ])
     }
