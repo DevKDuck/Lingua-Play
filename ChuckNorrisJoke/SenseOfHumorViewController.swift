@@ -9,7 +9,7 @@ import UIKit
 import Alamofire
 
 
-class ViewController: UIViewController {
+class SenseOfHumorViewController: UIViewController {
     
     var jokeLabelENG:String = ""
     
@@ -175,7 +175,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = .white
-        jokeLabel.text = "Next Joke Button Click"
+       
         // Do any additional setup after loading the view.
     }
     

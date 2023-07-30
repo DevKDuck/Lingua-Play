@@ -14,10 +14,11 @@
 		8C44C47A2A70FA6000044068 /* NaverImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C44C4792A70FA6000044068 /* NaverImage.swift */; };
 		8C5CAF002A6E2F4F00107EDB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5CAEFF2A6E2F4F00107EDB /* AppDelegate.swift */; };
 		8C5CAF022A6E2F4F00107EDB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5CAF012A6E2F4F00107EDB /* SceneDelegate.swift */; };
-		8C5CAF042A6E2F4F00107EDB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5CAF032A6E2F4F00107EDB /* ViewController.swift */; };
+		8C5CAF042A6E2F4F00107EDB /* SenseOfHumorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5CAF032A6E2F4F00107EDB /* SenseOfHumorViewController.swift */; };
 		8C5CAF072A6E2F4F00107EDB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C5CAF052A6E2F4F00107EDB /* Main.storyboard */; };
 		8C5CAF092A6E2F5300107EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C5CAF082A6E2F5300107EDB /* Assets.xcassets */; };
 		8C5CAF0C2A6E2F5300107EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C5CAF0A2A6E2F5300107EDB /* LaunchScreen.storyboard */; };
+		8CD91A7F2A74E8200025D3E1 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD91A7E2A74E8200025D3E1 /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,11 +29,12 @@
 		8C5CAEFC2A6E2F4F00107EDB /* ChuckNorrisJoke.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChuckNorrisJoke.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C5CAEFF2A6E2F4F00107EDB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8C5CAF012A6E2F4F00107EDB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		8C5CAF032A6E2F4F00107EDB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8C5CAF032A6E2F4F00107EDB /* SenseOfHumorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenseOfHumorViewController.swift; sourceTree = "<group>"; };
 		8C5CAF062A6E2F4F00107EDB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8C5CAF082A6E2F5300107EDB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8C5CAF0B2A6E2F5300107EDB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8C5CAF0D2A6E2F5300107EDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8CD91A7E2A74E8200025D3E1 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +71,7 @@
 				8C44C4772A6F88C000044068 /* ImageGameViewController.swift */,
 				8C5CAEFF2A6E2F4F00107EDB /* AppDelegate.swift */,
 				8C5CAF012A6E2F4F00107EDB /* SceneDelegate.swift */,
-				8C5CAF032A6E2F4F00107EDB /* ViewController.swift */,
+				8C5CAF032A6E2F4F00107EDB /* SenseOfHumorViewController.swift */,
 				8C44C4752A6F6C5000044068 /* ChckNorrisJokeResponse.swift */,
 				8C44C4732A6F6C1A00044068 /* PaPago.swift */,
 				8C5CAF052A6E2F4F00107EDB /* Main.storyboard */,
@@ -77,6 +79,7 @@
 				8C5CAF0A2A6E2F5300107EDB /* LaunchScreen.storyboard */,
 				8C5CAF0D2A6E2F5300107EDB /* Info.plist */,
 				8C44C4792A70FA6000044068 /* NaverImage.swift */,
+				8CD91A7E2A74E8200025D3E1 /* HomeViewController.swift */,
 			);
 			path = ChuckNorrisJoke;
 			sourceTree = "<group>";
@@ -158,9 +161,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C5CAF042A6E2F4F00107EDB /* ViewController.swift in Sources */,
+				8C5CAF042A6E2F4F00107EDB /* SenseOfHumorViewController.swift in Sources */,
 				8C5CAF002A6E2F4F00107EDB /* AppDelegate.swift in Sources */,
 				8C5CAF022A6E2F4F00107EDB /* SceneDelegate.swift in Sources */,
+				8CD91A7F2A74E8200025D3E1 /* HomeViewController.swift in Sources */,
 				8C44C4762A6F6C5000044068 /* ChckNorrisJokeResponse.swift in Sources */,
 				8C44C47A2A70FA6000044068 /* NaverImage.swift in Sources */,
 				8C44C4782A6F88C000044068 /* ImageGameViewController.swift in Sources */,

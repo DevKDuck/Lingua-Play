@@ -63,107 +63,115 @@ class ImageGameViewController: UIViewController{
     }()
     
     @objc func tapRandomButton(_ sender: UIButton){
-        let url = "https://random-words5.p.rapidapi.com/getMultipleRandom?count=3"
         
-        guard let url = URL(string: url) else {
-            print("Error: cannot create URL")
-            return
-        }
-        
-        let headers: HTTPHeaders = [
-            "X-RapidAPI-Key": RapidKey().rapidAPIKey,
-            "X-RapidAPI-Host": RapidKey().rapidAPIHost
-        ]
-        
-        
-        AF.request(url,
-                   method: .get,
-                   headers: headers)
-        .validate(statusCode: 200..<300)
-        .response{ r in
-            switch r.result{
-            case .success(let data):
-                if let data = data{
-                    if var str = String(data: data, encoding: .utf8){
-                        
-                        
-                        
-                        str = str.trimmingCharacters(in: ["["])
-                        str = str.trimmingCharacters(in: ["]"])
-                        
-                        str = String(str.filter { $0 != "\"" })
-
-                        let strArray = str.components(separatedBy: ",")
-                        print(strArray)
-
-                        let randomNumArray = [0,1,2]
-                        guard let randomNum = randomNumArray.randomElement()else{
-                            return
-                        }
-
-                        self.answer = strArray[randomNum]
-                        
-                        DispatchQueue.main.async {
-                            self.randomLabel1.text = strArray[0]
-                            self.randomLabel2.text = strArray[1]
-                            self.randomLabel3.text = strArray[2]
-                            
-//                        }
-                    }
-                        self.getWordMeans(query: strArray[randomNum])
-                        self.getImage(str: strArray[randomNum])
-                        
-                }
-            }
-            case .failure(let error):
-                print(error)
-            }
-            
-        }
-        
+        getRandomWords()
     }
     
-    func getWordMeans(query: String){
-        let urlString = "https://openapi.naver.com/v1/search/encyc.json?query=\(query)"
-        guard let url = URL(string:urlString) else {
-            print("String -> URL fail")
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue(Storage().naverClientID, forHTTPHeaderField: "X-Naver-Client-Id")
-        request.addValue(Storage().naverClientSecret, forHTTPHeaderField: "X-Naver-Client-Secret")
-        
-        
-        URLSession.shared.dataTask(with: request){ data, response, error in
-            guard error == nil else{
-                print("Error: error calling GET")
-                return
-            }
-            guard let data = data else{
-                print("Error: Did not recieve data")
+    func getRandomWords(){
+        DispatchQueue.global().async {
+            let url = "https://random-words5.p.rapidapi.com/getMultipleRandom?count=3"
+            
+            guard let url = URL(string: url) else {
+                print("Error: cannot create URL")
                 return
             }
             
+            let headers: HTTPHeaders = [
+                "X-RapidAPI-Key": RapidKey().rapidAPIKey,
+                "X-RapidAPI-Host": RapidKey().rapidAPIHost
+            ]
             
-            guard let response = response as? HTTPURLResponse, (200 ..< 300) ~= response.statusCode else {
-                if let res = response as? HTTPURLResponse, (400 ..< 500) ~= res.statusCode{
-                    print(res.statusCode.description)
+            
+            AF.request(url,
+                       method: .get,
+                       headers: headers)
+            .validate(statusCode: 200..<300)
+            .response{ r in
+                switch r.result{
+                case .success(let data):
+                    if let data = data{
+                        if var str = String(data: data, encoding: .utf8){
+                            
+                            
+                            
+                            str = str.trimmingCharacters(in: ["["])
+                            str = str.trimmingCharacters(in: ["]"])
+                            
+                            str = String(str.filter { $0 != "\"" })
+                            
+                            let strArray = str.components(separatedBy: ",")
+                            print(strArray)
+                            
+                            let randomNumArray = [0,1,2]
+                            guard let randomNum = randomNumArray.randomElement()else{
+                                return
+                            }
+                            
+                            self.answer = strArray[randomNum]
+                            
+                            DispatchQueue.main.async {
+                                self.randomLabel1.text = strArray[0]
+                                self.randomLabel2.text = strArray[1]
+                                self.randomLabel3.text = strArray[2]
+                                self.getWordMeans(query: strArray[randomNum])
+                                self.getImage(str: strArray[randomNum])
+                            }
+                            
+                        }
+                    }
+                case .failure(let error):
+                    print(error)
                 }
                 
-                print("Error: HTTP request failed")
+            }
+        }
+    }
+    
+    
+    func getWordMeans(query: String){
+        DispatchQueue.global().async {
+            
+            let urlString = "https://openapi.naver.com/v1/search/encyc.json?query=\(query)"
+            guard let url = URL(string:urlString) else {
+                print("String -> URL fail")
                 return
             }
-            guard let mean = try? JSONDecoder().decode(NaverDic.self, from: data) else{
-                return
-            }
-            DispatchQueue.main.async {
-                self.answerMeanLabel.text = mean.items[0].description
-            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.addValue(Storage().naverClientID, forHTTPHeaderField: "X-Naver-Client-Id")
+            request.addValue(Storage().naverClientSecret, forHTTPHeaderField: "X-Naver-Client-Secret")
             
             
-        }.resume()
+            URLSession.shared.dataTask(with: request){ data, response, error in
+                guard error == nil else{
+                    print("Error: error calling GET")
+                    return
+                }
+                guard let data = data else{
+                    print("Error: Did not recieve data")
+                    return
+                }
+                
+                
+                guard let response = response as? HTTPURLResponse, (200 ..< 300) ~= response.statusCode else {
+                    if let res = response as? HTTPURLResponse, (400 ..< 500) ~= res.statusCode{
+                        print(res.statusCode.description)
+                    }
+                    
+                    print("Error: HTTP request failed")
+                    return
+                }
+                guard let mean = try? JSONDecoder().decode(NaverDic.self, from: data) else{
+                    return
+                }
+                DispatchQueue.main.async {
+                    self.answerMeanLabel.text = mean.items[0].description
+                }
+                
+                
+            }.resume()
+        }
     }
     
     
@@ -190,26 +198,30 @@ class ImageGameViewController: UIViewController{
         }
         
         if text.isEmpty{
-            let alert = UIAlertController(title: "빈칸입니다", message: "정답을 적어주세요", preferredStyle: .alert)
-            let confirm = UIAlertAction(title: "확인", style: .cancel)
-            alert.addAction(confirm)
-            present(alert, animated: false)
+          pushAlert(title: "빈칸입니다", message: "정답을 적어주세요")
         }
         else{
             if text == answer{
-                let alert = UIAlertController(title: "정답", message: "정답입니다.", preferredStyle: .alert)
-                let confirm = UIAlertAction(title: "확인", style: .cancel)
-                alert.addAction(confirm)
-                present(alert, animated: false)
+                pushAlert(title: "정답입니다👏", message: "다음 버튼을 눌러주세요")
             }
             else{
-                let alert = UIAlertController(title: "오답", message: "다시 생각해보세요.", preferredStyle: .alert)
-                let confirm = UIAlertAction(title: "확인", style: .cancel)
-                alert.addAction(confirm)
-                present(alert, animated: false)
+                pushAlert(title:"오답입니다", message: "다시 생각해보세요")
             }
         }
         
+        
+    }
+    
+    func pushAlert(title:String, message:String){
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let confirm = UIAlertAction(title: "확인", style: .cancel)
+        alert.addAction(confirm)
+        present(alert, animated: false)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        getRandomWords()
         
     }
     
@@ -220,74 +232,75 @@ class ImageGameViewController: UIViewController{
         setConstraints()
         hideKeyBoard()
         
-        
     }
     
     func getImage(str: String){
-        
-        let encodedQuery = str.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        let urlString = "https://openapi.naver.com/v1/search/image?query=\(encodedQuery)"
-        
-        
-        guard let url = URL(string:urlString) else {
-            print("String -> URL fail")
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue(Storage().naverClientID, forHTTPHeaderField: "X-Naver-Client-Id")
-        request.addValue(Storage().naverClientSecret, forHTTPHeaderField: "X-Naver-Client-Secret")
-        
-        URLSession.shared.dataTask(with: request){ data, response, error in
-            guard error == nil else{
-                print("Error: error calling GET")
-                return
-            }
-            guard let data = data else{
-                print("Error: Did not recieve data")
+        DispatchQueue.global().async {
+            
+            let encodedQuery = str.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+            let urlString = "https://openapi.naver.com/v1/search/image?query=\(encodedQuery)"
+            
+            
+            guard let url = URL(string:urlString) else {
+                print("String -> URL fail")
                 return
             }
             
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.addValue(Storage().naverClientID, forHTTPHeaderField: "X-Naver-Client-Id")
+            request.addValue(Storage().naverClientSecret, forHTTPHeaderField: "X-Naver-Client-Secret")
             
-            guard let response = response as? HTTPURLResponse, (200 ..< 300) ~= response.statusCode else {
-                if let res = response as? HTTPURLResponse, (400 ..< 500) ~= res.statusCode{
-                    print(res.statusCode.description)
+            URLSession.shared.dataTask(with: request){ data, response, error in
+                guard error == nil else{
+                    print("Error: error calling GET")
+                    return
+                }
+                guard let data = data else{
+                    print("Error: Did not recieve data")
+                    return
                 }
                 
-                print("Error: HTTP request failed")
-                return
-            }
-            
-            guard let d = try? JSONDecoder().decode(NaverImage.self, from: data) else{
-                return
-            }
-            
-            let imagestr = d.items[0].link
-            if let imageURL = URL(string: imagestr){
-                downloadImage(from: imageURL)
-            }
-            
-            func downloadImage(from url: URL){
                 
-                URLSession.shared.dataTask(with: url) { data, response, error in
-                    guard let data = data, error == nil else {
-                        print("Error while downloading image: \(error?.localizedDescription ?? "")")
-                        return
+                guard let response = response as? HTTPURLResponse, (200 ..< 300) ~= response.statusCode else {
+                    if let res = response as? HTTPURLResponse, (400 ..< 500) ~= res.statusCode{
+                        print(res.statusCode.description)
                     }
                     
-                    DispatchQueue.main.async {
-                        if let image = UIImage(data: data) {
-                            self.imageView.image = image
-                            print(d.items.count)
-                        } else {
-                            print("Error: Invalid image data")
+                    print("Error: HTTP request failed")
+                    return
+                }
+                
+                guard let d = try? JSONDecoder().decode(NaverImage.self, from: data) else{
+                    return
+                }
+                
+                let imagestr = d.items[0].link
+                if let imageURL = URL(string: imagestr){
+                    downloadImage(from: imageURL)
+                }
+                
+                func downloadImage(from url: URL){
+                    
+                    URLSession.shared.dataTask(with: url) { data, response, error in
+                        guard let data = data, error == nil else {
+                            print("Error while downloading image: \(error?.localizedDescription ?? "")")
+                            return
                         }
-                    }
-                }.resume()
-            }
-            
-        }.resume()
+                        
+                        DispatchQueue.main.async {
+                            if let image = UIImage(data: data) {
+                                self.imageView.image = image
+                                print(d.items.count)
+                            } else {
+                                print("Error: Invalid image data")
+                            }
+                        }
+                    }.resume()
+                }
+                
+            }.resume()
+        }
         
     }
     
