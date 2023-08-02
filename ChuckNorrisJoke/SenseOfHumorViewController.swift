@@ -159,9 +159,9 @@ class SenseOfHumorViewController: UIViewController {
         .responseDecodable(of: PaPago.self){ response in
             switch response.result{
             case.success(let data):
-                DispatchQueue.main.async {
+//                DispatchQueue.main.async {
                     self.jokeLabelKOR.text = data.message.result.translatedText
-                }
+//                }
             case.failure(_):
                 print("Papago API POST failed")
             }

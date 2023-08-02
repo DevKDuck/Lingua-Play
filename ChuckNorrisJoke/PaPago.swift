@@ -60,4 +60,4 @@ struct NaverDicItems: Codable{
     let description: String
     let thumbnail: String
 }
-        
+
