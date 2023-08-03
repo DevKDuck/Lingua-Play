@@ -12,6 +12,8 @@ class ImageGameViewController: UIViewController{
     
     var answer:String?
     
+    
+    
     let imageView: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleToFill
@@ -236,17 +238,23 @@ class ImageGameViewController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        fetchWords()
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+     
         
-        view.backgroundColor = .systemTeal
+        view.backgroundColor = UIColor(red: 216, green: 217, blue: 218, alpha: 1)
         setConstraints()
         hideKeyBoard()
         
+        
+        
     }
+    
+ 
     
     func getImage(str: String){
         let encodedQuery = str.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
@@ -435,3 +443,9 @@ extension UIViewController{
         view.endEditing(true)
     }
 }
+
+//extension UIColor{
+//    func withAlpha(_ alpha: CGFloat) -> UIColor{
+//        return self.withAlphaComponent(alpha)
+//    }
+//}
