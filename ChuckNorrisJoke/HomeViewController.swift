@@ -18,52 +18,22 @@ class HomeViewController: UIViewController{
         return label
     }()
     
-    let senseOfHumorBGView: UIView = {
+    lazy var senseOfHumorBGView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(hexCode: "FFCACC")
         view.layer.cornerRadius = 25
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapsenseOfHumorButton(_:))))
         return view
     }()
     
-    let senseOfHumorIconBGView: UIView = {
+    lazy var inferGameBGView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 15
+        view.backgroundColor = UIColor(hexCode: "DBC4F0")
+        view.layer.cornerRadius = 25
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapInferGameButton(_:))))
         return view
     }()
-    
-    let senseOfHumorIconView: UIImageView = {
-        let imageview = UIImageView()
-        imageview.image = UIImage(systemName: "brain")
-        imageview.tintColor = .darkGray
-        return imageview
-    }()
-    
-    
-    let senseOfHumorLabelStackView: UIStackView = {
-        let senseOfHumorTitleLabel: UILabel = {
-            let label = UILabel()
-            label.text = "Sense of Humor"
-            label.textColor = .darkGray
-            label.font = UIFont(name: "Noto Sans Myanmar", size: 20)
-            label.font = .boldSystemFont(ofSize: 20)
-            return label
-        }()
-        let senseOfHumorSubtitleLabel: UILabel = {
-            let label = UILabel()
-            label.text = "Think of the sentence"
-            label.textColor = .darkGray
-            label.font = UIFont(name: "Noto Sans Myanmar", size: 15)
-            return label
-        }()
-        
-        
-        let stackView = UIStackView(arrangedSubviews: [senseOfHumorTitleLabel, senseOfHumorSubtitleLabel])
-        stackView.axis = .vertical
-        stackView.spacing = 1
-        return stackView
-    }()
-    
+
     @objc func tapsenseOfHumorButton(_ sender: UITapGestureRecognizer){
         guard let vc = storyboard?.instantiateViewController(identifier: "SenseOfHumorViewController") else {
             return
@@ -71,30 +41,6 @@ class HomeViewController: UIViewController{
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
-    
-    
-    
-//    lazy var senseOfHumorButton: UIButton = {
-//        let button = UIButton()
-//        button.setTitle("Sense of Humor", for: .normal)
-//        button.setTitleColor(.darkGray, for: .normal)
-//        button.titleLabel?.font = UIFont(name: "Noto Sans Myanmar", size: 20)
-//        button.backgroundColor = UIColor(hexCode: "FFCACC")
-//        button.layer.cornerRadius = 15
-//        button.addTarget(self, action: #selector(tapsenseOfHumorButton(_:)), for: .touchUpInside)
-//        return button
-//    }()
-//    
-    
-    lazy var inferGameButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Infer Game", for: .normal)
-        button.tintColor = .lightGray
-        button.backgroundColor = UIColor(hexCode: "DBC4F0")
-        button.layer.cornerRadius = 15
-        button.addTarget(self, action: #selector(tapInferGameButton(_:)), for: .touchUpInside)
-        return button
-    }()
     
     @objc func tapInferGameButton(_ sender: UIButton){
         let vc = ImageGameViewController()
@@ -105,32 +51,112 @@ class HomeViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         view.backgroundColor = .white
-        setLayourConstraints()
-        addTapGesture()
+        titleLabelLayoutConstraints()
+        setButton()
+        
     }
     
-    func addTapGesture(){
-        senseOfHumorBGView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapsenseOfHumorButton(_:))))
+    //버튼 배경뷰
+    func setBGView(color: String) -> UIView{
+        let view = UIView()
+        view.backgroundColor = UIColor(hexCode: color)
+        view.layer.cornerRadius = 25
+        return view
     }
     
-    func setLayourConstraints(){
+    //아이콘 배경뷰
+    func setIconBGView() -> UIView{
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 15
+        return view
+    }
+    
+    //아이콘 이미지뷰
+    func setIconView(systemimageName: String) -> UIImageView{
+        let imageview = UIImageView()
+        imageview.image = UIImage(systemName: systemimageName)
+        imageview.tintColor = .darkGray
+        return imageview
+    }
+    
+  
+    //타이틀과 부제 라벨
+    func setTitleAndSubLabel(labelText: String, fontSize: CGFloat, boldBool: Bool) -> UILabel{
+        let label = UILabel()
+        label.text = labelText
+        label.textColor = .darkGray
+        label.font = UIFont(name: "Noto Sans Myanmar", size: fontSize)
+        if boldBool == true{
+            label.font = .boldSystemFont(ofSize: fontSize)
+        }
+        return label
+    }
+    
+    //StackView 생성
+    func setLabelStackView(titleLabel: String, titleFontSize: CGFloat, titleBoldBool: Bool,
+                           subLabel: String, subFontSize: CGFloat, subBoldBool: Bool) -> UIStackView{
+        let titleLabel = setTitleAndSubLabel(labelText: titleLabel, fontSize: titleFontSize, boldBool: titleBoldBool)
+        let subTitleLabel = setTitleAndSubLabel(labelText: subLabel, fontSize: subFontSize, boldBool: subBoldBool)
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, subTitleLabel])
+        stackView.axis = .vertical
+        stackView.spacing = 1
+        return stackView
+    }
+    
+    //버튼 생성
+    func setButton(){
+        constraintButton(bgView: senseOfHumorBGView, iconImage: "text.bubble", titleLabel: "Sense Of Humor", titleFontSize: 20, titleBoldBool: true, subLabel: "Think of the sentence", subFontSize: 15, subBoldBool: false, constraintTopView: titleLabel)
+        constraintButton(bgView: inferGameBGView, iconImage: "brain.head.profile", titleLabel: "Sense Of Humor", titleFontSize: 20, titleBoldBool: true, subLabel: "Think of the sentence", subFontSize: 15, subBoldBool: false, constraintTopView: senseOfHumorBGView)
+    }
+    
+    //버튼 구성
+    func constraintButton(bgView: UIView, iconImage: String, titleLabel: String, titleFontSize: CGFloat, titleBoldBool: Bool, subLabel: String, subFontSize: CGFloat, subBoldBool: Bool, constraintTopView: UIView){
+        let iconBGView = setIconBGView()
+        let iconView = setIconView(systemimageName: iconImage)
+        let stackView = setLabelStackView(titleLabel: titleLabel, titleFontSize: titleFontSize, titleBoldBool: titleBoldBool, subLabel: subLabel, subFontSize: subFontSize, subBoldBool: subBoldBool)
+           
+        view.addSubview(bgView)
+        bgView.addSubview(iconBGView)
+        bgView.addSubview(stackView)
+        iconBGView.addSubview(iconView)
+        
+        bgView.translatesAutoresizingMaskIntoConstraints = false
+        iconBGView.translatesAutoresizingMaskIntoConstraints = false
+        iconView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            bgView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            bgView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: view.bounds.width / 30),
+            bgView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -(view.bounds.width / 30)),
+            bgView.topAnchor.constraint(equalTo: constraintTopView.bottomAnchor,constant: 20),
+            bgView.heightAnchor.constraint(equalToConstant:view.bounds.height / 6),
+            
+            iconBGView.leadingAnchor.constraint(equalTo: bgView.leadingAnchor, constant: view.bounds.width / 20),
+            iconBGView.centerYAnchor.constraint(equalTo: bgView.centerYAnchor),
+            iconBGView.heightAnchor.constraint(equalToConstant: (view.bounds.height / 6) / 2),
+            iconBGView.widthAnchor.constraint(equalToConstant: (view.bounds.height / 6) / 2),
+            
+            
+            iconView.centerYAnchor.constraint(equalTo: iconBGView.centerYAnchor),
+            iconView.centerXAnchor.constraint(equalTo: iconBGView.centerXAnchor),
+            iconView.heightAnchor.constraint(equalToConstant: (view.bounds.height / 6) / 2 * 0.8),
+            iconView.widthAnchor.constraint(equalToConstant: (view.bounds.height / 6) / 2 * 0.8),
+            
+            stackView.centerYAnchor.constraint(equalTo: iconBGView.centerYAnchor),
+            stackView.leadingAnchor.constraint(equalTo:iconBGView.trailingAnchor, constant: view.bounds.width / 20),
+            stackView.heightAnchor.constraint(equalToConstant: (view.bounds.height / 6) / 2),
+            stackView.widthAnchor.constraint(equalToConstant: (view.bounds.width / 2)),
+            
+        ])
+    }
+    
+    
+    func titleLabelLayoutConstraints(){
         view.addSubview(titleLabel)
-        view.addSubview(senseOfHumorBGView)
-        senseOfHumorBGView.addSubview(senseOfHumorIconBGView)
-        senseOfHumorBGView.addSubview(senseOfHumorLabelStackView)
-        senseOfHumorIconBGView.addSubview(senseOfHumorIconView)
-        view.addSubview(inferGameButton)
-        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        senseOfHumorIconBGView.translatesAutoresizingMaskIntoConstraints = false
-        senseOfHumorBGView.translatesAutoresizingMaskIntoConstraints = false
-        senseOfHumorIconView.translatesAutoresizingMaskIntoConstraints = false
-        senseOfHumorLabelStackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        inferGameButton.translatesAutoresizingMaskIntoConstraints = false
-        
         
         NSLayoutConstraint.activate([
             
@@ -140,45 +166,14 @@ class HomeViewController: UIViewController{
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 50),
             titleLabel.heightAnchor.constraint(equalToConstant: 80),
             
-            
-            senseOfHumorBGView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            senseOfHumorBGView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: view.bounds.width / 30),
-            senseOfHumorBGView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -(view.bounds.width / 30)),
-            senseOfHumorBGView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,constant: 80),
-            senseOfHumorBGView.heightAnchor.constraint(equalToConstant: view.bounds.height / 6),
-            
-            senseOfHumorIconBGView.leadingAnchor.constraint(equalTo: senseOfHumorBGView.leadingAnchor, constant: view.bounds.width / 20),
-            senseOfHumorIconBGView.centerYAnchor.constraint(equalTo: senseOfHumorBGView.centerYAnchor),
-            senseOfHumorIconBGView.heightAnchor.constraint(equalToConstant: (view.bounds.height / 6) / 2),
-            senseOfHumorIconBGView.widthAnchor.constraint(equalToConstant: (view.bounds.height / 6) / 2),
-            
-            
-            senseOfHumorIconView.centerYAnchor.constraint(equalTo: senseOfHumorIconBGView.centerYAnchor),
-            senseOfHumorIconView.centerXAnchor.constraint(equalTo: senseOfHumorIconBGView.centerXAnchor),
-            senseOfHumorIconView.heightAnchor.constraint(equalToConstant: (view.bounds.height / 6) / 2 * 0.8),
-            senseOfHumorIconView.widthAnchor.constraint(equalToConstant: (view.bounds.height / 6) / 2 * 0.8),
-            
-            senseOfHumorLabelStackView.centerYAnchor.constraint(equalTo: senseOfHumorIconBGView.centerYAnchor),
-            senseOfHumorLabelStackView.leadingAnchor.constraint(equalTo:senseOfHumorIconBGView.trailingAnchor, constant: view.bounds.width / 20),
-            senseOfHumorLabelStackView.heightAnchor.constraint(equalToConstant: (view.bounds.height / 6) / 2),
-            senseOfHumorLabelStackView.widthAnchor.constraint(equalToConstant: (view.bounds.width / 2)),
-            
-            
-            
-            
-            inferGameButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            inferGameButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            inferGameButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            inferGameButton.topAnchor.constraint(equalTo: senseOfHumorBGView.bottomAnchor,constant: 20),
-            inferGameButton.heightAnchor.constraint(equalToConstant:view.bounds.height / 6)
+        
         ])
     }
-    
-    
 }
 
 
 extension UIColor {
+    
     
     convenience init(hexCode: String, alpha: CGFloat = 1.0) {
         var hexFormatted: String = hexCode.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).uppercased()

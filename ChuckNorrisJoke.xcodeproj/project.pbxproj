@@ -18,6 +18,7 @@
 		8C5CAF072A6E2F4F00107EDB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C5CAF052A6E2F4F00107EDB /* Main.storyboard */; };
 		8C5CAF092A6E2F5300107EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C5CAF082A6E2F5300107EDB /* Assets.xcassets */; };
 		8C5CAF0C2A6E2F5300107EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C5CAF0A2A6E2F5300107EDB /* LaunchScreen.storyboard */; };
+		8C9CC9F02A7B8F8900A05FDF /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9CC9EF2A7B8F8900A05FDF /* LogInViewController.swift */; };
 		8CD91A7F2A74E8200025D3E1 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD91A7E2A74E8200025D3E1 /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +35,7 @@
 		8C5CAF082A6E2F5300107EDB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8C5CAF0B2A6E2F5300107EDB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8C5CAF0D2A6E2F5300107EDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8C9CC9EF2A7B8F8900A05FDF /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		8CD91A7E2A74E8200025D3E1 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,6 +82,7 @@
 				8C5CAF0D2A6E2F5300107EDB /* Info.plist */,
 				8C44C4792A70FA6000044068 /* NaverImage.swift */,
 				8CD91A7E2A74E8200025D3E1 /* HomeViewController.swift */,
+				8C9CC9EF2A7B8F8900A05FDF /* LogInViewController.swift */,
 			);
 			path = ChuckNorrisJoke;
 			sourceTree = "<group>";
@@ -163,6 +166,7 @@
 			files = (
 				8C5CAF042A6E2F4F00107EDB /* SenseOfHumorViewController.swift in Sources */,
 				8C5CAF002A6E2F4F00107EDB /* AppDelegate.swift in Sources */,
+				8C9CC9F02A7B8F8900A05FDF /* LogInViewController.swift in Sources */,
 				8C5CAF022A6E2F4F00107EDB /* SceneDelegate.swift in Sources */,
 				8CD91A7F2A74E8200025D3E1 /* HomeViewController.swift in Sources */,
 				8C44C4762A6F6C5000044068 /* ChckNorrisJokeResponse.swift in Sources */,

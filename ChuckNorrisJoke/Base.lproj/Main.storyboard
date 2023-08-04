@@ -8,6 +8,21 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--LogInViewController-->
+        <scene sceneID="CzW-AE-6a8">
+            <objects>
+                <viewController storyboardIdentifier="LogInViewController" title="LogInViewController" id="X95-Tq-XTW" customClass="LogInViewController" customModule="ChuckNorrisJoke" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="TnQ-9K-JdP">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="o2j-n5-Ujw"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Xuh-yE-gc4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1590" y="25"/>
+        </scene>
         <!--Home View Controller-->
         <scene sceneID="Ydg-NB-SM6">
             <objects>
