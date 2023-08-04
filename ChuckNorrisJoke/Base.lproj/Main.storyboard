@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="rK5-P0-urK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="C02-yB-LBU">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
@@ -33,15 +33,16 @@
                         <viewLayoutGuide key="safeArea" id="i6u-ZU-Asm"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="vP7-iA-AMZ"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hLP-Zs-HMi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-829" y="15"/>
+            <point key="canvasLocation" x="96.946564885496173" y="14.788732394366198"/>
         </scene>
         <!--SenseOfHumorViewController-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController restorationIdentifier="SenseOfHumorViewController" storyboardIdentifier="SenseOfHumorViewController" title="SenseOfHumorViewController" id="BYZ-38-t0r" customClass="SenseOfHumorViewController" customModule="ChuckNorrisJoke" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SenseOfHumorViewController" title="SenseOfHumorViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="SenseOfHumorViewController" customModule="ChuckNorrisJoke" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -143,7 +144,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="46.564885496183201" y="18.30985915492958"/>
+            <point key="canvasLocation" x="973.28244274809151" y="18.30985915492958"/>
         </scene>
         <!--ImageGameViewController-->
         <scene sceneID="ebc-VD-d7N">
@@ -158,7 +159,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zO1-rr-liE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="925" y="23"/>
+            <point key="canvasLocation" x="1851.1450381679388" y="22.535211267605636"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="aZf-4E-xw5">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="C02-yB-LBU" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lk0-Pn-wdY">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="rK5-P0-urK" kind="relationship" relationship="rootViewController" id="VQl-NH-du0"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RxO-Cq-4NN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-829.7709923664122" y="14.788732394366198"/>
         </scene>
     </scenes>
     <resources>

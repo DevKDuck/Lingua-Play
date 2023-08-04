@@ -11,6 +11,8 @@ import Alamofire
 
 class SenseOfHumorViewController: UIViewController {
     
+   
+    
     var jokeLabelENG:String = ""
     
     @IBOutlet weak var jokeLabel: UILabel!
@@ -177,14 +179,6 @@ class SenseOfHumorViewController: UIViewController {
         self.view.backgroundColor = .white
        
         // Do any additional setup after loading the view.
-    }
-    
-    @IBAction func tapNextGameButton(_ sender: UIButton) {
-        
-        let vc = ImageGameViewController()
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
-        
     }
     
 }

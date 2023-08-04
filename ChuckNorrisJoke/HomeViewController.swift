@@ -35,17 +35,17 @@ class HomeViewController: UIViewController{
     }()
 
     @objc func tapsenseOfHumorButton(_ sender: UITapGestureRecognizer){
-        guard let vc = storyboard?.instantiateViewController(identifier: "SenseOfHumorViewController") else {
-            return
-        }
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
+        guard let vc = storyboard?.instantiateViewController(withIdentifier:  "SenseOfHumorViewController") else { return}
+        self.navigationController?.pushViewController(vc, animated: true)
     }
+    
+    
     
     @objc func tapInferGameButton(_ sender: UIButton){
         let vc = ImageGameViewController()
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
+        
+        self.navigationController?.pushViewController(vc, animated: true)
+//        vc.modalPresentationStyle = .fullScreen
     }
     
     override func viewDidLoad() {
@@ -107,12 +107,12 @@ class HomeViewController: UIViewController{
     
     //버튼 생성
     func setButton(){
-        constraintButton(bgView: senseOfHumorBGView, iconImage: "text.bubble", titleLabel: "Sense Of Humor", titleFontSize: 20, titleBoldBool: true, subLabel: "Think of the sentence", subFontSize: 15, subBoldBool: false, constraintTopView: titleLabel)
-        constraintButton(bgView: inferGameBGView, iconImage: "brain.head.profile", titleLabel: "Sense Of Humor", titleFontSize: 20, titleBoldBool: true, subLabel: "Think of the sentence", subFontSize: 15, subBoldBool: false, constraintTopView: senseOfHumorBGView)
+        constraintButton(bgView: senseOfHumorBGView, iconImage: "text.bubble", titleLabel: "Sense Of Humor", titleFontSize: 20, titleBoldBool: true, subLabel: "Think of the sentence", subFontSize: 15, subBoldBool: false, constraintTopView: titleLabel, betweenViewDistance: 100)
+        constraintButton(bgView: inferGameBGView, iconImage: "brain.head.profile", titleLabel: "Sense Of Humor", titleFontSize: 20, titleBoldBool: true, subLabel: "Think of the sentence", subFontSize: 15, subBoldBool: false, constraintTopView: senseOfHumorBGView, betweenViewDistance: 30)
     }
     
     //버튼 구성
-    func constraintButton(bgView: UIView, iconImage: String, titleLabel: String, titleFontSize: CGFloat, titleBoldBool: Bool, subLabel: String, subFontSize: CGFloat, subBoldBool: Bool, constraintTopView: UIView){
+    func constraintButton(bgView: UIView, iconImage: String, titleLabel: String, titleFontSize: CGFloat, titleBoldBool: Bool, subLabel: String, subFontSize: CGFloat, subBoldBool: Bool, constraintTopView: UIView, betweenViewDistance: CGFloat){
         let iconBGView = setIconBGView()
         let iconView = setIconView(systemimageName: iconImage)
         let stackView = setLabelStackView(titleLabel: titleLabel, titleFontSize: titleFontSize, titleBoldBool: titleBoldBool, subLabel: subLabel, subFontSize: subFontSize, subBoldBool: subBoldBool)
@@ -131,7 +131,7 @@ class HomeViewController: UIViewController{
             bgView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             bgView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: view.bounds.width / 30),
             bgView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -(view.bounds.width / 30)),
-            bgView.topAnchor.constraint(equalTo: constraintTopView.bottomAnchor,constant: 20),
+            bgView.topAnchor.constraint(equalTo: constraintTopView.bottomAnchor,constant: betweenViewDistance),
             bgView.heightAnchor.constraint(equalToConstant:view.bounds.height / 6),
             
             iconBGView.leadingAnchor.constraint(equalTo: bgView.leadingAnchor, constant: view.bounds.width / 20),
