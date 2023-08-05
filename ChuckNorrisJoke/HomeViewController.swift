@@ -35,7 +35,9 @@ class HomeViewController: UIViewController{
     }()
 
     @objc func tapsenseOfHumorButton(_ sender: UITapGestureRecognizer){
-        guard let vc = storyboard?.instantiateViewController(withIdentifier:  "SenseOfHumorViewController") else { return}
+//        guard let vc = storyboard?.instantiateViewController(withIdentifier:  "SenseOfHumorViewController") else { return}
+        
+        let vc = SenseofHumorPrepareViewController()
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -46,6 +48,12 @@ class HomeViewController: UIViewController{
         
         self.navigationController?.pushViewController(vc, animated: true)
 //        vc.modalPresentationStyle = .fullScreen
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        navigationController?.navigationBar.isHidden = true
     }
     
     override func viewDidLoad() {

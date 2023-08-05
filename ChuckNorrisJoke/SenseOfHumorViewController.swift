@@ -173,6 +173,13 @@ class SenseOfHumorViewController: UIViewController {
         
     }
     
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        navigationController?.navigationBar.isHidden = false
+        navigationItem.backButtonTitle = "뒤"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

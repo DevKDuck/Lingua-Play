@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C2DDC8B2A7E1878004E2D95 /* SenseofHumorPrepareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C2DDC8A2A7E1878004E2D95 /* SenseofHumorPrepareViewController.swift */; };
 		8C44C4722A6E4CA700044068 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8C44C4712A6E4CA700044068 /* Alamofire */; };
 		8C44C4742A6F6C1A00044068 /* PaPago.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C44C4732A6F6C1A00044068 /* PaPago.swift */; };
 		8C44C4762A6F6C5000044068 /* ChckNorrisJokeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C44C4752A6F6C5000044068 /* ChckNorrisJokeResponse.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8C2DDC8A2A7E1878004E2D95 /* SenseofHumorPrepareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenseofHumorPrepareViewController.swift; sourceTree = "<group>"; };
 		8C44C4732A6F6C1A00044068 /* PaPago.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaPago.swift; sourceTree = "<group>"; };
 		8C44C4752A6F6C5000044068 /* ChckNorrisJokeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChckNorrisJokeResponse.swift; sourceTree = "<group>"; };
 		8C44C4772A6F88C000044068 /* ImageGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGameViewController.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				8C44C4792A70FA6000044068 /* NaverImage.swift */,
 				8CD91A7E2A74E8200025D3E1 /* HomeViewController.swift */,
 				8C9CC9EF2A7B8F8900A05FDF /* LogInViewController.swift */,
+				8C2DDC8A2A7E1878004E2D95 /* SenseofHumorPrepareViewController.swift */,
 			);
 			path = ChuckNorrisJoke;
 			sourceTree = "<group>";
@@ -172,6 +175,7 @@
 				8C44C4762A6F6C5000044068 /* ChckNorrisJokeResponse.swift in Sources */,
 				8C44C47A2A70FA6000044068 /* NaverImage.swift in Sources */,
 				8C44C4782A6F88C000044068 /* ImageGameViewController.swift in Sources */,
+				8C2DDC8B2A7E1878004E2D95 /* SenseofHumorPrepareViewController.swift in Sources */,
 				8C44C4742A6F6C1A00044068 /* PaPago.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
