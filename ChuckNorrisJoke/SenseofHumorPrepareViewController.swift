@@ -39,11 +39,13 @@ class SenseofHumorPrepareViewController: UIViewController{
     }()
     
     
+    
+    
     let topLabelstackView: UIStackView = {
         let titlelabel = UILabel()
         titlelabel.text = "Sense Of Humor"
-        titlelabel.font = UIFont(name:"Noto Sans Myanmar", size: 35)
-        titlelabel.font = .boldSystemFont(ofSize: 35)
+        titlelabel.font = UIFont(name:"Noto Sans Myanmar", size: 25)
+        titlelabel.font = .boldSystemFont(ofSize: 25)
         titlelabel.textColor = .darkGray
         titlelabel.textAlignment = .center
         titlelabel.translatesAutoresizingMaskIntoConstraints = false
@@ -51,7 +53,7 @@ class SenseofHumorPrepareViewController: UIViewController{
         let subtitlelabel = UILabel()
         subtitlelabel.text = "Think of the sentence"
         subtitlelabel.textColor = .darkGray
-        subtitlelabel.font = UIFont(name:"Noto Sans Myanmar", size: 20)
+        subtitlelabel.font = UIFont(name:"Noto Sans Myanmar", size: 17)
         subtitlelabel.translatesAutoresizingMaskIntoConstraints = false
         subtitlelabel.textAlignment = .center
         
@@ -82,15 +84,23 @@ class SenseofHumorPrepareViewController: UIViewController{
         
         view.addSubview(view1)
         view.addSubview(view2)
+        view.addSubview(playButton)
         
         NSLayoutConstraint.activate([
             view1.topAnchor.constraint(equalTo: benefitLabel.bottomAnchor, constant: 20),
             view1.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             view1.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            view1.heightAnchor.constraint(equalToConstant: (view.bounds.height / 5) / 2),
             
             view2.topAnchor.constraint(equalTo: view1.bottomAnchor, constant: 20),
             view2.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            view2.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
+            view2.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            view2.heightAnchor.constraint(equalToConstant: (view.bounds.height / 5) / 2),
+            
+            playButton.heightAnchor.constraint(equalToConstant: ((view.bounds.width / 7) * 3) / 2),
+            playButton.widthAnchor.constraint(equalToConstant: (view.bounds.width / 6) * 4),
+            playButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            playButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
         ])
         
     }
@@ -120,30 +130,28 @@ class SenseofHumorPrepareViewController: UIViewController{
     }
     
     
-    let benefitStackView: UIStackView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "book.closed.circle")
-        imageView.tintColor = .green
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: 35).isActive = true
-        
-        let label = UILabel()
-        label.text = "Read the joke and infer the meaning of the sentence"
-        label.font = UIFont(name: "Noto Sans Myanmar", size: 17)
-        label.textColor = .darkGray
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        
-        let stackView = UIStackView(arrangedSubviews: [imageView, label])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.alignment = .leading
-        stackView.spacing = 5
-        
-        return stackView
+    lazy var playButton: UIButton = {
+        var button = UIButton()
+        button.backgroundColor = UIColor(hexCode: "331D2C")
+        button.layer.cornerRadius = 30
+        button.setTitle("Play", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(tapPlayButton(_:)), for: .touchUpInside)
+        return button
     }()
+    
+    @objc func tapPlayButton(_ sender: UIButton){
+//        guard let vc = storyboard?.instantiateViewController(withIdentifier:  "SenseOfHumorViewController") else {
+//            return
+//        }
         
+        let v = SenseOfHumorViewController()
+        self.navigationController?.pushViewController(v, animated: true)
+    }
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -158,11 +166,12 @@ class SenseofHumorPrepareViewController: UIViewController{
         topIconBGView.addSubview(topIcon)
         
         
+        
         NSLayoutConstraint.activate([
             topBGView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             topBGView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,constant: 10),
             topBGView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            topBGView.heightAnchor.constraint(equalToConstant: view.bounds.height / 2),
+            topBGView.heightAnchor.constraint(equalToConstant: view.bounds.height / 2 - 44),
             
             topIconBGView.topAnchor.constraint(equalTo: topBGView.topAnchor, constant: (view.bounds.height / 2) / 6),
             topIconBGView.centerXAnchor.constraint(equalTo: topBGView.centerXAnchor),
@@ -178,20 +187,24 @@ class SenseofHumorPrepareViewController: UIViewController{
             topLabelstackView.widthAnchor.constraint(equalToConstant:  (view.bounds.height / 2)),
             topLabelstackView.heightAnchor.constraint(equalToConstant:  (view.bounds.height / 2) / 5),
             topLabelstackView.centerXAnchor.constraint(equalTo: topBGView.centerXAnchor),
-            topLabelstackView.centerYAnchor.constraint(equalTo: topBGView.centerYAnchor)
+            topLabelstackView.centerYAnchor.constraint(equalTo: topBGView.centerYAnchor),
+            
+            
         ])
         
     }
     
     func benefitConstraints(){
         view.addSubview(benefitLabel)
+        view.addSubview(playButton)
         
         
         NSLayoutConstraint.activate([
-        benefitLabel.topAnchor.constraint(equalTo: topBGView.bottomAnchor, constant: 20),
-        benefitLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-        
-        
+            benefitLabel.topAnchor.constraint(equalTo: topBGView.bottomAnchor, constant: 20),
+            benefitLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            benefitLabel.heightAnchor.constraint(equalToConstant: 50)
+            
+            
         ])
         setBenefitStackView()
     }

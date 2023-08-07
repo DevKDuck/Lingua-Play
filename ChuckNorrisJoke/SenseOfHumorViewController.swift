@@ -15,12 +15,6 @@ class SenseOfHumorViewController: UIViewController {
     
     var jokeLabelENG:String = ""
     
-    @IBOutlet weak var jokeLabel: UILabel!
-    @IBOutlet weak var jokeLabelKOR: UILabel!
-    
-    @IBAction func nextButton(_ sender: UIButton) {
-        chuckNorrisJokeGetData()
-    }
     
     func chuckNorrisJokeGetData(){
         let url = "https://api.chucknorris.io/jokes/random"
@@ -39,7 +33,7 @@ class SenseOfHumorViewController: UIViewController {
             case .success(let data):
                 self.jokeLabelENG = data.value
                 DispatchQueue.main.async {
-                    self.jokeLabel.text = data.value
+                    self.humorContentLabel.text = data.value
                 }
                 
             case .failure(_):
@@ -82,13 +76,7 @@ class SenseOfHumorViewController: UIViewController {
 //
     }
     
-    @IBAction func translateButton(_ sender: UIButton) {
-        //        change(str: jokeLabel.text ?? "")
-        
-        translationFromEnglishToKorean(str: jokeLabel.text ?? "")
-    }
-    
-    
+
     //MARK: Papago API URLSession을 이용하여 번역
     //    func change(str: String){
     //        let url = "https://openapi.naver.com/v1/papago/n2mt"
@@ -161,9 +149,9 @@ class SenseOfHumorViewController: UIViewController {
         .responseDecodable(of: PaPago.self){ response in
             switch response.result{
             case.success(let data):
-//                DispatchQueue.main.async {
-                    self.jokeLabelKOR.text = data.message.result.translatedText
-//                }
+                DispatchQueue.main.async {
+                    self.koreanContentLabel.text = data.message.result.translatedText
+                }
             case.failure(_):
                 print("Papago API POST failed")
             }
@@ -173,19 +161,149 @@ class SenseOfHumorViewController: UIViewController {
         
     }
     
+    let humorTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Humor"
+        label.font = UIFont(name: "Noto Sans Myanmar", size: 30)
+        label.font = .boldSystemFont(ofSize: 30)
+        label.textColor = .darkGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let humorContentLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Next Joke Button Click"
+        label.font = UIFont(name: "Noto Sans Myanmar", size: 17)
+        label.textAlignment = .center
+        label.textColor = .darkGray
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    
+    let koreanContentBGView: UIView = {
+       let view = UIView()
+        view.backgroundColor = UIColor(hexCode: "F6F4EB")
+        view.layer.cornerRadius = 20
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    let koreanContentLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Translate Button Click"
+        label.font = UIFont(name: "Noto Sans Myanmar", size: 17)
+        label.textAlignment = .center
+        label.textColor = .lightGray
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    
+    lazy var playButton: UIButton = {
+        var button = UIButton()
+        button.backgroundColor = UIColor(hexCode: "331D2C")
+        button.layer.cornerRadius = 30
+        button.setTitle("Play", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(tapNextJokeButton(_:)), for: .touchUpInside)
+        return button
+    }()
+    
+//    lazy var nextJokeButton: UIButton = {
+//       let button = UIButton()
+//        button.backgroundColor = UIColor(hexCode: "FFCACC")
+//        button.setTitle("Next Joke", for: .normal)
+//        button.titleLabel?.font = UIFont(name:"Noto Sans Myanmar", size: 25)
+//        button.addTarget(self, action: #selector(tapNextJokeButton(_:)), for: .touchUpInside)
+//        button.tintColor = .darkGray
+//        return button
+//    }()
+//
+//    lazy var translateButton: UIButton = {
+//       let button = UIButton()
+//        button.backgroundColor = UIColor(hexCode: "FFCACC")
+//        button.setTitle("Next Joke", for: .normal)
+//        button.titleLabel?.font = UIFont(name:"Noto Sans Myanmar", size: 25)
+//        button.addTarget(self, action: #selector(taptranslateButton(_:)), for: .touchUpInside)
+//        button.tintColor = .darkGray
+//        return button
+//    }()
+    
+    @objc func tapNextJokeButton(_ sender: UIButton) {
+        if sender.titleLabel?.text == "Play"{
+            chuckNorrisJokeGetData()
+            sender.setTitle("Translate", for: .normal)
+        }
+        else{
+            translationFromEnglishToKorean(str: humorContentLabel.text ?? "")
+            sender.setTitle("Play", for: .normal)
+        }
+    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.navigationBar.isHidden = false
-        navigationItem.backButtonTitle = "뒤"
+
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = .white
+        setLayoutConstraints()
        
         // Do any additional setup after loading the view.
+    }
+    
+    func setLayoutConstraints(){
+        view.addSubview(humorTitleLabel)
+        view.addSubview(humorContentLabel)
+        view.addSubview(koreanContentBGView)
+        view.addSubview(koreanContentLabel)
+        view.addSubview(playButton)
+        
+        NSLayoutConstraint.activate([
+            humorTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            humorTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            humorContentLabel.topAnchor.constraint(equalTo: humorTitleLabel.bottomAnchor, constant: 10),
+            humorContentLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            humorContentLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            
+            humorContentLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            
+            koreanContentBGView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            koreanContentBGView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5),
+            koreanContentBGView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5),
+            koreanContentBGView.heightAnchor.constraint(equalToConstant: view.bounds.height / 3),
+            koreanContentBGView.topAnchor.constraint(equalTo: humorContentLabel.bottomAnchor, constant: 10),
+            
+            koreanContentLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            koreanContentLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5),
+            koreanContentLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5),
+            koreanContentBGView.heightAnchor.constraint(equalToConstant: view.bounds.height / 3),
+            koreanContentLabel.topAnchor.constraint(equalTo: koreanContentBGView.topAnchor),
+            koreanContentLabel.centerYAnchor.constraint(equalTo: koreanContentBGView.centerYAnchor),
+            
+        
+            playButton.widthAnchor.constraint(equalToConstant: (view.bounds.width / 6) * 4),
+            playButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            playButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+            playButton.heightAnchor.constraint(equalToConstant: ((view.bounds.width / 7) * 3) / 2)
+            
+            
+        
+        ])
+        
     }
     
 }
