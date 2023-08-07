@@ -74,7 +74,75 @@ class SenseofHumorPrepareViewController: UIViewController{
         return label
     }()
     
+    func setBenefitStackView(){
+        let view1 = createBenefitStackView(text: "Read the joke and infer the meaning of the sentence")
+        
+        let view2 = createBenefitStackView(text: "Press the translation button to check if the inferences are correct")
+        
+        
+        view.addSubview(view1)
+        view.addSubview(view2)
+        
+        NSLayoutConstraint.activate([
+            view1.topAnchor.constraint(equalTo: benefitLabel.bottomAnchor, constant: 20),
+            view1.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            view1.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            
+            view2.topAnchor.constraint(equalTo: view1.bottomAnchor, constant: 20),
+            view2.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            view2.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
+        ])
+        
+    }
     
+    func createBenefitStackView(text: String) -> UIStackView{
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "book.closed.circle")
+        imageView.tintColor = .green
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        
+        let label = UILabel()
+        label.text = text
+        label.font = UIFont(name: "Noto Sans Myanmar", size: 17)
+        label.textColor = .darkGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        
+        let stackView = UIStackView(arrangedSubviews: [imageView, label])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.alignment = .leading
+        stackView.spacing = 5
+        
+        return stackView
+    }
+    
+    
+    let benefitStackView: UIStackView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "book.closed.circle")
+        imageView.tintColor = .green
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        
+        let label = UILabel()
+        label.text = "Read the joke and infer the meaning of the sentence"
+        label.font = UIFont(name: "Noto Sans Myanmar", size: 17)
+        label.textColor = .darkGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        
+        let stackView = UIStackView(arrangedSubviews: [imageView, label])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.alignment = .leading
+        stackView.spacing = 5
+        
+        return stackView
+    }()
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,12 +186,14 @@ class SenseofHumorPrepareViewController: UIViewController{
     func benefitConstraints(){
         view.addSubview(benefitLabel)
         
+        
         NSLayoutConstraint.activate([
         benefitLabel.topAnchor.constraint(equalTo: topBGView.bottomAnchor, constant: 20),
         benefitLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
         
-        ])
         
+        ])
+        setBenefitStackView()
     }
     
 }
