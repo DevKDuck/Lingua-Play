@@ -216,36 +216,70 @@ class SenseOfHumorViewController: UIViewController {
         return button
     }()
     
-//    lazy var nextJokeButton: UIButton = {
-//       let button = UIButton()
-//        button.backgroundColor = UIColor(hexCode: "FFCACC")
-//        button.setTitle("Next Joke", for: .normal)
-//        button.titleLabel?.font = UIFont(name:"Noto Sans Myanmar", size: 25)
-//        button.addTarget(self, action: #selector(tapNextJokeButton(_:)), for: .touchUpInside)
-//        button.tintColor = .darkGray
-//        return button
-//    }()
-//
-//    lazy var translateButton: UIButton = {
-//       let button = UIButton()
-//        button.backgroundColor = UIColor(hexCode: "FFCACC")
-//        button.setTitle("Next Joke", for: .normal)
-//        button.titleLabel?.font = UIFont(name:"Noto Sans Myanmar", size: 25)
-//        button.addTarget(self, action: #selector(taptranslateButton(_:)), for: .touchUpInside)
-//        button.tintColor = .darkGray
-//        return button
-//    }()
+
+    var timer: Timer?
+    var startTime : Date?
+    
     
     @objc func tapNextJokeButton(_ sender: UIButton) {
         if sender.titleLabel?.text == "Play"{
             chuckNorrisJokeGetData()
+            
+            //시작 시간 설정
+            startTime = Date()
+            
+            timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true){ _ in
+                //0.1초 간격으로 타이머 무효화될때까지 반복
+            }
             sender.setTitle("Translate", for: .normal)
         }
         else{
+            if let startTime = startTime{
+                let currentTime = Date()
+                let elapsedTime = currentTime.timeIntervalSince(startTime)
+                updateTime(with: elapsedTime)
+                // 시작 시간과 멈춘시간 차이 업데이트
+            }
+            
+            //타이머 제거
+            timer?.invalidate()
             translationFromEnglishToKorean(str: humorContentLabel.text ?? "")
+            updateNumbersOfPlays()
             sender.setTitle("Play", for: .normal)
         }
     }
+    
+    func updateNumbersOfPlays(){
+        let saveNum = UserDefaults.standard.value(forKey: "NumbersOfPlays") ?? 0
+        UserDefaults.standard.set(saveNum as! Int + 1, forKey: "NumbersOfPlays")
+        
+    }
+    
+    func updateTime(with timeInterval: TimeInterval){
+        let minutes = Int(timeInterval / 60)
+        let seconds = Int(timeInterval.truncatingRemainder(dividingBy: 60))
+        let milliseconds = Int((timeInterval * 100).truncatingRemainder(dividingBy: 100))
+        
+        let saveMinutes = UserDefaults.standard.value(forKey: "SOFminutes") ?? 0
+        let saveSeconds = UserDefaults.standard.value(forKey: "SOFseconds") ?? 0
+        let saveMilliseconds = UserDefaults.standard.value(forKey: "SOFmilliseconds") ?? 0
+        
+        
+        UserDefaults.standard.set(saveMinutes as! Int + minutes, forKey: "SOFminutes")
+        UserDefaults.standard.set(saveSeconds as! Int + seconds, forKey: "SOFseconds")
+        UserDefaults.standard.set(saveMilliseconds as! Int + milliseconds, forKey: "SOFmilliseconds")
+        
+        
+        print(saveMinutes)
+        print(saveSeconds)
+        print(saveMilliseconds)
+        
+        let timeText = String(format: "%02d:%02d:%02d.%02d",  minutes, seconds, milliseconds)
+//        print(Int(timeInterval))
+    }
+    
+    
+    
     
     
     override func viewWillAppear(_ animated: Bool) {

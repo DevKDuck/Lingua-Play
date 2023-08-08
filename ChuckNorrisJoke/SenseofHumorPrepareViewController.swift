@@ -38,32 +38,170 @@ class SenseofHumorPrepareViewController: UIViewController{
         return imageview
     }()
     
-    
-    
-    
-    let topLabelstackView: UIStackView = {
-        let titlelabel = UILabel()
-        titlelabel.text = "Sense Of Humor"
-        titlelabel.font = UIFont(name:"Noto Sans Myanmar", size: 25)
-        titlelabel.font = .boldSystemFont(ofSize: 25)
-        titlelabel.textColor = .darkGray
-        titlelabel.textAlignment = .center
-        titlelabel.translatesAutoresizingMaskIntoConstraints = false
+    let statsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Stats"
+        label.font = UIFont(name: "Noto Sans Myanmar", size: 17)
+        label.font = .boldSystemFont(ofSize: 17)
+        label.textColor = .darkGray
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
         
-        let subtitlelabel = UILabel()
-        subtitlelabel.text = "Think of the sentence"
-        subtitlelabel.textColor = .darkGray
-        subtitlelabel.font = UIFont(name:"Noto Sans Myanmar", size: 17)
-        subtitlelabel.translatesAutoresizingMaskIntoConstraints = false
-        subtitlelabel.textAlignment = .center
-        
-        let stackView = UIStackView(arrangedSubviews: [titlelabel,subtitlelabel])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.spacing = 0.1
-        
-        return stackView
+        return label
     }()
+    
+    
+    
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Sense Of Humor"
+        label.font = UIFont(name:"Noto Sans Myanmar", size: 25)
+        label.font = .boldSystemFont(ofSize: 25)
+        label.textColor = .darkGray
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+
+        return label
+    }()
+    
+    let subtitlelabel: UILabel = {
+        let label = UILabel()
+        label.text = "Think of the sentence"
+        label.textColor = .darkGray
+        label.font = UIFont(name:"Noto Sans Myanmar", size: 17)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+
+        return label
+    }()
+
+    
+    func setStatsStackView(){
+        
+        let bgview1 = UIView()
+        bgview1.backgroundColor = .white
+        bgview1.layer.cornerRadius = 15
+        bgview1.translatesAutoresizingMaskIntoConstraints = false
+        
+        let bgview2 = UIView()
+        bgview2.backgroundColor = .white
+        bgview2.layer.cornerRadius = 15
+        bgview2.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        let titlelabel1 = UILabel()
+        titlelabel1.text = "Number of plays"
+        titlelabel1.font = UIFont(name: "Noto Sans Myanmar", size: 13)
+        titlelabel1.textColor = .darkGray
+        titlelabel1.textAlignment = .center
+        titlelabel1.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        let saveMinutes = UserDefaults.standard.value(forKey: "SOFminutes") ?? 0
+        let saveSeconds = UserDefaults.standard.value(forKey: "SOFseconds") ?? 0
+        let saveMilliseconds = UserDefaults.standard.value(forKey: "SOFmilliseconds") ?? 0
+         let saveNum = UserDefaults.standard.value(forKey: "NumbersOfPlays")
+        
+        let contentlabel1 = UILabel()
+        contentlabel1.text =  "\(saveNum ?? 0)"
+        contentlabel1.font = UIFont(name: "Noto Sans Myanmar", size: 25)
+        contentlabel1.font = .boldSystemFont(ofSize: 25)
+        contentlabel1.textColor = .darkGray
+        contentlabel1.textAlignment = .center
+        contentlabel1.translatesAutoresizingMaskIntoConstraints = false
+        
+        let titlelabel2 = UILabel()
+        titlelabel2.text = "Accumulated time"
+        titlelabel2.font = UIFont(name: "Noto Sans Myanmar", size: 13 )
+        titlelabel2.textColor = .darkGray
+        titlelabel2.textAlignment = .center
+        titlelabel2.translatesAutoresizingMaskIntoConstraints = false
+        
+    
+        
+//        print(saveMinutes,saveSeconds,saveMilliseconds)
+        let contentlabel2 = UILabel()
+        
+        //밀리언 초가 1000이상
+        if saveMilliseconds as! Int > 999{
+            
+            let addseconds = saveMilliseconds as! Int / 1000
+            let milliseconds = saveMilliseconds as! Int % 1000
+            
+            //밀리언 초가 1000이상이고 초에 1을 더했을겨
+            if saveSeconds as! Int + addseconds > 59{
+                let seconds = (saveSeconds as! Int + addseconds) % 60
+                let minutes = ((saveSeconds as! Int + addseconds) / 60)
+                contentlabel2.text = "\(minutes + (saveMinutes as! Int))분 \(seconds)"
+            }
+            else{
+                contentlabel2.text = "\(saveMinutes)분 \(saveSeconds as! Int + addseconds)"
+            }
+        }
+        else{ //밀리언 초가 1000이하 초가 60이상일때
+            if saveSeconds as! Int > 59{
+               let minutes = (saveMinutes as! Int) + ((saveSeconds as! Int) / 60)
+                let seconds = (saveSeconds as! Int) % 60
+                contentlabel2.text = "\(minutes)분 \(seconds)"
+            }
+            else{
+                //밀리언 초가 1000이하이고 초가 59이하일때
+                contentlabel2.text = "\(saveMinutes)분 \(saveSeconds)"
+            }
+        }
+        
+        contentlabel2.font = .boldSystemFont(ofSize: 25)
+        
+        contentlabel2.textColor = .darkGray
+        contentlabel2.textAlignment = .center
+        contentlabel2.translatesAutoresizingMaskIntoConstraints = false
+ 
+        topBGView.addSubview(bgview1)
+        topBGView.addSubview(bgview2)
+        bgview1.addSubview(titlelabel1)
+        bgview1.addSubview(contentlabel1)
+        bgview2.addSubview(titlelabel2)
+        bgview2.addSubview(contentlabel2)
+//        bgview1.addSubview(stackview1)
+//        view.addSubview(bgview2)
+//        bgview2.addSubview(stackview2)
+        
+        NSLayoutConstraint.activate([
+            
+            bgview1.leadingAnchor.constraint(equalTo: topBGView.leadingAnchor, constant: 15),
+            bgview1.widthAnchor.constraint(equalToConstant: (view.bounds.width / 2) - 35),
+            bgview1.topAnchor.constraint(equalTo: statsLabel.bottomAnchor,constant: 10),
+            bgview1.bottomAnchor.constraint(equalTo: topBGView.bottomAnchor, constant: -10),
+            
+            contentlabel1.centerXAnchor.constraint(equalTo: bgview1.centerXAnchor),
+            contentlabel1.leadingAnchor.constraint(equalTo: bgview1.leadingAnchor),
+            contentlabel1.trailingAnchor.constraint(equalTo: bgview1.trailingAnchor),
+            contentlabel1.topAnchor.constraint(equalTo: bgview1.topAnchor, constant: 10),
+            
+            titlelabel1.centerXAnchor.constraint(equalTo: bgview1.centerXAnchor),
+            titlelabel1.leadingAnchor.constraint(equalTo: bgview1.leadingAnchor),
+            titlelabel1.trailingAnchor.constraint(equalTo: bgview1.trailingAnchor),
+            titlelabel1.topAnchor.constraint(equalTo: contentlabel1.bottomAnchor, constant: 5),
+            
+            bgview2.trailingAnchor.constraint(equalTo: topBGView.trailingAnchor, constant: -15),
+            bgview2.widthAnchor.constraint(equalToConstant: (view.bounds.width / 2) - 35),
+            bgview2.topAnchor.constraint(equalTo: statsLabel.bottomAnchor,constant: 10),
+            bgview2.bottomAnchor.constraint(equalTo: topBGView.bottomAnchor, constant: -10),
+            
+            contentlabel2.centerXAnchor.constraint(equalTo: bgview2.centerXAnchor),
+            contentlabel2.leadingAnchor.constraint(equalTo: bgview2.leadingAnchor),
+            contentlabel2.trailingAnchor.constraint(equalTo: bgview2.trailingAnchor),
+            contentlabel2.topAnchor.constraint(equalTo: bgview2.topAnchor, constant: 10),
+            
+            titlelabel2.centerXAnchor.constraint(equalTo: bgview2.centerXAnchor),
+            titlelabel2.leadingAnchor.constraint(equalTo: bgview2.leadingAnchor),
+            titlelabel2.trailingAnchor.constraint(equalTo: bgview2.trailingAnchor),
+            titlelabel2.topAnchor.constraint(equalTo: contentlabel2.bottomAnchor, constant: 5)
+            
+        ])
+        
+        
+    }
     
     let benefitLabel: UILabel = {
         let label = UILabel()
@@ -142,9 +280,9 @@ class SenseofHumorPrepareViewController: UIViewController{
     }()
     
     @objc func tapPlayButton(_ sender: UIButton){
-//        guard let vc = storyboard?.instantiateViewController(withIdentifier:  "SenseOfHumorViewController") else {
-//            return
-//        }
+        //        guard let vc = storyboard?.instantiateViewController(withIdentifier:  "SenseOfHumorViewController") else {
+        //            return
+        //        }
         
         let v = SenseOfHumorViewController()
         self.navigationController?.pushViewController(v, animated: true)
@@ -162,8 +300,10 @@ class SenseofHumorPrepareViewController: UIViewController{
     func setTopViewLayoutConstraints(){
         view.addSubview(topBGView)
         topBGView.addSubview(topIconBGView)
-        topBGView.addSubview(topLabelstackView)
+        topBGView.addSubview(titleLabel)
+        topBGView.addSubview(subtitlelabel)
         topIconBGView.addSubview(topIcon)
+        topBGView.addSubview(statsLabel)
         
         
         
@@ -184,13 +324,29 @@ class SenseofHumorPrepareViewController: UIViewController{
             topIcon.widthAnchor.constraint(equalToConstant: (view.bounds.height / 2) / 6 * 0.8),
             
             
-            topLabelstackView.widthAnchor.constraint(equalToConstant:  (view.bounds.height / 2)),
-            topLabelstackView.heightAnchor.constraint(equalToConstant:  (view.bounds.height / 2) / 5),
-            topLabelstackView.centerXAnchor.constraint(equalTo: topBGView.centerXAnchor),
-            topLabelstackView.centerYAnchor.constraint(equalTo: topBGView.centerYAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: topBGView.leadingAnchor, constant: 10),
+            titleLabel.trailingAnchor.constraint(equalTo: topBGView.trailingAnchor, constant: -10),
+            
+//            titleLabel.heightAnchor.constraint(equalToConstant:  (view.bounds.height / 2) / 6 * 0.65),
+            titleLabel.centerXAnchor.constraint(equalTo: topBGView.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: topIconBGView.bottomAnchor, constant: 10),
+            
+ 
+            subtitlelabel.leadingAnchor.constraint(equalTo: topBGView.leadingAnchor, constant: 10),
+            subtitlelabel.trailingAnchor.constraint(equalTo: topBGView.trailingAnchor, constant: -10),
+            
+//            titleLabel.heightAnchor.constraint(equalToConstant:  (view.bounds.height / 2) / 6 * 0.65),
+            subtitlelabel.centerXAnchor.constraint(equalTo: topBGView.centerXAnchor),
+            subtitlelabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 3),
+            
+            statsLabel.leadingAnchor.constraint(equalTo: topBGView.leadingAnchor, constant: 15),
+            statsLabel.topAnchor.constraint(equalTo: subtitlelabel.bottomAnchor, constant: 15),
+            statsLabel.heightAnchor.constraint(equalToConstant: 30)
+            
             
             
         ])
+        setStatsStackView()
         
     }
     
