@@ -12,6 +12,7 @@ class SenseofHumorPrepareViewController: UIViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.navigationBar.isHidden = true
+        setTopViewLayoutConstraints()
     }
     
     let topBGView: UIView = {
@@ -126,27 +127,26 @@ class SenseofHumorPrepareViewController: UIViewController{
         if saveMilliseconds as! Int > 999{
             
             let addseconds = saveMilliseconds as! Int / 1000
-            let milliseconds = saveMilliseconds as! Int % 1000
             
             //밀리언 초가 1000이상이고 초에 1을 더했을겨
             if saveSeconds as! Int + addseconds > 59{
                 let seconds = (saveSeconds as! Int + addseconds) % 60
                 let minutes = ((saveSeconds as! Int + addseconds) / 60)
-                contentlabel2.text = "\(minutes + (saveMinutes as! Int))분 \(seconds)"
+                contentlabel2.text = "\(minutes + (saveMinutes as! Int))m \(seconds)s"
             }
             else{
-                contentlabel2.text = "\(saveMinutes)분 \(saveSeconds as! Int + addseconds)"
+                contentlabel2.text = "\(saveMinutes)m \(saveSeconds as! Int + addseconds)s"
             }
         }
         else{ //밀리언 초가 1000이하 초가 60이상일때
             if saveSeconds as! Int > 59{
                let minutes = (saveMinutes as! Int) + ((saveSeconds as! Int) / 60)
                 let seconds = (saveSeconds as! Int) % 60
-                contentlabel2.text = "\(minutes)분 \(seconds)"
+                contentlabel2.text = "\(minutes)m \(seconds)s"
             }
             else{
                 //밀리언 초가 1000이하이고 초가 59이하일때
-                contentlabel2.text = "\(saveMinutes)분 \(saveSeconds)"
+                contentlabel2.text = "\(saveMinutes)m \(saveSeconds)s"
             }
         }
         

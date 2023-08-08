@@ -324,7 +324,6 @@ class SenseOfHumorViewController: UIViewController {
             koreanContentLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             koreanContentLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5),
             koreanContentLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5),
-            koreanContentBGView.heightAnchor.constraint(equalToConstant: view.bounds.height / 3),
             koreanContentLabel.topAnchor.constraint(equalTo: koreanContentBGView.topAnchor),
             koreanContentLabel.centerYAnchor.constraint(equalTo: koreanContentBGView.centerYAnchor),
             
