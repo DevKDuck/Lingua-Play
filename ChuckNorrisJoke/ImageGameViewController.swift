@@ -23,7 +23,7 @@ class ImageGameViewController: UIViewController{
     let randomLabel1: UILabel = {
         let label = UILabel()
         label.text = "RANDOM LABEL1"
-        label.textColor = .white
+        label.textColor = .darkGray
         label.textAlignment = .center
         return label
     }()
@@ -31,7 +31,7 @@ class ImageGameViewController: UIViewController{
     let randomLabel2: UILabel = {
         let label = UILabel()
         label.text = "RANDOM LABEL2"
-        label.textColor = .white
+        label.textColor = .darkGray
         label.textAlignment = .center
         return label
     }()
@@ -39,14 +39,14 @@ class ImageGameViewController: UIViewController{
     let randomLabel3: UILabel = {
         let label = UILabel()
         label.text = "RANDOM LABEL3"
-        label.textColor = .white
+        label.textColor = .darkGray
         label.textAlignment = .center
         return label
     }()
     
     let answerMeanLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .white
+        label.textColor = .darkGray
         label.textAlignment = .center
         label.numberOfLines = 0
         
@@ -195,7 +195,7 @@ class ImageGameViewController: UIViewController{
     
     let textField: UITextField = {
         let textField = UITextField()
-        textField.backgroundColor = .white
+        textField.backgroundColor = .lightGray
         textField.textColor = .darkGray
         return textField
     }()

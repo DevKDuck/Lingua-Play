@@ -9,15 +9,15 @@ import UIKit
 
 class SenseofHumorPrepareViewController: UIViewController{
     
+    var gameIdentifier = ""
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.navigationBar.isHidden = true
         setTopViewLayoutConstraints()
     }
-    
     let topBGView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(hexCode: "FFCACC")
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 25
         return view
@@ -33,7 +33,6 @@ class SenseofHumorPrepareViewController: UIViewController{
     
     let topIcon: UIImageView = {
         let imageview = UIImageView()
-        imageview.image = UIImage(systemName: "text.bubble" )
         imageview.tintColor = .darkGray
         imageview.translatesAutoresizingMaskIntoConstraints = false
         return imageview
@@ -55,7 +54,6 @@ class SenseofHumorPrepareViewController: UIViewController{
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Sense Of Humor"
         label.font = UIFont(name:"Noto Sans Myanmar", size: 25)
         label.font = .boldSystemFont(ofSize: 25)
         label.textColor = .darkGray
@@ -67,7 +65,6 @@ class SenseofHumorPrepareViewController: UIViewController{
     
     let subtitlelabel: UILabel = {
         let label = UILabel()
-        label.text = "Think of the sentence"
         label.textColor = .darkGray
         label.font = UIFont(name:"Noto Sans Myanmar", size: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -120,7 +117,6 @@ class SenseofHumorPrepareViewController: UIViewController{
         
     
         
-//        print(saveMinutes,saveSeconds,saveMilliseconds)
         let contentlabel2 = UILabel()
         
         //밀리언 초가 1000이상
@@ -162,9 +158,6 @@ class SenseofHumorPrepareViewController: UIViewController{
         bgview1.addSubview(contentlabel1)
         bgview2.addSubview(titlelabel2)
         bgview2.addSubview(contentlabel2)
-//        bgview1.addSubview(stackview1)
-//        view.addSubview(bgview2)
-//        bgview2.addSubview(stackview2)
         
         NSLayoutConstraint.activate([
             
@@ -176,12 +169,12 @@ class SenseofHumorPrepareViewController: UIViewController{
             contentlabel1.centerXAnchor.constraint(equalTo: bgview1.centerXAnchor),
             contentlabel1.leadingAnchor.constraint(equalTo: bgview1.leadingAnchor),
             contentlabel1.trailingAnchor.constraint(equalTo: bgview1.trailingAnchor),
-            contentlabel1.topAnchor.constraint(equalTo: bgview1.topAnchor, constant: 10),
+            contentlabel1.topAnchor.constraint(equalTo: bgview1.topAnchor, constant: 20),
             
             titlelabel1.centerXAnchor.constraint(equalTo: bgview1.centerXAnchor),
             titlelabel1.leadingAnchor.constraint(equalTo: bgview1.leadingAnchor),
             titlelabel1.trailingAnchor.constraint(equalTo: bgview1.trailingAnchor),
-            titlelabel1.topAnchor.constraint(equalTo: contentlabel1.bottomAnchor, constant: 5),
+            titlelabel1.topAnchor.constraint(equalTo: contentlabel1.bottomAnchor, constant: 10),
             
             bgview2.trailingAnchor.constraint(equalTo: topBGView.trailingAnchor, constant: -15),
             bgview2.widthAnchor.constraint(equalToConstant: (view.bounds.width / 2) - 35),
@@ -191,12 +184,12 @@ class SenseofHumorPrepareViewController: UIViewController{
             contentlabel2.centerXAnchor.constraint(equalTo: bgview2.centerXAnchor),
             contentlabel2.leadingAnchor.constraint(equalTo: bgview2.leadingAnchor),
             contentlabel2.trailingAnchor.constraint(equalTo: bgview2.trailingAnchor),
-            contentlabel2.topAnchor.constraint(equalTo: bgview2.topAnchor, constant: 10),
+            contentlabel2.topAnchor.constraint(equalTo: bgview2.topAnchor, constant: 20),
             
             titlelabel2.centerXAnchor.constraint(equalTo: bgview2.centerXAnchor),
             titlelabel2.leadingAnchor.constraint(equalTo: bgview2.leadingAnchor),
             titlelabel2.trailingAnchor.constraint(equalTo: bgview2.trailingAnchor),
-            titlelabel2.topAnchor.constraint(equalTo: contentlabel2.bottomAnchor, constant: 5)
+            titlelabel2.topAnchor.constraint(equalTo: contentlabel2.bottomAnchor, constant: 10)
             
         ])
         
@@ -215,10 +208,20 @@ class SenseofHumorPrepareViewController: UIViewController{
     }()
     
     func setBenefitStackView(){
-        let view1 = createBenefitStackView(text: "Read the joke and infer the meaning of the sentence")
         
-        let view2 = createBenefitStackView(text: "Press the translation button to check if the inferences are correct")
+        let view1: UIView
+        let view2: UIView
         
+        
+        if gameIdentifier == "GuessingWords"{
+            view1 = createBenefitStackView(text: "Think carefully about the words translated into Korean")
+            view2 = createBenefitStackView(text: "It could be a picture related to a word or not, and there could be a hint in the image")
+        }
+        else{
+            view1 = createBenefitStackView(text: "Read the joke and infer the meaning of the sentence")
+            
+            view2 = createBenefitStackView(text: "Press the translation button to check if the inferences are correct")
+        }
         
         view.addSubview(view1)
         view.addSubview(view2)
@@ -280,12 +283,14 @@ class SenseofHumorPrepareViewController: UIViewController{
     }()
     
     @objc func tapPlayButton(_ sender: UIButton){
-        //        guard let vc = storyboard?.instantiateViewController(withIdentifier:  "SenseOfHumorViewController") else {
-        //            return
-        //        }
-        
-        let v = SenseOfHumorViewController()
-        self.navigationController?.pushViewController(v, animated: true)
+        let vc: UIViewController
+        if gameIdentifier == "GuessingWords"{
+            vc = ImageGameViewController()
+        }
+        else{
+            vc = SenseOfHumorViewController()
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     
@@ -295,6 +300,22 @@ class SenseofHumorPrepareViewController: UIViewController{
         view.backgroundColor = .white
         setTopViewLayoutConstraints()
         benefitConstraints()
+        setContentUI()
+    }
+    
+    func setContentUI(){
+        if gameIdentifier == "GuessingWords"{
+            topBGView.backgroundColor = UIColor(hexCode: "DBC4F0")
+            topIcon.image = UIImage(systemName: "brain.head.profile")
+            titleLabel.text = "Gussing Words"
+            subtitlelabel.text = "Try to guess words"
+        }
+        else{
+            topBGView.backgroundColor = UIColor(hexCode: "FFCACC")
+            topIcon.image = UIImage(systemName: "text.bubble" )
+            titleLabel.text = "Sense Of Humor"
+            subtitlelabel.text = "Think of the sentence"
+        }
     }
     
     func setTopViewLayoutConstraints(){

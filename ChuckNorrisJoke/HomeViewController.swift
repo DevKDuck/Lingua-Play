@@ -38,14 +38,15 @@ class HomeViewController: UIViewController{
 //        guard let vc = storyboard?.instantiateViewController(withIdentifier:  "SenseOfHumorViewController") else { return}
         
         let vc = SenseofHumorPrepareViewController()
+        vc.gameIdentifier = "SenseOfHumon"
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     
     
     @objc func tapInferGameButton(_ sender: UIButton){
-        let vc = ImageGameViewController()
-        
+        let vc = SenseofHumorPrepareViewController()
+        vc.gameIdentifier = "GuessingWords"
         self.navigationController?.pushViewController(vc, animated: true)
 //        vc.modalPresentationStyle = .fullScreen
     }
@@ -116,7 +117,7 @@ class HomeViewController: UIViewController{
     //버튼 생성
     func setButton(){
         constraintButton(bgView: senseOfHumorBGView, iconImage: "text.bubble", titleLabel: "Sense Of Humor", titleFontSize: 20, titleBoldBool: true, subLabel: "Think of the sentence", subFontSize: 15, subBoldBool: false, constraintTopView: titleLabel, betweenViewDistance: 100)
-        constraintButton(bgView: inferGameBGView, iconImage: "brain.head.profile", titleLabel: "Sense Of Humor", titleFontSize: 20, titleBoldBool: true, subLabel: "Think of the sentence", subFontSize: 15, subBoldBool: false, constraintTopView: senseOfHumorBGView, betweenViewDistance: 30)
+        constraintButton(bgView: inferGameBGView, iconImage: "brain.head.profile", titleLabel: "Gussing Words", titleFontSize: 20, titleBoldBool: true, subLabel: "Try to guess words", subFontSize: 15, subBoldBool: false, constraintTopView: senseOfHumorBGView, betweenViewDistance: 30)
     }
     
     //버튼 구성
