@@ -37,7 +37,7 @@ class HomeViewController: UIViewController{
     @objc func tapsenseOfHumorButton(_ sender: UITapGestureRecognizer){
 //        guard let vc = storyboard?.instantiateViewController(withIdentifier:  "SenseOfHumorViewController") else { return}
         
-        let vc = SenseofHumorPrepareViewController()
+        let vc = PrepareViewController()
         vc.gameIdentifier = "SenseOfHumon"
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -45,7 +45,7 @@ class HomeViewController: UIViewController{
     
     
     @objc func tapInferGameButton(_ sender: UIButton){
-        let vc = SenseofHumorPrepareViewController()
+        let vc = PrepareViewController()
         vc.gameIdentifier = "GuessingWords"
         self.navigationController?.pushViewController(vc, animated: true)
 //        vc.modalPresentationStyle = .fullScreen

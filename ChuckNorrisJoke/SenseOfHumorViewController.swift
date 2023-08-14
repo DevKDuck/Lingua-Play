@@ -11,7 +11,7 @@ import Alamofire
 
 class SenseOfHumorViewController: UIViewController {
     
-   
+    
     
     var jokeLabelENG:String = ""
     
@@ -45,38 +45,38 @@ class SenseOfHumorViewController: UIViewController {
         
         
         //MARK: URLSession을 이용하여 ChuckNorrisJoke API에서 GET형식으로 받아오는 로직
-//                var request = URLRequest(url: url)
-//                request.httpMethod = "GET"
-//
-//
-//                URLSession.shared.dataTask(with: request){ data, response, error in
-//                    guard error == nil else{
-//                        print("Error: error calling GET")
-//                        return
-//                    }
-//                    guard let data = data else{
-//                        print("Error: Did not recieve data")
-//                        return
-//                    }
-//                    guard let response = response as? HTTPURLResponse, (200 ..< 300) ~= response.statusCode else {
-//                        print("Error: HTTP request failed")
-//                        return
-//                    }
-//                    guard let output = try? JSONDecoder().decode(Response.self, from: data) else{
-//                        print("Error: JSON Data Parsing failed")
-//                        return
-//                    }
-//
-//                    DispatchQueue.main.async {
-//                        self.jokeLabel.text = output.value
-//                    }
-//                    self.change(str: output.value)
-//
-//                }.resume()
-//
+        //                var request = URLRequest(url: url)
+        //                request.httpMethod = "GET"
+        //
+        //
+        //                URLSession.shared.dataTask(with: request){ data, response, error in
+        //                    guard error == nil else{
+        //                        print("Error: error calling GET")
+        //                        return
+        //                    }
+        //                    guard let data = data else{
+        //                        print("Error: Did not recieve data")
+        //                        return
+        //                    }
+        //                    guard let response = response as? HTTPURLResponse, (200 ..< 300) ~= response.statusCode else {
+        //                        print("Error: HTTP request failed")
+        //                        return
+        //                    }
+        //                    guard let output = try? JSONDecoder().decode(Response.self, from: data) else{
+        //                        print("Error: JSON Data Parsing failed")
+        //                        return
+        //                    }
+        //
+        //                    DispatchQueue.main.async {
+        //                        self.jokeLabel.text = output.value
+        //                    }
+        //                    self.change(str: output.value)
+        //
+        //                }.resume()
+        //
     }
     
-
+    
     //MARK: Papago API URLSession을 이용하여 번역
     //    func change(str: String){
     //        let url = "https://openapi.naver.com/v1/papago/n2mt"
@@ -182,10 +182,10 @@ class SenseOfHumorViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
+    
     
     let koreanContentBGView: UIView = {
-       let view = UIView()
+        let view = UIView()
         view.backgroundColor = UIColor(hexCode: "F6F4EB")
         view.layer.cornerRadius = 20
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -216,29 +216,47 @@ class SenseOfHumorViewController: UIViewController {
         return button
     }()
     
-
+    
     var timer: Timer?
     var startTime : Date?
+    var addTime: TimeInterval = 0.0
     
+    @objc func handleAppBackground(){
+        if timer != nil && timer!.isValid{
+            timer?.invalidate()
+            
+            if let startTime = startTime{
+                let currentTime = Date()
+                let elapsedTime = currentTime.timeIntervalSince(startTime)
+                
+                addTime = elapsedTime //Play 후 백그라운드로 이동할 경우 멈추고 Date 를 addTiem에 저장
+                
+                confirmTime(with: elapsedTime)
+            }
+            
+            
+            playButton.setTitle("Continue", for: .normal)
+        }//타이머의 값이 nil 아니고 타이머가 유호한 경우
+    }
+    
+  
     
     @objc func tapNextJokeButton(_ sender: UIButton) {
-        if sender.titleLabel?.text == "Play"{
+        switch sender.titleLabel?.text{
+        case "Play":
             chuckNorrisJokeGetData()
             
             //시작 시간 설정
             startTime = Date()
-            
-            timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true){ _ in
-                //0.1초 간격으로 타이머 무효화될때까지 반복
-            }
             sender.setTitle("Translate", for: .normal)
-        }
-        else{
+            
+        case "Translate":
             if let startTime = startTime{
                 let currentTime = Date()
                 let elapsedTime = currentTime.timeIntervalSince(startTime)
-                updateTime(with: elapsedTime)
-                // 시작 시간과 멈춘시간 차이 업데이트
+                
+                confirmTime(with: elapsedTime + addTime)
+                updateTime(with: elapsedTime + addTime)
             }
             
             //타이머 제거
@@ -246,7 +264,25 @@ class SenseOfHumorViewController: UIViewController {
             translationFromEnglishToKorean(str: humorContentLabel.text ?? "")
             updateNumbersOfPlays()
             sender.setTitle("Play", for: .normal)
+            
+        case "Continue":
+            startTime = Date()
+            sender.setTitle("Translate", for: .normal)
+        case .none:
+            print("Button Text is none")
+        case .some(_):
+            print("Button Text is some")
         }
+        
+    }
+    
+    
+    func confirmTime(with timeInterval: TimeInterval){
+        let minutes = Int(timeInterval / 60)
+        let seconds = Int(timeInterval.truncatingRemainder(dividingBy: 60))
+        let milliseconds = Int((timeInterval * 100).truncatingRemainder(dividingBy: 100))
+        
+        print(minutes,seconds,milliseconds)
     }
     
     func updateNumbersOfPlays(){
@@ -255,10 +291,12 @@ class SenseOfHumorViewController: UIViewController {
         
     }
     
+    
     func updateTime(with timeInterval: TimeInterval){
         let minutes = Int(timeInterval / 60)
         let seconds = Int(timeInterval.truncatingRemainder(dividingBy: 60))
         let milliseconds = Int((timeInterval * 100).truncatingRemainder(dividingBy: 100))
+        
         
         let saveMinutes = UserDefaults.standard.value(forKey: "SOFminutes") ?? 0
         let saveSeconds = UserDefaults.standard.value(forKey: "SOFseconds") ?? 0
@@ -269,13 +307,6 @@ class SenseOfHumorViewController: UIViewController {
         UserDefaults.standard.set(saveSeconds as! Int + seconds, forKey: "SOFseconds")
         UserDefaults.standard.set(saveMilliseconds as! Int + milliseconds, forKey: "SOFmilliseconds")
         
-        
-        print(saveMinutes)
-        print(saveSeconds)
-        print(saveMilliseconds)
-        
-        let timeText = String(format: "%02d:%02d:%02d.%02d",  minutes, seconds, milliseconds)
-//        print(Int(timeInterval))
     }
     
     
@@ -285,7 +316,8 @@ class SenseOfHumorViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.navigationBar.isHidden = false
-
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAppBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        
     }
     
     override func viewDidLoad() {
@@ -293,8 +325,16 @@ class SenseOfHumorViewController: UIViewController {
         
         self.view.backgroundColor = .white
         setLayoutConstraints()
-       
+        
+        
+        
         // Do any additional setup after loading the view.
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
     
     func setLayoutConstraints(){
@@ -327,14 +367,14 @@ class SenseOfHumorViewController: UIViewController {
             koreanContentLabel.topAnchor.constraint(equalTo: koreanContentBGView.topAnchor),
             koreanContentLabel.centerYAnchor.constraint(equalTo: koreanContentBGView.centerYAnchor),
             
-        
+            
             playButton.widthAnchor.constraint(equalToConstant: (view.bounds.width / 6) * 4),
             playButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             playButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
             playButton.heightAnchor.constraint(equalToConstant: ((view.bounds.width / 7) * 3) / 2)
             
             
-        
+            
         ])
         
     }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SenseofHumorPrepareViewController: UIViewController{
+class PrepareViewController: UIViewController{
     
     var gameIdentifier = ""
     
@@ -16,6 +16,7 @@ class SenseofHumorPrepareViewController: UIViewController{
         navigationController?.navigationBar.isHidden = true
         setTopViewLayoutConstraints()
     }
+    
     let topBGView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
