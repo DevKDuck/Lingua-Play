@@ -289,7 +289,8 @@ class PrepareViewController: UIViewController{
             vc = ImageGameViewController()
         }
         else{
-            vc = SenseOfHumorViewController()
+//            vc = SenseOfHumorViewController()
+            vc = ResultViewController()
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }

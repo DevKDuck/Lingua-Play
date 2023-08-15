@@ -11,10 +11,7 @@ import Alamofire
 
 class SenseOfHumorViewController: UIViewController {
     
-    
-    
     var jokeLabelENG:String = ""
-    
     
     func chuckNorrisJokeGetData(){
         let url = "https://api.chucknorris.io/jokes/random"
@@ -173,7 +170,7 @@ class SenseOfHumorViewController: UIViewController {
     
     let humorContentLabel: UILabel = {
         let label = UILabel()
-        label.text = "Next Joke Button Click"
+        label.text = "Play Button Click plz"
         label.font = UIFont(name: "Noto Sans Myanmar", size: 17)
         label.textAlignment = .center
         label.textColor = .darkGray
@@ -217,26 +214,19 @@ class SenseOfHumorViewController: UIViewController {
     }()
     
     
-    var timer: Timer?
     var startTime : Date?
     var addTime: TimeInterval = 0.0
     
     @objc func handleAppBackground(){
-        if timer != nil && timer!.isValid{
-            timer?.invalidate()
+        if let startTime = startTime{
+            let currentTime = Date()
+            let elapsedTime = currentTime.timeIntervalSince(startTime)
             
-            if let startTime = startTime{
-                let currentTime = Date()
-                let elapsedTime = currentTime.timeIntervalSince(startTime)
-                
-                addTime = elapsedTime //Play 후 백그라운드로 이동할 경우 멈추고 Date 를 addTiem에 저장
-                
-                confirmTime(with: elapsedTime)
-            }
+            addTime = elapsedTime //Play 후 백그라운드로 이동할 경우 멈추고 Date 를 addTiem에 저장
             
-            
+            confirmTime(with: elapsedTime)
             playButton.setTitle("Continue", for: .normal)
-        }//타이머의 값이 nil 아니고 타이머가 유호한 경우
+        }
     }
     
   
@@ -259,8 +249,6 @@ class SenseOfHumorViewController: UIViewController {
                 updateTime(with: elapsedTime + addTime)
             }
             
-            //타이머 제거
-            timer?.invalidate()
             translationFromEnglishToKorean(str: humorContentLabel.text ?? "")
             updateNumbersOfPlays()
             sender.setTitle("Play", for: .normal)
@@ -273,9 +261,7 @@ class SenseOfHumorViewController: UIViewController {
         case .some(_):
             print("Button Text is some")
         }
-        
     }
-    
     
     func confirmTime(with timeInterval: TimeInterval){
         let minutes = Int(timeInterval / 60)
@@ -325,7 +311,6 @@ class SenseOfHumorViewController: UIViewController {
         
         self.view.backgroundColor = .white
         setLayoutConstraints()
-        
         
         
         // Do any additional setup after loading the view.
