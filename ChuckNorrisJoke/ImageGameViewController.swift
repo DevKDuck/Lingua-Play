@@ -12,17 +12,58 @@ class ImageGameViewController: UIViewController{
     
     var answer:String?
     
-    
-    
     let imageView: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleToFill
         return image
     }()
     
+    let guesisngWordsTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Guessing Words"
+        label.font = UIFont(name: "Noto Sans Myanmar", size: 30)
+        label.font = .boldSystemFont(ofSize: 30)
+        label.textColor = .darkGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    
+    func setChoiceStackview(label1: UILabel, label2: UILabel, label3: UILabel) -> UIStackView{
+        
+        let uiview = UIView()
+        uiview.backgroundColor = .black
+        uiview.translatesAutoresizingMaskIntoConstraints = false
+        uiview.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        uiview.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.7).isActive = true
+        
+        let uiview2 = UIView()
+        uiview2.backgroundColor = .black
+        uiview2.translatesAutoresizingMaskIntoConstraints = false
+        uiview2.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        uiview2.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.7).isActive = true
+        
+        let stackview = UIStackView()
+        stackview.axis = .vertical
+        stackview.spacing = 2
+        stackview.layoutMargins = UIEdgeInsets(top: 30, left: 0, bottom: 30, right: 0)
+        stackview.isLayoutMarginsRelativeArrangement = true
+        stackview.distribution = .equalSpacing
+        stackview.alignment = .center
+        stackview.addArrangedSubview(label1)
+        stackview.addArrangedSubview(uiview)
+        stackview.addArrangedSubview(label2)
+        stackview.addArrangedSubview(uiview2)
+        stackview.addArrangedSubview(label3)
+        
+        stackview.translatesAutoresizingMaskIntoConstraints = false
+        
+        return stackview
+    }
+    
+    
     let randomLabel1: UILabel = {
         let label = UILabel()
-        label.text = "RANDOM LABEL1"
         label.textColor = .darkGray
         label.textAlignment = .center
         return label
@@ -30,7 +71,6 @@ class ImageGameViewController: UIViewController{
     
     let randomLabel2: UILabel = {
         let label = UILabel()
-        label.text = "RANDOM LABEL2"
         label.textColor = .darkGray
         label.textAlignment = .center
         return label
@@ -38,7 +78,6 @@ class ImageGameViewController: UIViewController{
     
     let randomLabel3: UILabel = {
         let label = UILabel()
-        label.text = "RANDOM LABEL3"
         label.textColor = .darkGray
         label.textAlignment = .center
         return label
@@ -46,19 +85,24 @@ class ImageGameViewController: UIViewController{
     
     let answerMeanLabel: UILabel = {
         let label = UILabel()
+        label.text = "Play Button Click plz"
+        label.font = UIFont(name: "Noto Sans Myanmar", size: 17)
+        label.textAlignment = .center
         label.textColor = .darkGray
         label.textAlignment = .center
         label.numberOfLines = 0
-        
-        
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
+    
     lazy var randomButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("다음 단어", for: .normal)
-        button.backgroundColor = .black
-        button.setTitleColor(.white, for: .normal)
+        var button = UIButton()
+        button.backgroundColor = UIColor(hexCode: "331D2C")
+        button.layer.cornerRadius = 30
+        button.setTitle("Next Word", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(tapRandomButton(_:)), for: .touchUpInside)
         return button
         
@@ -70,44 +114,47 @@ class ImageGameViewController: UIViewController{
     
     func fetchWords(){
         DispatchQueue.global(qos: .background).async {
-            let headers: HTTPHeaders = [
-                "X-RapidAPI-Key": RapidKey().rapidAPIKey,
-                "X-RapidAPI-Host": RapidKey().rapidAPIHost
-            ]
+//            let headers: HTTPHeaders = [
+//                "X-RapidAPI-Key": RapidKey().rapidAPIKey,
+//                "X-RapidAPI-Host": RapidKey().rapidAPIHost
+//            ]
+//
+//            let url = "https://random-words5.p.rapidapi.com/getMultipleRandom?count=3"
+//            AF.request(url, headers: headers).response { response in
+//                switch response.result{
+//                case .success(let data):
+//                    if let data = data {
+//                        if var str = String(data: data, encoding: .utf8){
+//                            str = str.trimmingCharacters(in: ["["])
+//                            str = str.trimmingCharacters(in: ["]"])
+//
+//                            str = String(str.filter { $0 != "\"" })
+//
+//                            let strArray = str.components(separatedBy: ",")
             
-            let url = "https://random-words5.p.rapidapi.com/getMultipleRandom?count=3"
-            AF.request(url, headers: headers).response { response in
-                switch response.result{
-                case .success(let data):
-                    if let data = data {
-                        if var str = String(data: data, encoding: .utf8){
-                            str = str.trimmingCharacters(in: ["["])
-                            str = str.trimmingCharacters(in: ["]"])
-                            
-                            str = String(str.filter { $0 != "\"" })
-                            
-                            let strArray = str.components(separatedBy: ",")
                             let randomNumArray = [0,1,2]
+            let strArray = ["Faker", "Chovy", "Showmaker"]
                             guard let randomNum = randomNumArray.randomElement()else{
                                 return
                             }
                             self.answer = strArray[randomNum]
                             
                             DispatchQueue.main.async {
-                                self.randomLabel1.text = strArray[0]
-                                self.randomLabel2.text = strArray[1]
-                                self.randomLabel3.text = strArray[2]
+                                //MARK: 한달 사용량 초과 issue....
+                                self.randomLabel1.text = "⓵ \(strArray[0])"
+                                self.randomLabel2.text = "⓶ \(strArray[1])"
+                                self.randomLabel3.text = "⓷ \(strArray[2])"
                             }
-                            self.translationFromEnglishToKorean(str: strArray[randomNum])
-                            self.getImage(str: strArray[randomNum])
+            self.translationFromEnglishToKorean(str: strArray[randomNum])
+            self.getImage(str: strArray[randomNum])
                             
-                        }
-                    }
-                    
-                case .failure(let error):
-                    print("Err: \(error.localizedDescription)")
-                }
-            }
+//                        }
+//                    }
+//
+//                case .failure(let error):
+//                    print("Err: \(error.localizedDescription)")
+//                }
+//            }
         }
     }
     
@@ -132,7 +179,7 @@ class ImageGameViewController: UIViewController{
             switch response.result{
             case.success(let data):
                 DispatchQueue.main.async {
-                    self.answerMeanLabel.text = data.message.result.translatedText
+                    self.answerMeanLabel.text = "해석: \(data.message.result.translatedText)"
                 }
             case.failure(_):
                 print("Papago API POST failed")
@@ -229,6 +276,14 @@ class ImageGameViewController: UIViewController{
         
     }
     
+    let choiceBGView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(hexCode: "DBC4F0")
+        view.layer.cornerRadius = 20
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     func pushAlert(title:String, message:String){
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let confirm = UIAlertAction(title: "확인", style: .cancel)
@@ -251,8 +306,6 @@ class ImageGameViewController: UIViewController{
         view.backgroundColor = UIColor(red: 216, green: 217, blue: 218, alpha: 1)
         setConstraints()
         hideKeyBoard()
-        
-        
         
     }
     
@@ -350,14 +403,20 @@ class ImageGameViewController: UIViewController{
     
     
     private func setConstraints(){
-        self.view.addSubview(imageView)
-        self.view.addSubview(textField)
-        self.view.addSubview(confirmButton)
-        self.view.addSubview(randomLabel1)
-        self.view.addSubview(randomLabel2)
-        self.view.addSubview(randomLabel3)
-        self.view.addSubview(randomButton)
-        self.view.addSubview(answerMeanLabel)
+        view.addSubview(guesisngWordsTitleLabel)
+        view.addSubview(imageView)
+//        self.view.addSubview(textField)
+//        self.view.addSubview(confirmButton)
+        
+        let stackview = setChoiceStackview(label1: randomLabel1, label2: randomLabel2, label3: randomLabel3)
+        
+//        view.addSubview(randomLabel1)
+//        view.addSubview(randomLabel2)
+//        view.addSubview(randomLabel3)
+        view.addSubview(randomButton)
+        view.addSubview(answerMeanLabel)
+        view.addSubview(choiceBGView)
+        choiceBGView.addSubview(stackview)
         
         
         
@@ -366,69 +425,92 @@ class ImageGameViewController: UIViewController{
         randomLabel2.translatesAutoresizingMaskIntoConstraints = false
         randomLabel3.translatesAutoresizingMaskIntoConstraints = false
         randomButton.translatesAutoresizingMaskIntoConstraints = false
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        confirmButton.translatesAutoresizingMaskIntoConstraints = false
+//        textField.translatesAutoresizingMaskIntoConstraints = false
+//        confirmButton.translatesAutoresizingMaskIntoConstraints = false
         answerMeanLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             
             
             imageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            imageView.topAnchor.constraint(equalTo: choiceBGView.bottomAnchor, constant:
+                                            view.bounds.height / 50),
             //            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
             //            imageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            imageView.heightAnchor.constraint(equalToConstant: 200),
-            imageView.widthAnchor.constraint(equalToConstant: 200),
-            
-            answerMeanLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            answerMeanLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            answerMeanLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            answerMeanLabel.heightAnchor.constraint(equalToConstant: 100),
-            answerMeanLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
+            imageView.heightAnchor.constraint(equalToConstant: view.bounds.height / 4),
+            imageView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9),
             
             
+            guesisngWordsTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            guesisngWordsTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            answerMeanLabel.topAnchor.constraint(equalTo: guesisngWordsTitleLabel.bottomAnchor, constant: 10),
+            answerMeanLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            answerMeanLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            
+            answerMeanLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             
-            randomLabel1.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            randomLabel1.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            randomLabel1.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            randomLabel1.heightAnchor.constraint(equalToConstant: 44),
-            randomLabel1.topAnchor.constraint(equalTo: answerMeanLabel.bottomAnchor, constant: 20),
+            choiceBGView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            choiceBGView.topAnchor.constraint(equalTo: answerMeanLabel.bottomAnchor, constant: view.bounds.height / 50),
+            choiceBGView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9),
+            choiceBGView.heightAnchor.constraint(equalToConstant: view.bounds.height / 4),
             
-            randomLabel2.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            randomLabel2.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            randomLabel2.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            randomLabel2.heightAnchor.constraint(equalToConstant: 44),
-            randomLabel2.topAnchor.constraint(equalTo: randomLabel1.bottomAnchor, constant: 10),
-            
-            randomLabel3.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            randomLabel3.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            randomLabel3.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            randomLabel3.heightAnchor.constraint(equalToConstant: 44),
-            randomLabel3.topAnchor.constraint(equalTo: randomLabel2.bottomAnchor, constant: 10),
+            stackview.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            stackview.topAnchor.constraint(equalTo: choiceBGView.topAnchor),
+            stackview.bottomAnchor.constraint(equalTo: choiceBGView.bottomAnchor),
+            stackview.leadingAnchor.constraint(equalTo: choiceBGView.leadingAnchor),
+            stackview.trailingAnchor.constraint(equalTo: choiceBGView.trailingAnchor),
             
             
+            
+            
+            
+//            randomLabel1.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+//            randomLabel1.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+//            randomLabel1.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+//            randomLabel1.heightAnchor.constraint(equalToConstant: 44),
+//            randomLabel1.topAnchor.constraint(equalTo: answerMeanLabel.bottomAnchor, constant: 20),
+//
+//            randomLabel2.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+//            randomLabel2.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+//            randomLabel2.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+//            randomLabel2.heightAnchor.constraint(equalToConstant: 44),
+//            randomLabel2.topAnchor.constraint(equalTo: randomLabel1.bottomAnchor, constant: 10),
+//
+//            randomLabel3.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+//            randomLabel3.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+//            randomLabel3.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+//            randomLabel3.heightAnchor.constraint(equalToConstant: 44),
+//            randomLabel3.topAnchor.constraint(equalTo: randomLabel2.bottomAnchor, constant: 10),
+            
+            randomButton.heightAnchor.constraint(equalToConstant: ((view.bounds.width / 7) * 3) / 2),
+            randomButton.widthAnchor.constraint(equalToConstant: (view.bounds.width / 6) * 4),
             randomButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            randomButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            randomButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            randomButton.heightAnchor.constraint(equalToConstant: 44),
-            randomButton.topAnchor.constraint(equalTo: randomLabel3.bottomAnchor, constant: 10),
+            randomButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
             
             
-            
-            textField.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            textField.heightAnchor.constraint(equalToConstant: 44),
-            textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            textField.topAnchor.constraint(equalTo: randomButton.bottomAnchor, constant: 20),
-            
-            
-            confirmButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-            confirmButton.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 10),
-            confirmButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            confirmButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            
-            confirmButton.heightAnchor.constraint(equalToConstant: 44),
+//            randomButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+//            randomButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+//            randomButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+//            randomButton.heightAnchor.constraint(equalToConstant: 44),
+//            randomButton.topAnchor.constraint(equalTo: randomLabel3.bottomAnchor, constant: 10),
+//
+//
+//
+//            textField.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+//            textField.heightAnchor.constraint(equalToConstant: 44),
+//            textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+//            textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+//            textField.topAnchor.constraint(equalTo: randomButton.bottomAnchor, constant: 20),
+//
+//
+//            confirmButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+//            confirmButton.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 10),
+//            confirmButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+//            confirmButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+//
+//            confirmButton.heightAnchor.constraint(equalToConstant: 44),
             
         ])
     }
