@@ -15,6 +15,12 @@ class PrepareViewController: UIViewController{
         super.viewWillAppear(true)
         navigationController?.navigationBar.isHidden = true
         setTopViewLayoutConstraints()
+        
+        //현재 플레이 횟수, 타임 제거
+        UserDefaults.standard.removeObject(forKey: "playCount")
+        UserDefaults.standard.removeObject(forKey: "playMinutes")
+        UserDefaults.standard.removeObject(forKey: "playSeconds")
+        UserDefaults.standard.removeObject(forKey: "playMilliseconds")
     }
     
     let topBGView: UIView = {
@@ -289,8 +295,8 @@ class PrepareViewController: UIViewController{
             vc = ImageGameViewController()
         }
         else{
-//            vc = SenseOfHumorViewController()
-            vc = ResultViewController()
+            vc = SenseOfHumorViewController()
+            
         }
         self.navigationController?.pushViewController(vc, animated: true)
     }

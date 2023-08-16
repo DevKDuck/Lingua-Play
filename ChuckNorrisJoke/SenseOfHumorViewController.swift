@@ -229,7 +229,7 @@ class SenseOfHumorViewController: UIViewController {
         }
     }
     
-  
+    
     
     @objc func tapNextJokeButton(_ sender: UIButton) {
         switch sender.titleLabel?.text{
@@ -274,7 +274,12 @@ class SenseOfHumorViewController: UIViewController {
     func updateNumbersOfPlays(){
         let saveNum = UserDefaults.standard.value(forKey: "NumbersOfPlays") ?? 0
         UserDefaults.standard.set(saveNum as! Int + 1, forKey: "NumbersOfPlays")
+        //누적횟수 저장
         
+        let playCount = UserDefaults.standard.value(forKey: "playCount") ?? 0
+        UserDefaults.standard.set(playCount as! Int + 1, forKey: "playCount")
+        print(playCount)
+        //현재 횟수 저장
     }
     
     
@@ -288,10 +293,19 @@ class SenseOfHumorViewController: UIViewController {
         let saveSeconds = UserDefaults.standard.value(forKey: "SOFseconds") ?? 0
         let saveMilliseconds = UserDefaults.standard.value(forKey: "SOFmilliseconds") ?? 0
         
+        let playMinutes = UserDefaults.standard.value(forKey: "playMinutes") ?? 0
+        let playSeconds = UserDefaults.standard.value(forKey: "playSeconds") ?? 0
+        let playMilliseconds = UserDefaults.standard.value(forKey: "playMilliseconds") ?? 0
+
         
         UserDefaults.standard.set(saveMinutes as! Int + minutes, forKey: "SOFminutes")
         UserDefaults.standard.set(saveSeconds as! Int + seconds, forKey: "SOFseconds")
         UserDefaults.standard.set(saveMilliseconds as! Int + milliseconds, forKey: "SOFmilliseconds")
+        
+        UserDefaults.standard.set(playMinutes as! Int + minutes, forKey: "playMinutes")
+        UserDefaults.standard.set(playSeconds as! Int + seconds, forKey: "playSeconds")
+        UserDefaults.standard.set(playMilliseconds as! Int + milliseconds, forKey: "playMilliseconds")
+        
         
     }
     
@@ -302,8 +316,19 @@ class SenseOfHumorViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.navigationBar.isHidden = false
+        
+        let rightBarButton = UIBarButtonItem(title: "End", style: .plain, target: self, action: #selector(tapEndButton))
+        navigationItem.rightBarButtonItem = rightBarButton
+        
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleAppBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         
+    }
+    
+    
+    @objc func tapEndButton(){
+        let nextVC = ResultViewController()
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     override func viewDidLoad() {
