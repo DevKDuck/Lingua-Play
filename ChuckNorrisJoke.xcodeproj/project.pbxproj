@@ -22,6 +22,8 @@
 		8C94639B2A8B62B500339BDE /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C94639A2A8B62B500339BDE /* ResultViewController.swift */; };
 		8C94639E2A8B65A900339BDE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 8C94639D2A8B65A900339BDE /* Lottie */; };
 		8C9463A02A8B669700339BDE /* animation_llc03wvm.json in Resources */ = {isa = PBXBuildFile; fileRef = 8C94639F2A8B669700339BDE /* animation_llc03wvm.json */; };
+		8C9463A22A8DEE3400339BDE /* correctAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8C9463A12A8DEE3300339BDE /* correctAnimation.json */; };
+		8C9463A62A8DF64300339BDE /* incorrectAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 8C9463A52A8DF64300339BDE /* incorrectAnimation.json */; };
 		8C9CC9F02A7B8F8900A05FDF /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9CC9EF2A7B8F8900A05FDF /* LogInViewController.swift */; };
 		8CD91A7F2A74E8200025D3E1 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD91A7E2A74E8200025D3E1 /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
@@ -42,6 +44,8 @@
 		8C5CAF0D2A6E2F5300107EDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8C94639A2A8B62B500339BDE /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		8C94639F2A8B669700339BDE /* animation_llc03wvm.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = animation_llc03wvm.json; sourceTree = "<group>"; };
+		8C9463A12A8DEE3300339BDE /* correctAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = correctAnimation.json; sourceTree = "<group>"; };
+		8C9463A52A8DF64300339BDE /* incorrectAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = incorrectAnimation.json; sourceTree = "<group>"; };
 		8C9CC9EF2A7B8F8900A05FDF /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		8CD91A7E2A74E8200025D3E1 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -79,6 +83,8 @@
 			isa = PBXGroup;
 			children = (
 				8C94639F2A8B669700339BDE /* animation_llc03wvm.json */,
+				8C9463A12A8DEE3300339BDE /* correctAnimation.json */,
+				8C9463A52A8DF64300339BDE /* incorrectAnimation.json */,
 				8C44C4772A6F88C000044068 /* ImageGameViewController.swift */,
 				8C5CAEFF2A6E2F4F00107EDB /* AppDelegate.swift */,
 				8C5CAF012A6E2F4F00107EDB /* SceneDelegate.swift */,
@@ -166,8 +172,10 @@
 			files = (
 				8C5CAF0C2A6E2F5300107EDB /* LaunchScreen.storyboard in Resources */,
 				8C5CAF092A6E2F5300107EDB /* Assets.xcassets in Resources */,
+				8C9463A62A8DF64300339BDE /* incorrectAnimation.json in Resources */,
 				8C9463A02A8B669700339BDE /* animation_llc03wvm.json in Resources */,
 				8C5CAF072A6E2F4F00107EDB /* Main.storyboard in Resources */,
+				8C9463A22A8DEE3400339BDE /* correctAnimation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

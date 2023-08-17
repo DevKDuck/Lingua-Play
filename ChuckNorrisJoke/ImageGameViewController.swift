@@ -7,6 +7,7 @@
 
 import UIKit
 import Alamofire
+import Lottie
 
 class ImageGameViewController: UIViewController{
     
@@ -100,7 +101,7 @@ class ImageGameViewController: UIViewController{
         var button = UIButton()
         button.backgroundColor = UIColor(hexCode: "331D2C")
         button.layer.cornerRadius = 30
-        button.setTitle("Next Word", for: .normal)
+        button.setTitle("Play", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(tapRandomButton(_:)), for: .touchUpInside)
@@ -108,8 +109,72 @@ class ImageGameViewController: UIViewController{
         
     }()
     
+    private var correctAnimationView: LottieAnimationView = .init(name: "correctAnimation.json")
+    private var incorrectAnimationView: LottieAnimationView = .init(name: "incorrectAnimation.json")
+    
+    
     @objc func tapRandomButton(_ sender: UIButton){
-        fetchWords()
+        switch sender.titleLabel?.text{
+            
+        case "Play":
+            fetchWords()
+            sender.setTitle("Solving a problem", for: .normal)
+            
+        case "Next Word":
+            fetchWords()
+            sender.setTitle("Solving a problem", for: .normal)
+            
+        case "Solving a problem":
+            let alert = UIAlertController(title: "정답을 맞추세요", message: "정확히 작성해 보세요.", preferredStyle: .alert)
+
+            alert.addTextField{ textField in
+                textField.placeholder = " Let`s get it 🤙"
+            }
+            
+            let cancle = UIAlertAction(title: "닫기", style: .cancel)
+            let confirm = UIAlertAction(title: "확인", style: .default){ [weak self] _ in
+                guard let self = self else {return}
+                
+                if let textField = alert.textFields?.first, let userInput = textField.text{
+                    if self.answer == userInput{
+                        playAnimation(animationName: correctAnimationView)
+                        sender.setTitle("Next Word", for: .normal)
+                    }else{
+                        playAnimation(animationName: incorrectAnimationView)
+                    }
+                }
+            }
+            
+            
+            
+            alert.addAction(cancle)
+            alert.addAction(confirm)
+            
+            present(alert, animated: true)
+            
+        case .none:
+            print("버튼라벨이 nil일경우")
+        case .some(let label):
+            print("버튼라벨은 \(label)입니다.")
+        }
+    }
+    
+    func playAnimation(animationName animationView: LottieAnimationView){
+        self.view.addSubview(animationView)
+        
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        animationView.contentMode = .scaleAspectFit
+        animationView.play()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            animationView.isHidden = true
+        }
+        
+        NSLayoutConstraint.activate([
+            animationView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
+            animationView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            animationView.heightAnchor.constraint(equalToConstant: view.bounds.width),
+            animationView.widthAnchor.constraint(equalToConstant: view.bounds.width)
+        ])
     }
     
     func fetchWords(){
@@ -295,7 +360,7 @@ class ImageGameViewController: UIViewController{
         super.viewWillAppear(animated)
         
         navigationController?.navigationBar.isHidden = false
-        fetchWords()
+//        fetchWords()
         
     }
     
