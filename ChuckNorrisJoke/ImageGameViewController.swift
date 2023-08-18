@@ -112,6 +112,18 @@ class ImageGameViewController: UIViewController{
     private var correctAnimationView: LottieAnimationView = .init(name: "correctAnimation.json")
     private var incorrectAnimationView: LottieAnimationView = .init(name: "incorrectAnimation.json")
     
+    var startTime : Date?
+    var addTime: TimeInterval = 0.0
+    
+    
+    @objc func handleAppBackground(){
+        if let startTime = startTime{
+            let currentTime = Date()
+            let elapsedTime = currentTime.timeIntervalSince(startTime)
+            
+            addTime = elapsedTime //Play 후 백그라운드로 이동할 경우 멈추고 Date 를 addTiem에 저장
+        }
+    }
     
     @objc func tapRandomButton(_ sender: UIButton){
         switch sender.titleLabel?.text{
@@ -119,6 +131,7 @@ class ImageGameViewController: UIViewController{
         case "Play":
             fetchWords()
             sender.setTitle("Solving a problem", for: .normal)
+            startTime = Date()
             
         case "Next Word":
             fetchWords()
@@ -138,18 +151,17 @@ class ImageGameViewController: UIViewController{
                 if let textField = alert.textFields?.first, let userInput = textField.text{
                     if self.answer == userInput{
                         playAnimation(animationName: correctAnimationView)
-                        sender.setTitle("Next Word", for: .normal)
+                        updateNumbersOfPlays()
+                        fetchWords()
                     }else{
                         playAnimation(animationName: incorrectAnimationView)
                     }
                 }
             }
             
-            
-            
             alert.addAction(cancle)
             alert.addAction(confirm)
-            
+
             present(alert, animated: true)
             
         case .none:
@@ -159,9 +171,48 @@ class ImageGameViewController: UIViewController{
         }
     }
     
+    func updateNumbersOfPlays(){
+        let saveNum = UserDefaults.standard.value(forKey: "ImageGamePlays") ?? 0
+        UserDefaults.standard.set(saveNum as! Int + 1, forKey: "ImageGamePlays")
+        //누적횟수 저장
+        
+        let playCount = UserDefaults.standard.value(forKey: "playCount") ?? 0
+        UserDefaults.standard.set(playCount as! Int + 1, forKey: "playCount")
+        print(playCount)
+        //현재 횟수 저장
+    }
+    
+    func updateTime(with timeInterval: TimeInterval){
+        let minutes = Int(timeInterval / 60)
+        let seconds = Int(timeInterval.truncatingRemainder(dividingBy: 60))
+        let milliseconds = Int((timeInterval * 100).truncatingRemainder(dividingBy: 100))
+        
+        
+        let saveMinutes = UserDefaults.standard.value(forKey: "IGminutes") ?? 0
+        let saveSeconds = UserDefaults.standard.value(forKey: "IGseconds") ?? 0
+        let saveMilliseconds = UserDefaults.standard.value(forKey: "IGmilliseconds") ?? 0
+        
+        let playMinutes = UserDefaults.standard.value(forKey: "playMinutes") ?? 0
+        let playSeconds = UserDefaults.standard.value(forKey: "playSeconds") ?? 0
+        let playMilliseconds = UserDefaults.standard.value(forKey: "playMilliseconds") ?? 0
+
+        
+        UserDefaults.standard.set(saveMinutes as! Int + minutes, forKey: "IGminutes")
+        UserDefaults.standard.set(saveSeconds as! Int + seconds, forKey: "IGseconds")
+        UserDefaults.standard.set(saveMilliseconds as! Int + milliseconds, forKey: "IGmilliseconds")
+        
+        UserDefaults.standard.set(playMinutes as! Int + minutes, forKey: "playMinutes")
+        UserDefaults.standard.set(playSeconds as! Int + seconds, forKey: "playSeconds")
+        UserDefaults.standard.set(playMilliseconds as! Int + milliseconds, forKey: "playMilliseconds")
+        
+        
+    }
+    
+    
     func playAnimation(animationName animationView: LottieAnimationView){
         self.view.addSubview(animationView)
         
+        animationView.isHidden = false
         animationView.translatesAutoresizingMaskIntoConstraints = false
         animationView.contentMode = .scaleAspectFit
         animationView.play()
@@ -172,8 +223,8 @@ class ImageGameViewController: UIViewController{
         NSLayoutConstraint.activate([
             animationView.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
             animationView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            animationView.heightAnchor.constraint(equalToConstant: view.bounds.width),
-            animationView.widthAnchor.constraint(equalToConstant: view.bounds.width)
+            animationView.heightAnchor.constraint(equalToConstant: view.bounds.width * 0.8),
+            animationView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.8)
         ])
     }
     
@@ -303,44 +354,6 @@ class ImageGameViewController: UIViewController{
     //        }
     //    }
     
-    
-    
-    let textField: UITextField = {
-        let textField = UITextField()
-        textField.backgroundColor = .lightGray
-        textField.textColor = .darkGray
-        return textField
-    }()
-    
-    lazy var confirmButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("정답 확인 하기", for: .normal)
-        button.backgroundColor = .systemGreen
-        button.setTitleColor(.darkGray, for: .normal)
-        button.addTarget(self, action: #selector(confirmTapButton(_:)), for: .touchUpInside)
-        return button
-    }()
-    
-    @objc func confirmTapButton(_ sender: UIButton){
-        guard let text = textField.text else{
-            return
-        }
-        
-        if text.isEmpty{
-            pushAlert(title: "빈칸입니다", message: "정답을 적어주세요")
-        }
-        else{
-            if text == answer{
-                pushAlert(title: "정답입니다👏", message: "다음 버튼을 눌러주세요")
-            }
-            else{
-                pushAlert(title:"오답입니다", message: "다시 생각해보세요")
-            }
-        }
-        
-        
-    }
-    
     let choiceBGView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(hexCode: "DBC4F0")
@@ -358,15 +371,27 @@ class ImageGameViewController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         navigationController?.navigationBar.isHidden = false
-//        fetchWords()
+        let rightBarButton = UIBarButtonItem(title: "End", style: .plain, target: self, action: #selector(tapEndButton))
+        navigationItem.rightBarButtonItem = rightBarButton
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAppBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        
+    }
+    
+    @objc func tapEndButton(){
+        if let startTime = startTime{
+            let currentTime = Date()
+            let elapsedTime = currentTime.timeIntervalSince(startTime)
+            
+            updateTime(with: elapsedTime + addTime)
+        }
+        let nextVC = ResultViewController()
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-     
         
         view.backgroundColor = UIColor(red: 216, green: 217, blue: 218, alpha: 1)
         setConstraints()
@@ -374,6 +399,10 @@ class ImageGameViewController: UIViewController{
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)   
+    }
  
     
     func getImage(str: String){
@@ -470,14 +499,8 @@ class ImageGameViewController: UIViewController{
     private func setConstraints(){
         view.addSubview(guesisngWordsTitleLabel)
         view.addSubview(imageView)
-//        self.view.addSubview(textField)
-//        self.view.addSubview(confirmButton)
         
         let stackview = setChoiceStackview(label1: randomLabel1, label2: randomLabel2, label3: randomLabel3)
-        
-//        view.addSubview(randomLabel1)
-//        view.addSubview(randomLabel2)
-//        view.addSubview(randomLabel3)
         view.addSubview(randomButton)
         view.addSubview(answerMeanLabel)
         view.addSubview(choiceBGView)
@@ -490,8 +513,6 @@ class ImageGameViewController: UIViewController{
         randomLabel2.translatesAutoresizingMaskIntoConstraints = false
         randomLabel3.translatesAutoresizingMaskIntoConstraints = false
         randomButton.translatesAutoresizingMaskIntoConstraints = false
-//        textField.translatesAutoresizingMaskIntoConstraints = false
-//        confirmButton.translatesAutoresizingMaskIntoConstraints = false
         answerMeanLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -500,8 +521,7 @@ class ImageGameViewController: UIViewController{
             imageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             imageView.topAnchor.constraint(equalTo: choiceBGView.bottomAnchor, constant:
                                             view.bounds.height / 50),
-            //            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            //            imageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            
             imageView.heightAnchor.constraint(equalToConstant: view.bounds.height / 4),
             imageView.widthAnchor.constraint(equalToConstant: view.bounds.width * 0.9),
             

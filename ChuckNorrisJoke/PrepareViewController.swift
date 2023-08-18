@@ -102,10 +102,24 @@ class PrepareViewController: UIViewController{
         titlelabel1.translatesAutoresizingMaskIntoConstraints = false
         
         
-        let saveMinutes = UserDefaults.standard.value(forKey: "SOFminutes") ?? 0
-        let saveSeconds = UserDefaults.standard.value(forKey: "SOFseconds") ?? 0
-        let saveMilliseconds = UserDefaults.standard.value(forKey: "SOFmilliseconds") ?? 0
-         let saveNum = UserDefaults.standard.value(forKey: "NumbersOfPlays")
+        let saveMinutes: Any?
+        let saveSeconds: Any?
+        let saveNum: Any?
+        let saveMilliseconds: Any?
+        
+        
+        if gameIdentifier == "GuessingWords"{
+            saveMinutes = UserDefaults.standard.value(forKey: "IGminutes") ?? 0
+            saveSeconds = UserDefaults.standard.value(forKey: "IGseconds") ?? 0
+            saveMilliseconds = UserDefaults.standard.value(forKey: "IGmilliseconds") ?? 0
+            saveNum = UserDefaults.standard.value(forKey: "ImageGamePlays")
+        }
+        else{
+            saveMinutes = UserDefaults.standard.value(forKey: "SOFminutes") ?? 0
+            saveSeconds = UserDefaults.standard.value(forKey: "SOFseconds") ?? 0
+            saveMilliseconds = UserDefaults.standard.value(forKey: "SOFmilliseconds") ?? 0
+            saveNum = UserDefaults.standard.value(forKey: "NumbersOfPlays")
+        }
         
         let contentlabel1 = UILabel()
         contentlabel1.text =  "\(saveNum ?? 0)"
@@ -138,7 +152,7 @@ class PrepareViewController: UIViewController{
                 contentlabel2.text = "\(minutes + (saveMinutes as! Int))m \(seconds)s"
             }
             else{
-                contentlabel2.text = "\(saveMinutes)m \(saveSeconds as! Int + addseconds)s"
+                contentlabel2.text = "\(saveMinutes ?? "00")m \(saveSeconds as! Int + addseconds)s"
             }
         }
         else{ //밀리언 초가 1000이하 초가 60이상일때
@@ -149,7 +163,7 @@ class PrepareViewController: UIViewController{
             }
             else{
                 //밀리언 초가 1000이하이고 초가 59이하일때
-                contentlabel2.text = "\(saveMinutes)m \(saveSeconds)s"
+                contentlabel2.text = "\(saveMinutes ?? "00")m \(saveSeconds ?? 00)s"
             }
         }
         
