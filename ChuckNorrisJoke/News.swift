@@ -7,7 +7,7 @@
 
 import Foundation
 
-private struct NewsServiceKey{
+struct NewsServiceKey{
     let serviceKey: String = "75b34d78-49c3-4850-b7d8-a68f3e0fb1a3"
 }
 

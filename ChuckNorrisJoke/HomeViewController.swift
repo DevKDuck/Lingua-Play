@@ -116,6 +116,7 @@ class HomeViewController: UIViewController{
         let label = UILabel()
         label.text = labelText
         label.textColor = .darkGray
+        label.numberOfLines = 0
         label.font = UIFont(name: "Noto Sans Myanmar", size: fontSize)
         if boldBool == true{
             label.font = .boldSystemFont(ofSize: fontSize)
@@ -130,7 +131,8 @@ class HomeViewController: UIViewController{
         let subTitleLabel = setTitleAndSubLabel(labelText: subLabel, fontSize: subFontSize, boldBool: subBoldBool)
         let stackView = UIStackView(arrangedSubviews: [titleLabel, subTitleLabel])
         stackView.axis = .vertical
-        stackView.spacing = 1
+        stackView.spacing = 0
+        stackView.distribution = .fillProportionally
         return stackView
     }
     
@@ -139,7 +141,7 @@ class HomeViewController: UIViewController{
         constraintButton(bgView: senseOfHumorBGView, iconImage: "text.bubble", titleLabel: "Sense Of Humor", titleFontSize: 20, titleBoldBool: true, subLabel: "Think of the sentence", subFontSize: 15, subBoldBool: false, constraintTopView: titleLabel, betweenViewDistance: 60)
         constraintButton(bgView: inferGameBGView, iconImage: "brain.head.profile", titleLabel: "Gussing Words", titleFontSize: 20, titleBoldBool: true, subLabel: "Try to guess words", subFontSize: 15, subBoldBool: false, constraintTopView: senseOfHumorBGView, betweenViewDistance: 20)
         
-        constraintButton(bgView: newsBGView, iconImage: "newspaper", titleLabel: "Physical News", titleFontSize: 20, titleBoldBool: true, subLabel: "Provides information on sports news for all-all.", subFontSize: 15, subBoldBool: false, constraintTopView: inferGameBGView, betweenViewDistance: 20)
+        constraintButton(bgView: newsBGView, iconImage: "newspaper", titleLabel: "Festival News", titleFontSize: 20, titleBoldBool: true, subLabel: "Provides information on sports news for all-all.", subFontSize: 15, subBoldBool: false, constraintTopView: inferGameBGView, betweenViewDistance: 20)
     }
     
     //버튼 구성
@@ -176,11 +178,19 @@ class HomeViewController: UIViewController{
             iconView.heightAnchor.constraint(equalToConstant: (view.bounds.height / 6) / 2 * 0.8),
             iconView.widthAnchor.constraint(equalToConstant: (view.bounds.height / 6) / 2 * 0.8),
             
-            stackView.centerYAnchor.constraint(equalTo: iconBGView.centerYAnchor),
+//            stackView.centerYAnchor.constraint(equalTo: iconBGView.centerYAnchor),
             stackView.leadingAnchor.constraint(equalTo:iconBGView.trailingAnchor, constant: view.bounds.width / 20),
-            stackView.heightAnchor.constraint(equalToConstant: (view.bounds.height / 6) / 2),
-            stackView.widthAnchor.constraint(equalToConstant: (view.bounds.width / 2)),
+            stackView.trailingAnchor.constraint(equalTo:bgView.trailingAnchor, constant: -(view.bounds.width / 20)),
+            stackView.topAnchor.constraint(equalTo: bgView.topAnchor, constant: (view.bounds.height / 6) * 0.1),
+            stackView.bottomAnchor.constraint(equalTo: bgView.bottomAnchor, constant: -((view.bounds.height / 6) * 0.1)),
+//            stackView.heightAnchor.constraint(equalToConstant: (view.bounds.height / 6) *),
+//            stackView.widthAnchor.constraint(equalToConstant: (view.bounds.width * (28/30)) * 0.7)
             
+        
+            
+            //view의 넓이 / 30 * 2 = 좌우 공백 = 버튼배경넓이
+            //view.bounds.height / 6 = 아이콘배경화면
+            //view.bounds.width / 20 = 아이콘 배경화면 좌측 공백
         ])
     }
     

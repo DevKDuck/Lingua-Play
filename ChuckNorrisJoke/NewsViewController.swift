@@ -46,8 +46,15 @@ class NewsViewController: UIViewController{
         fetchData(numberOfRows: 10, pageNo: 1)
         
         
+        
         view.backgroundColor = .white
+        setConstraintsLayout()
+        
+    }
+    
+    func setConstraintsLayout(){
         view.addSubview(festivalNewsTitleLabel)
+        
         
     }
     
