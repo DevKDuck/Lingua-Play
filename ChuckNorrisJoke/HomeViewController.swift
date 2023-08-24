@@ -34,6 +34,24 @@ class HomeViewController: UIViewController{
         return view
     }()
 
+    lazy var newsBGView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(hexCode: "A8DF8E")
+        view.layer.cornerRadius = 25
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapNewsView(_:))))
+        return view
+    }()
+    
+    @objc func tapNewsView(_ sender: UITapGestureRecognizer){
+        let vc = NewsViewController()
+        
+        self.navigationController?.pushViewController(vc, animated: true)
+        
+    }
+    
+    
+
+    
     @objc func tapsenseOfHumorButton(_ sender: UITapGestureRecognizer){
 //        guard let vc = storyboard?.instantiateViewController(withIdentifier:  "SenseOfHumorViewController") else { return}
         
@@ -50,6 +68,8 @@ class HomeViewController: UIViewController{
         self.navigationController?.pushViewController(vc, animated: true)
 //        vc.modalPresentationStyle = .fullScreen
     }
+    
+    
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -116,8 +136,10 @@ class HomeViewController: UIViewController{
     
     //버튼 생성
     func setButton(){
-        constraintButton(bgView: senseOfHumorBGView, iconImage: "text.bubble", titleLabel: "Sense Of Humor", titleFontSize: 20, titleBoldBool: true, subLabel: "Think of the sentence", subFontSize: 15, subBoldBool: false, constraintTopView: titleLabel, betweenViewDistance: 100)
-        constraintButton(bgView: inferGameBGView, iconImage: "brain.head.profile", titleLabel: "Gussing Words", titleFontSize: 20, titleBoldBool: true, subLabel: "Try to guess words", subFontSize: 15, subBoldBool: false, constraintTopView: senseOfHumorBGView, betweenViewDistance: 30)
+        constraintButton(bgView: senseOfHumorBGView, iconImage: "text.bubble", titleLabel: "Sense Of Humor", titleFontSize: 20, titleBoldBool: true, subLabel: "Think of the sentence", subFontSize: 15, subBoldBool: false, constraintTopView: titleLabel, betweenViewDistance: 60)
+        constraintButton(bgView: inferGameBGView, iconImage: "brain.head.profile", titleLabel: "Gussing Words", titleFontSize: 20, titleBoldBool: true, subLabel: "Try to guess words", subFontSize: 15, subBoldBool: false, constraintTopView: senseOfHumorBGView, betweenViewDistance: 20)
+        
+        constraintButton(bgView: newsBGView, iconImage: "newspaper", titleLabel: "Physical News", titleFontSize: 20, titleBoldBool: true, subLabel: "Provides information on sports news for all-all.", subFontSize: 15, subBoldBool: false, constraintTopView: inferGameBGView, betweenViewDistance: 20)
     }
     
     //버튼 구성

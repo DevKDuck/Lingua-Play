@@ -61,3 +61,15 @@ struct NaverDicItems: Codable{
     let thumbnail: String
 }
 
+
+struct PathsurlgetParametersSchema: Codable{
+    let type: String
+    let schemadefault: String?
+    
+    enum CodingKeys: String, CodingKey{
+        case type
+        case schemadefault = "default"
+    }
+}
+
+

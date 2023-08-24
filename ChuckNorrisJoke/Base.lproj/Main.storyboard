@@ -11,7 +11,7 @@
         <!--LogInViewController-->
         <scene sceneID="CzW-AE-6a8">
             <objects>
-                <viewController storyboardIdentifier="LogInViewController" title="LogInViewController" id="X95-Tq-XTW" customClass="LogInViewController" customModule="ChuckNorrisJoke" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LogInViewController" title="LogInViewController" id="X95-Tq-XTW" customClass="NewsViewController" customModule="ChuckNorrisJoke" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TnQ-9K-JdP">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
