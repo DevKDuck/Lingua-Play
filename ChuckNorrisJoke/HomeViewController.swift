@@ -141,7 +141,7 @@ class HomeViewController: UIViewController{
         constraintButton(bgView: senseOfHumorBGView, iconImage: "text.bubble", titleLabel: "Sense Of Humor", titleFontSize: 20, titleBoldBool: true, subLabel: "Think of the sentence", subFontSize: 15, subBoldBool: false, constraintTopView: titleLabel, betweenViewDistance: 60)
         constraintButton(bgView: inferGameBGView, iconImage: "brain.head.profile", titleLabel: "Gussing Words", titleFontSize: 20, titleBoldBool: true, subLabel: "Try to guess words", subFontSize: 15, subBoldBool: false, constraintTopView: senseOfHumorBGView, betweenViewDistance: 20)
         
-        constraintButton(bgView: newsBGView, iconImage: "newspaper", titleLabel: "Festival News", titleFontSize: 20, titleBoldBool: true, subLabel: "Provides information on sports news for all-all.", subFontSize: 15, subBoldBool: false, constraintTopView: inferGameBGView, betweenViewDistance: 20)
+        constraintButton(bgView: newsBGView, iconImage: "newspaper", titleLabel: "Daily News", titleFontSize: 20, titleBoldBool: true, subLabel: "Headline news provided by BBC News", subFontSize: 15, subBoldBool: false, constraintTopView: inferGameBGView, betweenViewDistance: 20)
     }
     
     //버튼 구성
