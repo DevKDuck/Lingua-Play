@@ -185,12 +185,6 @@ class HomeViewController: UIViewController{
             stackView.bottomAnchor.constraint(equalTo: bgView.bottomAnchor, constant: -((view.bounds.height / 6) * 0.1)),
 //            stackView.heightAnchor.constraint(equalToConstant: (view.bounds.height / 6) *),
 //            stackView.widthAnchor.constraint(equalToConstant: (view.bounds.width * (28/30)) * 0.7)
-            
-        
-            
-            //view의 넓이 / 30 * 2 = 좌우 공백 = 버튼배경넓이
-            //view.bounds.height / 6 = 아이콘배경화면
-            //view.bounds.width / 20 = 아이콘 배경화면 좌측 공백
         ])
     }
     
