@@ -12,10 +12,36 @@ import Kingfisher
 
 class NewsViewController: UITableViewController{
     
-    var cirtArray = [String]()
+    var authorArray = [String]()
     var titleArray = [String]()
-    var regDateArray = [String]()
+    var descriptionArray = [String]()
     var imgUrlArray = [String]()
+    
+
+    
+    func fetchData2(){
+        let url = "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=6cadc26e16894316aff6cfde14050ba5"
+        
+//        let headers: HTTPHeaders = ["accept" : "application/json"]
+        AF.request(url, method: .get, parameters: nil).validate(statusCode: 200..<300).responseDecodable(of: News2.self){ response in
+            switch response.result{
+            case.success(let datas):
+                print(datas)
+                for data in datas.articles{
+                    self.titleArray.append(data.title)
+                    self.descriptionArray.append(data.description)
+                    self.authorArray.append(data.author)
+                    self.imgUrlArray.append(data.urlToImage)
+                }
+                self.tableView.reloadData()
+               
+            case .failure(let err):
+                print(err.localizedDescription)
+            }
+        }
+    }
+   
+    
     
     func fetchData(serviceKey: String = NewsServiceKey().serviceKey, numberOfRows: Int, pageNo: Int){
         let url = "http://api.kcisa.kr/openapi/service/rest/meta4/getKCPG0504?serviceKey=\(serviceKey)&numOfRows=\(numberOfRows)&pageNo=\(pageNo)"
@@ -27,9 +53,9 @@ class NewsViewController: UITableViewController{
                 for data in datas.response.body.items.item{
                     if let city = data.spatialCoverage, let title = data.title, let regDate = data.regDate,
                        let img = data.referenceIdentifier{
-                        self.cirtArray.append(city)
+                        self.authorArray.append(city)
                         self.titleArray.append(title)
-                        self.regDateArray.append(regDate)
+                        self.descriptionArray.append(regDate)
                         self.imgUrlArray.append(img)
                     }
                 }
@@ -61,7 +87,8 @@ class NewsViewController: UITableViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        fetchData(numberOfRows: 100, pageNo: 1)
+//        fetchData(numberOfRows: 100, pageNo: 1)
+        fetchData2()
         
         
         view.backgroundColor = .white
@@ -91,7 +118,7 @@ class NewsViewController: UITableViewController{
         return 1
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.cirtArray.count
+        return self.authorArray.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -100,9 +127,9 @@ class NewsViewController: UITableViewController{
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "NewsTableViewCell", for: indexPath) as? NewsTableViewCell else {return UITableViewCell()}
-        cell.cityLabel.text = cirtArray[indexPath.row]
-        cell.festivalTitleLabel.text = titleArray[indexPath.row]
-        cell.regDateLabel.text = "등록일: \(regDateArray[indexPath.row])"
+        cell.authorLabel.text = authorArray[indexPath.row]
+        cell.titleLabel.text = titleArray[indexPath.row]
+        cell.descriptionLabel.text = "Content: \(descriptionArray[indexPath.row])"
         
         let imageURLStr = imgUrlArray[indexPath.row]
         cell.img.kf.setImage(with: URL(string: imageURLStr))

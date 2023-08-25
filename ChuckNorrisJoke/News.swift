@@ -57,3 +57,26 @@ struct NewsBodyItem: Codable{
     let url: String
     let contributor: String?
 }
+
+struct Articles: Codable{
+    let source: ArticlesSource
+    let author: String
+    let title: String
+    let description: String
+    let url: String
+    let urlToImage: String
+    let publishedAt: String
+    let content: String
+    
+}
+struct ArticlesSource: Codable{
+    let id: String
+    let name: String
+}
+
+
+struct News2: Codable{
+    let status: String
+    let totalResults: Int
+    let articles: [Articles]
+}

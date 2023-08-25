@@ -10,30 +10,34 @@ import UIKit
 
 class NewsTableViewCell: UITableViewCell{
     
-    let cityLabel: UILabel = {
+    let authorLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .lightGray
+        label.numberOfLines = 0
 //        label.text = "경기도 수원시"
         label.font = UIFont(name: "Noto Sans Myanmar", size: 15)
         return label
     }()
     
-    let festivalTitleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .darkGray
 //        label.text = "희망나눔 페스티벌 2016"
-        label.font = UIFont(name: "Noto Sans Myanmar", size: 10)
-        label.font = .boldSystemFont(ofSize: 10)
+        label.numberOfLines = 0
+        label.font = UIFont(name: "Noto Sans Myanmar", size: 12)
+        label.font = .boldSystemFont(ofSize: 12)
+        
         return label
     }()
     
-    let regDateLabel: UILabel = {
+    let descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .darkGray
 //        label.text = "관리자 | 031-230-1692~4"
+        label.numberOfLines = 0
         label.font = UIFont(name: "Noto Sans Myanmar", size: 10)
         label.font = .boldSystemFont(ofSize: 10)
         return label
@@ -56,9 +60,9 @@ class NewsTableViewCell: UITableViewCell{
            
            contentView.backgroundColor = .white
            contentView.addSubview(img)
-           contentView.addSubview(cityLabel)
-           contentView.addSubview(festivalTitleLabel)
-           contentView.addSubview(regDateLabel)
+           contentView.addSubview(authorLabel)
+           contentView.addSubview(titleLabel)
+           contentView.addSubview(descriptionLabel)
            
            
            NSLayoutConstraint.activate([
@@ -68,19 +72,19 @@ class NewsTableViewCell: UITableViewCell{
             img.heightAnchor.constraint(equalToConstant: 140),
             img.widthAnchor.constraint(equalToConstant: 140),
             
-               cityLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-               cityLabel.leadingAnchor.constraint(equalTo: img.trailingAnchor, constant: 16),
-               cityLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+               authorLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+               authorLabel.leadingAnchor.constraint(equalTo: img.trailingAnchor, constant: 16),
+               authorLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
                
                
                
-               festivalTitleLabel.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: 4),
-               festivalTitleLabel.leadingAnchor.constraint(equalTo: img.trailingAnchor, constant: 16),
-               festivalTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+               titleLabel.topAnchor.constraint(equalTo: authorLabel.bottomAnchor, constant: 4),
+               titleLabel.leadingAnchor.constraint(equalTo: img.trailingAnchor, constant: 16),
+               titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
                
-               regDateLabel.topAnchor.constraint(equalTo: festivalTitleLabel.bottomAnchor, constant: 4),
-               regDateLabel.leadingAnchor.constraint(equalTo: img.trailingAnchor, constant: 16),
-               regDateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+               descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+               descriptionLabel.leadingAnchor.constraint(equalTo: img.trailingAnchor, constant: 16),
+               descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
                
            ])
        }
