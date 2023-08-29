@@ -11,11 +11,13 @@ import Kingfisher
 
 
 class NewsViewController: UITableViewController{
+   
     
     var authorArray = [String]()
     var titleArray = [String]()
     var descriptionArray = [String]()
     var imgUrlArray = [String]()
+    var contentArray = [String]()
     
     var lastContentOffset: CGFloat = 0
     
@@ -31,6 +33,7 @@ class NewsViewController: UITableViewController{
                     self.descriptionArray.append(data.description)
                     self.authorArray.append(data.author)
                     self.imgUrlArray.append(data.urlToImage)
+                    self.contentArray.append(data.content)
                 }
                 self.tableView.reloadData()
                
@@ -116,6 +119,7 @@ class NewsViewController: UITableViewController{
         cell.titleLabel.text = titleArray[indexPath.row]
         cell.descriptionLabel.text = "Content: \(descriptionArray[indexPath.row])"
         
+        
         let imageURLStr = imgUrlArray[indexPath.row]
         cell.img.kf.setImage(with: URL(string: imageURLStr))
         return cell
@@ -125,7 +129,11 @@ class NewsViewController: UITableViewController{
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = NewsDetailContentViewController()
         vc.imgUrl = imgUrlArray[indexPath.row]
+        vc.titleLabel.text = titleArray[indexPath.row]
+        vc.bottomSheetContent = contentArray[indexPath.row]
+        vc.bottomSheetDescription = descriptionArray[indexPath.row]
         navigationController?.pushViewController(vc, animated: true)
+        
     }
     
 //    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
