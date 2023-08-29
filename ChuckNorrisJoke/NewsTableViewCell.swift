@@ -58,6 +58,7 @@ class NewsTableViewCell: UITableViewCell{
        override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
            super.init(style: style, reuseIdentifier: reuseIdentifier)
            
+           
            contentView.backgroundColor = .white
            contentView.addSubview(img)
            contentView.addSubview(authorLabel)

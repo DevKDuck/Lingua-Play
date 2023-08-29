@@ -17,7 +17,7 @@ class NewsViewController: UITableViewController{
     var descriptionArray = [String]()
     var imgUrlArray = [String]()
     
-
+    var lastContentOffset: CGFloat = 0
     
     func fetchData2(){
         let url = "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=6cadc26e16894316aff6cfde14050ba5"
@@ -26,7 +26,6 @@ class NewsViewController: UITableViewController{
         AF.request(url, method: .get, parameters: nil).validate(statusCode: 200..<300).responseDecodable(of: News2.self){ response in
             switch response.result{
             case.success(let datas):
-                print(datas)
                 for data in datas.articles{
                     self.titleArray.append(data.title)
                     self.descriptionArray.append(data.description)
@@ -89,10 +88,6 @@ class NewsViewController: UITableViewController{
         
 //        fetchData(numberOfRows: 100, pageNo: 1)
         fetchData2()
-        
-        
-        view.backgroundColor = .white
-        
         setTableView()
     }
     
@@ -100,20 +95,10 @@ class NewsViewController: UITableViewController{
         tableView.dataSource = self
         tableView.delegate = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView = UITableView(frame: view.bounds, style: .grouped)
         tableView.register(NewsTableViewCell.self, forCellReuseIdentifier: "NewsTableViewCell")
     }
     
-    func setConstraintsLayout(){
-        
-        NSLayoutConstraint.activate([
-        tableView.topAnchor.constraint(equalTo: view.topAnchor),
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        
-        
-    }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -139,8 +124,57 @@ class NewsViewController: UITableViewController{
  
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = NewsDetailContentViewController()
+        vc.imgUrl = imgUrlArray[indexPath.row]
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+//    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return "Daily News"
+//    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.white
+        
+        let titleLabel: UILabel = {
+           let label = UILabel()
+            label.text = "Daily News"
+            label.textColor = .darkGray
+            label.font = .boldSystemFont(ofSize: 40)
+            label.font = UIFont(name: "Noto Sans Myanmar", size: 40)
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+        
+        headerView.addSubview(titleLabel)
+        
+        titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16).isActive = true
+        titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor).isActive = true
+        
+        
+        return headerView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return view.bounds.height / 7
+    }
+ 
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        let contentOffset = scrollView.contentOffset.y
+
+
+        if contentOffset > self.lastContentOffset {
+            // 아래로 스크롤 중
+            print("아래로 스크롤 중")
+        } else if contentOffset < self.lastContentOffset {
+            // 위로 스크롤 중
+            print("위로 스크롤 중")
+        }
+
+        self.lastContentOffset = contentOffset
+    }
 }
+
 
 

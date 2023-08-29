@@ -23,6 +23,10 @@
 		8C91421B2A9745AC0069F99E /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C91421A2A9745AC0069F99E /* NewsTableViewCell.swift */; };
 		8C91421E2A9863440069F99E /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 8C91421D2A9863440069F99E /* Kingfisher */; };
 		8C9142202A9881A20069F99E /* NewsDetailContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C91421F2A9881A20069F99E /* NewsDetailContentViewController.swift */; };
+		8C9142222A9C6C440069F99E /* NewsBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9142212A9C6C440069F99E /* NewsBottomSheetViewController.swift */; };
+		8C9142252A9C70670069F99E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8C9142242A9C70670069F99E /* SnapKit */; };
+		8C9142282A9C71B60069F99E /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 8C9142272A9C71B60069F99E /* Then */; };
+		8C91422B2A9C95910069F99E /* FloatingPanel in Frameworks */ = {isa = PBXBuildFile; productRef = 8C91422A2A9C95910069F99E /* FloatingPanel */; };
 		8C94639B2A8B62B500339BDE /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C94639A2A8B62B500339BDE /* ResultViewController.swift */; };
 		8C94639E2A8B65A900339BDE /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 8C94639D2A8B65A900339BDE /* Lottie */; };
 		8C9463A02A8B669700339BDE /* animation_llc03wvm.json in Resources */ = {isa = PBXBuildFile; fileRef = 8C94639F2A8B669700339BDE /* animation_llc03wvm.json */; };
@@ -49,6 +53,7 @@
 		8C9142182A971E710069F99E /* News.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		8C91421A2A9745AC0069F99E /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
 		8C91421F2A9881A20069F99E /* NewsDetailContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDetailContentViewController.swift; sourceTree = "<group>"; };
+		8C9142212A9C6C440069F99E /* NewsBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsBottomSheetViewController.swift; sourceTree = "<group>"; };
 		8C94639A2A8B62B500339BDE /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		8C94639F2A8B669700339BDE /* animation_llc03wvm.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = animation_llc03wvm.json; sourceTree = "<group>"; };
 		8C9463A12A8DEE3300339BDE /* correctAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = correctAnimation.json; sourceTree = "<group>"; };
@@ -62,7 +67,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C9142282A9C71B60069F99E /* Then in Frameworks */,
 				8C91421E2A9863440069F99E /* Kingfisher in Frameworks */,
+				8C9142252A9C70670069F99E /* SnapKit in Frameworks */,
+				8C91422B2A9C95910069F99E /* FloatingPanel in Frameworks */,
 				8C44C4722A6E4CA700044068 /* Alamofire in Frameworks */,
 				8C94639E2A8B65A900339BDE /* Lottie in Frameworks */,
 			);
@@ -111,6 +119,7 @@
 				8C9142182A971E710069F99E /* News.swift */,
 				8C91421A2A9745AC0069F99E /* NewsTableViewCell.swift */,
 				8C91421F2A9881A20069F99E /* NewsDetailContentViewController.swift */,
+				8C9142212A9C6C440069F99E /* NewsBottomSheetViewController.swift */,
 			);
 			path = ChuckNorrisJoke;
 			sourceTree = "<group>";
@@ -135,6 +144,9 @@
 				8C44C4712A6E4CA700044068 /* Alamofire */,
 				8C94639D2A8B65A900339BDE /* Lottie */,
 				8C91421D2A9863440069F99E /* Kingfisher */,
+				8C9142242A9C70670069F99E /* SnapKit */,
+				8C9142272A9C71B60069F99E /* Then */,
+				8C91422A2A9C95910069F99E /* FloatingPanel */,
 			);
 			productName = ChuckNorrisJoke;
 			productReference = 8C5CAEFC2A6E2F4F00107EDB /* ChuckNorrisJoke.app */;
@@ -168,6 +180,9 @@
 				8C44C4702A6E4CA700044068 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				8C94639C2A8B65A800339BDE /* XCRemoteSwiftPackageReference "lottie-spm" */,
 				8C91421C2A9863440069F99E /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				8C9142232A9C70670069F99E /* XCRemoteSwiftPackageReference "SnapKit" */,
+				8C9142262A9C71B60069F99E /* XCRemoteSwiftPackageReference "Then" */,
+				8C9142292A9C95910069F99E /* XCRemoteSwiftPackageReference "FloatingPanel" */,
 			);
 			productRefGroup = 8C5CAEFD2A6E2F4F00107EDB /* Products */;
 			projectDirPath = "";
@@ -204,6 +219,7 @@
 				8C9CC9F02A7B8F8900A05FDF /* NewsViewController.swift in Sources */,
 				8C5CAF022A6E2F4F00107EDB /* SceneDelegate.swift in Sources */,
 				8C9142202A9881A20069F99E /* NewsDetailContentViewController.swift in Sources */,
+				8C9142222A9C6C440069F99E /* NewsBottomSheetViewController.swift in Sources */,
 				8C91421B2A9745AC0069F99E /* NewsTableViewCell.swift in Sources */,
 				8CD91A7F2A74E8200025D3E1 /* HomeViewController.swift in Sources */,
 				8C44C4762A6F6C5000044068 /* ChckNorrisJokeResponse.swift in Sources */,
@@ -456,6 +472,30 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		8C9142232A9C70670069F99E /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		8C9142262A9C71B60069F99E /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		8C9142292A9C95910069F99E /* XCRemoteSwiftPackageReference "FloatingPanel" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scenee/FloatingPanel";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		8C94639C2A8B65A800339BDE /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
@@ -476,6 +516,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8C91421C2A9863440069F99E /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		8C9142242A9C70670069F99E /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8C9142232A9C70670069F99E /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		8C9142272A9C71B60069F99E /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8C9142262A9C71B60069F99E /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+		8C91422A2A9C95910069F99E /* FloatingPanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8C9142292A9C95910069F99E /* XCRemoteSwiftPackageReference "FloatingPanel" */;
+			productName = FloatingPanel;
 		};
 		8C94639D2A8B65A900339BDE /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
