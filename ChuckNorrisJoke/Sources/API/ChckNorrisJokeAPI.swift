@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Response: Codable{
+struct ChuckNorrisJoke: Codable{
     let icon_url : String
     let id : String
     let url : String

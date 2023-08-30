@@ -6,69 +6,60 @@
 //
 
 import UIKit
+import Then
+import SnapKit
+import Foundation
+
 
 class HomeViewController: UIViewController{
-    
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.text = "Ligua Play"
-        label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 40)
-        return label
-    }()
-    
-    lazy var senseOfHumorBGView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(hexCode: "FFCACC")
-        view.layer.cornerRadius = 25
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapsenseOfHumorButton(_:))))
-        return view
-    }()
-    
-    lazy var inferGameBGView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(hexCode: "DBC4F0")
-        view.layer.cornerRadius = 25
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapInferGameButton(_:))))
-        return view
-    }()
 
-    lazy var newsBGView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(hexCode: "A8DF8E")
-        view.layer.cornerRadius = 25
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapNewsView(_:))))
-        return view
-    }()
+    //MARK: UI객체
+    let titleLabel = UILabel().then{
+        $0.textAlignment = .center
+        $0.text = "Ligua Play"
+        $0.textColor = .black
+        $0.font = UIFont.systemFont(ofSize: 40)
+    }
     
-    @objc func tapNewsView(_ sender: UITapGestureRecognizer){
-        let vc = NewsViewController()
-        
-        self.navigationController?.pushViewController(vc, animated: true)
-        
+    lazy var senseOfHumorBGView = UIView().then{
+        $0.backgroundColor = UIColor(hexCode: "FFCACC")
+        $0.layer.cornerRadius = 25
+        $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapsenseOfHumorButton(_:))))
+    }
+    
+    lazy var inferGameBGView = UIView().then {
+        $0.backgroundColor = UIColor(hexCode: "DBC4F0")
+        $0.layer.cornerRadius = 25
+        $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapInferGameButton(_:))))
+    }
+
+    lazy var newsBGView = UIView().then{
+        $0.backgroundColor = UIColor(hexCode: "A8DF8E")
+        $0.layer.cornerRadius = 25
+        $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapNewsView(_:))))
     }
     
     
-
+    
+    //MARK: 액션 실행 Selector
+    @objc func tapNewsView(_ sender: UITapGestureRecognizer){
+        let vc = NewsViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     
     @objc func tapsenseOfHumorButton(_ sender: UITapGestureRecognizer){
-//        guard let vc = storyboard?.instantiateViewController(withIdentifier:  "SenseOfHumorViewController") else { return}
-        
         let vc = PrepareViewController()
         vc.gameIdentifier = "SenseOfHumon"
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     
-    
     @objc func tapInferGameButton(_ sender: UIButton){
         let vc = PrepareViewController()
         vc.gameIdentifier = "GuessingWords"
         self.navigationController?.pushViewController(vc, animated: true)
-//        vc.modalPresentationStyle = .fullScreen
     }
-    
     
     
     
@@ -79,12 +70,11 @@ class HomeViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .white
         titleLabelLayoutConstraints()
         setButton()
-        
     }
+    
     
     //버튼 배경뷰
     func setBGView(color: String) -> UIView{
@@ -114,13 +104,14 @@ class HomeViewController: UIViewController{
     //타이틀과 부제 라벨
     func setTitleAndSubLabel(labelText: String, fontSize: CGFloat, boldBool: Bool) -> UILabel{
         let label = UILabel()
-        label.text = labelText
         label.textColor = .darkGray
         label.numberOfLines = 0
         label.font = UIFont(name: "Noto Sans Myanmar", size: fontSize)
+        var attributedText = NSMutableAttributedString(string: labelText)
         if boldBool == true{
-            label.font = .boldSystemFont(ofSize: fontSize)
+            attributedText.addAttributes([.font:UIFont.boldSystemFont(ofSize: 24)], range: NSRange(location: 0, length: attributedText.length))
         }
+        label.attributedText = attributedText
         return label
     }
     
@@ -178,13 +169,10 @@ class HomeViewController: UIViewController{
             iconView.heightAnchor.constraint(equalToConstant: (view.bounds.height / 6) / 2 * 0.8),
             iconView.widthAnchor.constraint(equalToConstant: (view.bounds.height / 6) / 2 * 0.8),
             
-//            stackView.centerYAnchor.constraint(equalTo: iconBGView.centerYAnchor),
             stackView.leadingAnchor.constraint(equalTo:iconBGView.trailingAnchor, constant: view.bounds.width / 20),
             stackView.trailingAnchor.constraint(equalTo:bgView.trailingAnchor, constant: -(view.bounds.width / 20)),
             stackView.topAnchor.constraint(equalTo: bgView.topAnchor, constant: (view.bounds.height / 6) * 0.1),
             stackView.bottomAnchor.constraint(equalTo: bgView.bottomAnchor, constant: -((view.bounds.height / 6) * 0.1)),
-//            stackView.heightAnchor.constraint(equalToConstant: (view.bounds.height / 6) *),
-//            stackView.widthAnchor.constraint(equalToConstant: (view.bounds.width * (28/30)) * 0.7)
         ])
     }
     
@@ -205,28 +193,3 @@ class HomeViewController: UIViewController{
         ])
     }
 }
-
-
-extension UIColor {
-    
-    
-    convenience init(hexCode: String, alpha: CGFloat = 1.0) {
-        var hexFormatted: String = hexCode.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).uppercased()
-        
-        if hexFormatted.hasPrefix("#") {
-            hexFormatted = String(hexFormatted.dropFirst())
-        }
-        
-        assert(hexFormatted.count == 6, "Invalid hex code used.")
-        
-        var rgbValue: UInt64 = 0
-        Scanner(string: hexFormatted).scanHexInt64(&rgbValue)
-        
-        self.init(red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
-                  green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
-                  blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-                  alpha: alpha)
-    }
-}
-
-//색깔convienece bound , frame 정리

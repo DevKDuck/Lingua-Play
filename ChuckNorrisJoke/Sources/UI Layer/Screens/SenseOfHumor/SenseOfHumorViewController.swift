@@ -25,7 +25,7 @@ class SenseOfHumorViewController: UIViewController {
                    parameters: nil,
                    encoding:URLEncoding.default)
         .validate(statusCode: 200..<300)
-        .responseDecodable(of:Response.self){ response in
+        .responseDecodable(of:ChuckNorrisJoke.self){ response in
             switch response.result{
             case .success(let data):
                 self.jokeLabelENG = data.value
