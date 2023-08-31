@@ -128,13 +128,6 @@ class NewsDetailContentViewController: UIViewController, FloatingPanelController
             l.left.equalTo(self.view).offset(15)
             l.trailing.equalTo(self.view).offset(-15)
         }
-        
-//        NSLayoutConstraint.activate([
-//            imgView.topAnchor.constraint(equalTo: view.topAnchor),
-//            imgView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-//            imgView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-//            imgView.heightAnchor.constraint(equalToConstant: view.bounds.height / 2)
-//        ])
     }
     
     

@@ -47,29 +47,62 @@ class NewsBottomSheetViewController: UIViewController{
                                  "target" : "ko",
                                  "text" : contentLabel.text ?? "Not Found Content"]
         
-        fetchPapago(param: descriptionLabelParam,translateLabelName: self.descriptionLabel)
-        fetchPapago(param: conetntLabelParam, translateLabelName: self.contentLabel)
-       
+//        fetchPapago(param: descriptionLabelParam,translateLabelName: self.descriptionLabel)
+//        fetchPapago(param: conetntLabelParam, translateLabelName: self.contentLabel)
+
+        downloadJson(descriptionLabelParam){ json in
+            self.descriptionLabel.text = json
+        }
+        downloadJson(conetntLabelParam){ json in
+            self.contentLabel.text = json
+        }
         
-        func fetchPapago(param: Parameters, translateLabelName: UILabel){
-            AF.request(url, method: .post,
-                       parameters: param,
-                       encoding: URLEncoding.default,
-                       headers: ["Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8",
-                                 "X-Naver-Client-Id" : Storage().naverClientID, "X-Naver-Client-Secret" : Storage().naverClientSecret])
-            .validate(statusCode: 200..<300)
-            .responseDecodable(of: PaPago.self){ response in
-                switch response.result{
-                case.success(let data):
-                    DispatchQueue.main.async {
-                        translateLabelName.text = "\(data.message.result.translatedText)"
+        func downloadJson(_ param: Parameters, _ completion:((String?) -> Void)?){
+            DispatchQueue.global().async {
+                AF.request(url, method: .post,
+                           parameters: param,
+                           encoding: URLEncoding.default,
+                           headers: ["Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8",
+                                     "X-Naver-Client-Id" : Storage().naverClientID, "X-Naver-Client-Secret" : Storage().naverClientSecret])
+                .validate(statusCode: 200..<300)
+                .responseDecodable(of: PaPago.self){ response in
+                    switch response.result{
+                    case.success(let data):
+                        DispatchQueue.main.async {
+                            completion?(data.message.result.translatedText)
+                        }
+                    case.failure(_):
+                        print("Papago API POST failed")
                     }
-                case.failure(_):
-                    print("Papago API POST failed")
+                    
                 }
-                
             }
         }
+        
+        
+        func fetchPapago(param: Parameters, translateLabelName: UILabel){
+            DispatchQueue.global().async {
+                AF.request(url, method: .post,
+                           parameters: param,
+                           encoding: URLEncoding.default,
+                           headers: ["Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8",
+                                     "X-Naver-Client-Id" : Storage().naverClientID, "X-Naver-Client-Secret" : Storage().naverClientSecret])
+                .validate(statusCode: 200..<300)
+                .responseDecodable(of: PaPago.self){ response in
+                    switch response.result{
+                    case.success(let data):
+                        DispatchQueue.main.async {
+                            translateLabelName.text = "\(data.message.result.translatedText)"
+                        }
+                    case.failure(_):
+                        print("Papago API POST failed")
+                    }
+                    
+                }
+            }
+        }
+        
+    
         
     }
     

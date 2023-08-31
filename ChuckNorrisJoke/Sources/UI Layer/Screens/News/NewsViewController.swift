@@ -21,11 +21,11 @@ class NewsViewController: UITableViewController{
     
     var lastContentOffset: CGFloat = 0
     
-    func fetchData2(){
+    func fetchData(){
         let url = "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=6cadc26e16894316aff6cfde14050ba5"
         
 //        let headers: HTTPHeaders = ["accept" : "application/json"]
-        AF.request(url, method: .get, parameters: nil).validate(statusCode: 200..<300).responseDecodable(of: News2.self){ response in
+        AF.request(url, method: .get, parameters: nil).validate(statusCode: 200..<300).responseDecodable(of: NewsAPI.self){ response in
             switch response.result{
             case.success(let datas):
                 for data in datas.articles{
@@ -33,42 +33,18 @@ class NewsViewController: UITableViewController{
                     self.descriptionArray.append(data.description)
                     self.authorArray.append(data.author)
                     self.imgUrlArray.append(data.urlToImage)
-                    self.contentArray.append(data.content)
+                    self.contentArray.append(data.content ?? "Have No content")
                 }
                 self.tableView.reloadData()
                
             case .failure(let err):
-                print(err.localizedDescription)
+                print("Fetch NewsAPI Data \(err.localizedDescription)")
             }
         }
     }
    
     
-    
-    func fetchData(serviceKey: String = NewsServiceKey().serviceKey, numberOfRows: Int, pageNo: Int){
-        let url = "http://api.kcisa.kr/openapi/service/rest/meta4/getKCPG0504?serviceKey=\(serviceKey)&numOfRows=\(numberOfRows)&pageNo=\(pageNo)"
-        
-        let headers: HTTPHeaders = ["accept" : "application/json"]
-        AF.request(url, method: .get, parameters: nil, headers: headers).validate(statusCode: 200..<300).responseDecodable(of: News.self){ response in
-            switch response.result{
-            case.success(let datas):
-                for data in datas.response.body.items.item{
-                    if let city = data.spatialCoverage, let title = data.title, let regDate = data.regDate,
-                       let img = data.referenceIdentifier{
-                        self.authorArray.append(city)
-                        self.titleArray.append(title)
-                        self.descriptionArray.append(regDate)
-                        self.imgUrlArray.append(img)
-                    }
-                }
-                self.tableView.reloadData()
-               
-            case .failure(let err):
-                print(err.localizedDescription)
-            }
-        }
-    }
-   
+
     let festivalNewsTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 30)
@@ -77,21 +53,13 @@ class NewsViewController: UITableViewController{
         return label
     }()
     
-//    let view1 : UIView = {
-//       let view = UIView()
-//        view.bounds = CGRect(x: 200, y: 200, width: 150, height: 150)
-//        view.backgroundColor = .blue
-//        return view
-//    }()
-//
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        fetchData(numberOfRows: 100, pageNo: 1)
-        fetchData2()
+    
+        fetchData()
         setTableView()
+
     }
     
     func setTableView(){
@@ -135,10 +103,7 @@ class NewsViewController: UITableViewController{
         navigationController?.pushViewController(vc, animated: true)
         
     }
-    
-//    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return "Daily News"
-//    }
+
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
