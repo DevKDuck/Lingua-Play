@@ -53,22 +53,38 @@ class Test: UIViewController{
     
     func onLoad(){
         let obaservable = fetchData()
-        
         let disposbale = obaservable
         //            .debug() -> 과정을 볼 수 있음
-            .subscribe{ event in
-            switch event{
-            case let .next(json):
-                DispatchQueue.main.async {
+            //MARK: .map (sugar API)를 이용해서 .count로 변환 operator
+            /*
+             .map{ json in json?.count ?? 0}
+            .map{"\($0)"}
+             */
+        
+        //MARK: .filter operator
+//            .filter{cnt in cnt > 0}
+        
+        
+            .observeOn(MainScheduler.instance) // DispatchQueue.main.async블록 대신 사용 sugar API : operator
+            .subscribe(onNext: { json in
+//                DispatchQueue.main.async {
                     self.labelA.text = json
-                }
-            case .completed:
-                break
-            case .error:
-                break
-            }
+//                }
+            })
+        //MARK: subScribe 단순화
+//            .subscribe{ event in
+//            switch event{
+//            case let .next(json):
+//                DispatchQueue.main.async {
+//                    self.labelA.text = json
+//                }
+//            case .completed:
+//                break
+//            case .error:
+//                break
+//            }
             
-        }
+//        }
 //        disposbale.dispose() 필요에 의해 작업을 취소할 때 사용
     }
     
@@ -82,7 +98,10 @@ class Test: UIViewController{
     */
     
     func fetchData() -> Observable<String?> {
-        return Observable.just("Helloworld")
+        
+        //MARK: Sugar API
+        //MARK: just 이용한 Test
+        //        return Observable.just("Helloworld")
         /*
          -> 데이터 하나 보내는것은 .just로 보낼 수 있음
          return Observable.create{ emitter in
@@ -92,26 +111,33 @@ class Test: UIViewController{
          }
          */
         
+        // return observable.just(["Hello", "World]) -> ["Hello", "World"] 반환
         
-//        return Observable.create() { emitter in
-//            let url = URL(string: "https://api.chucknorris.io/jokes/random")!
-//            let task = URLSession.shared.dataTask(with: url){ (data, _, err) in
-//                guard err == nil else{
-//                    emitter.onError(err!)
-//                    return
-//                }
-//
-//                if let dat = data, let json = String(data: dat, encoding: .utf8){
-//                    emitter.onNext(json)
-//                }
-//
-//                emitter.onCompleted() // 이때 클로저의 순환참조가 클로저 종료에 의해 종료됨
-//            }
-//            task.resume()
-//            return Disposables.create {
-//                task.cancel()
-//            }
-//        }
+        //MARK: from 이용한 Test
+//        return Observable.from(["Hello","World"])
+        // "Hello", "World" 한번씩 차례로반환
+         
+        
+        
+        return Observable.create() { emitter in
+            let url = URL(string: "https://api.chucknorris.io/jokes/random")!
+            let task = URLSession.shared.dataTask(with: url){ (data, _, err) in
+                guard err == nil else{
+                    emitter.onError(err!)
+                    return
+                }
+
+                if let dat = data, let json = String(data: dat, encoding: .utf8){
+                    emitter.onNext(json)
+                }
+
+                emitter.onCompleted() // 이때 클로저의 순환참조가 클로저 종료에 의해 종료됨
+            }
+            task.resume()
+            return Disposables.create {
+                task.cancel()
+            }
+        }
         
     }
 }
