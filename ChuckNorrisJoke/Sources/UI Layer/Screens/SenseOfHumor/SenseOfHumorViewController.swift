@@ -7,11 +7,13 @@
 
 import UIKit
 import Alamofire
-
+import RxSwift
 
 class SenseOfHumorViewController: UIViewController {
     
     var jokeLabelENG:String = ""
+    
+   
     
     func chuckNorrisJokeGetData(){
         let url = "https://api.chucknorris.io/jokes/random"

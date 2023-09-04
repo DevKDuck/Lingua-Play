@@ -83,7 +83,7 @@ class NewsBottomSheetViewController: UIViewController{
 //
 //        }
         
-        testxSwiftJson(descriptionLabelParam)
+        _ = testxSwiftJson(descriptionLabelParam)
             .subscribe { event in //나중에 오면은 = subscribe  나중에 온게 event
                 switch event{
                 case .next(let json):
@@ -94,8 +94,8 @@ class NewsBottomSheetViewController: UIViewController{
                     break
                 }
             }
-        
-        testxSwiftJson(conetntLabelParam)
+        //MARK: Observable로 오는 데이터를 받아서 처리하는 방법
+        _ = testxSwiftJson(conetntLabelParam)
             .subscribe { event in //나중에 오면은 = subscribe  나중에 온게 event
                 switch event{
                 case .next(let json):
@@ -105,8 +105,15 @@ class NewsBottomSheetViewController: UIViewController{
                 case .error(_):
                     break
                 }
+                
+                
+                
             }
         
+      
+        
+        
+        //MARK: 비동기로 생기는 데이터를 Observable로 감싸서 리턴하는 방법
         func testxSwiftJson(_ param: Parameters) -> Observable<String?> { //Observable 나중에 생기는 데이터
             return Observable.create(){ f in//만들때는 Create 사용
                 AF.request(url, method: .post,
@@ -120,6 +127,7 @@ class NewsBottomSheetViewController: UIViewController{
                     case.success(let data):
                         DispatchQueue.main.async {
                             f.onNext(data.message.result.translatedText)
+                            f.onCompleted() //순환참조해제
                         }
                     case.failure(_):
                         print("Papago API POST failed")
