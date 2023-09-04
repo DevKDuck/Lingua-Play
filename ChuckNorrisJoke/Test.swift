@@ -82,25 +82,36 @@ class Test: UIViewController{
     */
     
     func fetchData() -> Observable<String?> {
-        return Observable.create() { emitter in
-            let url = URL(string: "https://api.chucknorris.io/jokes/random")!
-            let task = URLSession.shared.dataTask(with: url){ (data, _, err) in
-                guard err == nil else{
-                    emitter.onError(err!)
-                    return
-                }
-                
-                if let dat = data, let json = String(data: dat, encoding: .utf8){
-                    emitter.onNext(json)
-                }
-                
-                emitter.onCompleted() // 이때 클로저의 순환참조가 클로저 종료에 의해 종료됨
-            }
-            task.resume()
-            return Disposables.create {
-                task.cancel()
-            }
-        }
+        return Observable.just("Helloworld")
+        /*
+         -> 데이터 하나 보내는것은 .just로 보낼 수 있음
+         return Observable.create{ emitter in
+             emitter.onNext("Hello world")
+             emitter.onCompleted()
+             return Disposbles.create()
+         }
+         */
+        
+        
+//        return Observable.create() { emitter in
+//            let url = URL(string: "https://api.chucknorris.io/jokes/random")!
+//            let task = URLSession.shared.dataTask(with: url){ (data, _, err) in
+//                guard err == nil else{
+//                    emitter.onError(err!)
+//                    return
+//                }
+//
+//                if let dat = data, let json = String(data: dat, encoding: .utf8){
+//                    emitter.onNext(json)
+//                }
+//
+//                emitter.onCompleted() // 이때 클로저의 순환참조가 클로저 종료에 의해 종료됨
+//            }
+//            task.resume()
+//            return Disposables.create {
+//                task.cancel()
+//            }
+//        }
         
     }
 }
