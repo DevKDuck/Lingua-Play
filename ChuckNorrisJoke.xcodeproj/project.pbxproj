@@ -91,6 +91,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8C1F862A2AA62E5900E88D04 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				8C900B232AA07630008907D0 /* Test.swift */,
+			);
+			path = Test;
+			sourceTree = "<group>";
+		};
 		8C5CAEF32A6E2F4E00107EDB = {
 			isa = PBXGroup;
 			children = (
@@ -110,13 +118,13 @@
 		8C5CAEFE2A6E2F4F00107EDB /* ChuckNorrisJoke */ = {
 			isa = PBXGroup;
 			children = (
+				8C1F862A2AA62E5900E88D04 /* Test */,
 				8C91422E2A9F242F0069F99E /* Sources */,
 				8C91422D2A9F22870069F99E /* Resources */,
 				8C5CAF012A6E2F4F00107EDB /* SceneDelegate.swift */,
 				8C5CAF082A6E2F5300107EDB /* Assets.xcassets */,
 				8C5CAF0A2A6E2F5300107EDB /* LaunchScreen.storyboard */,
 				8C5CAF0D2A6E2F5300107EDB /* Info.plist */,
-				8C900B232AA07630008907D0 /* Test.swift */,
 			);
 			path = ChuckNorrisJoke;
 			sourceTree = "<group>";

@@ -8,6 +8,7 @@
 import UIKit
 import Alamofire
 import Kingfisher
+import RxSwift
 
 
 class NewsViewController: UITableViewController{
@@ -42,6 +43,41 @@ class NewsViewController: UITableViewController{
             }
         }
     }
+    
+    func testRxSwiftComine(){
+        _ = rxSwiftFetchData()
+            .subscribe(onNext: { datas in
+                for data in datas.articles{
+                    self.titleArray.append(data.title)
+                    self.descriptionArray.append(data.description)
+                    self.authorArray.append(data.author)
+                    self.imgUrlArray.append(data.urlToImage)
+                    self.contentArray.append(data.content ?? "Have No content")
+                }
+                self.tableView.reloadData()
+            })
+            
+    }
+    
+    func rxSwiftFetchData() -> Observable<NewsAPI>{
+        return Observable.create(){ emitter in
+            
+            let url = "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=6cadc26e16894316aff6cfde14050ba5"
+            AF.request(url, method: .get, parameters: nil).validate(statusCode: 200..<300).responseDecodable(of: NewsAPI.self){ response in
+                switch response.result{
+                case.success(let datas):
+                    emitter.onNext(datas)
+                    emitter.onCompleted()
+                case .failure(let err):
+                    print("Fetch NewsAPI Data \(err.localizedDescription)")
+                }
+            }
+            return Disposables.create {
+                
+            }
+        }
+        
+    }
    
     
 
@@ -57,7 +93,8 @@ class NewsViewController: UITableViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        fetchData()
+//        fetchData()
+        testRxSwiftComine()
         setTableView()
 
     }

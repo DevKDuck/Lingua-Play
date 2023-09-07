@@ -26,6 +26,11 @@ import Then
 
 class Test: UIViewController{
     
+    
+    var disposablee: Disposable?
+    var disposables: [Disposable] = []
+    var disposbag = DisposeBag() // Sugar APi
+    
     let labelA = UILabel().then{
         $0.textColor = .darkGray
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +42,16 @@ class Test: UIViewController{
         super.viewDidLoad()
         view.backgroundColor = .yellow
         setConstraints()
-        onLoad()
+//        onLoad()
+        testRxSwiftCombine()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        //MARK: dispose 데이터를 받거나 하는 도중에 창이 닫히면 중단
+        disposablee?.dispose()
+        
+        disposables.forEach{$0.dispose()} //배열에 존재하는 작업 취소
     }
     
     func setConstraints(){
@@ -50,6 +64,24 @@ class Test: UIViewController{
         labelA.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10)
         ])
     }
+    
+    func testRxSwiftCombine(){
+        
+        //MARK: ZiP을 이용한 Rx
+        let jsonObservable = fetchData()
+        let helloObservable = Observable.just("Hello World")
+        
+        let d = Observable.zip(jsonObservable,helloObservable) { $1 + "\n" + $0 }
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { json in
+                self.labelA.text = json
+            })
+            .disposed(by: disposbag) //.insert 대신 이어서 가능
+        
+//        disposables.append(d) //disposable 배열에 추가
+//        disposbag.insert(d) //sugar API disposeBag
+    }
+    
     
     func onLoad(){
         let obaservable = fetchData()
@@ -64,8 +96,17 @@ class Test: UIViewController{
         //MARK: .filter operator
 //            .filter{cnt in cnt > 0}
         
+        //MARK: .observeOn()
+            .observeOn(MainScheduler.instance)
+        //operationQueue를 래핑 한게 Scheduler임
+        //MainScheduler는 한개만있어서 instance를 사용하는 것임
+        // DispatchQueue.main.async블록 대신 사용 sugar API : operator
+        // 다음줄을 다음의 쓰레드로 사용.observeOn(쓰레드)
         
-            .observeOn(MainScheduler.instance) // DispatchQueue.main.async블록 대신 사용 sugar API : operator
+        
+        //MARK: .subscribeOn()
+        // .subscribeOn() 시작 스레드를 변경, 위치가 상관없음 어디에 있든
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .default))
             .subscribe(onNext: { json in
 //                DispatchQueue.main.async {
                     self.labelA.text = json
@@ -97,7 +138,7 @@ class Test: UIViewController{
     5. Disposed
     */
     
-    func fetchData() -> Observable<String?> {
+    func fetchData() -> Observable<String> {
         
         //MARK: Sugar API
         //MARK: just 이용한 Test

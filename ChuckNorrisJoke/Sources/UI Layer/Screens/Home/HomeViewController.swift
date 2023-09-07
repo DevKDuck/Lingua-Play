@@ -43,8 +43,8 @@ class HomeViewController: UIViewController{
     
     //MARK: 액션 실행 Selector
     @objc func tapNewsView(_ sender: UITapGestureRecognizer){
-//        let vc = NewsViewController()
-        let vc = Test()
+        let vc = NewsViewController()
+//        let vc = Test()
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
