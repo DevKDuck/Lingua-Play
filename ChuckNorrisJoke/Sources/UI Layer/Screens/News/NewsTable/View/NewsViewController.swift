@@ -13,6 +13,7 @@ import RxSwift
 
 class NewsViewController: UITableViewController{
    
+    private let disposeBag = DisposeBag()
     
     var authorArray = [String]()
     var titleArray = [String]()
@@ -46,6 +47,8 @@ class NewsViewController: UITableViewController{
     
     func testRxSwiftComine(){
         _ = rxSwiftFetchData()
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background)) // 백그라운드 스레드에서 작업 실행
+            .observeOn(MainScheduler.instance) // UI업데이트를 메인스레드에서
             .subscribe(onNext: { datas in
                 for data in datas.articles{
                     self.titleArray.append(data.title)
@@ -56,17 +59,20 @@ class NewsViewController: UITableViewController{
                 }
                 self.tableView.reloadData()
             })
+            .disposed(by: disposeBag)
             
     }
     
     func rxSwiftFetchData() -> Observable<NewsAPI>{
-        return Observable.create(){ emitter in
+        let url = "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=6cadc26e16894316aff6cfde14050ba5"
+        
+        return Observable<NewsAPI>.create(){ emitter in
             
-            let url = "https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=6cadc26e16894316aff6cfde14050ba5"
+           
             AF.request(url, method: .get, parameters: nil).validate(statusCode: 200..<300).responseDecodable(of: NewsAPI.self){ response in
                 switch response.result{
-                case.success(let datas):
-                    emitter.onNext(datas)
+                case.success(let data):
+                    emitter.onNext(data)
                     emitter.onCompleted()
                 case .failure(let err):
                     print("Fetch NewsAPI Data \(err.localizedDescription)")

@@ -19,6 +19,9 @@
 		8C5CAF072A6E2F4F00107EDB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C5CAF052A6E2F4F00107EDB /* Main.storyboard */; };
 		8C5CAF092A6E2F5300107EDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C5CAF082A6E2F5300107EDB /* Assets.xcassets */; };
 		8C5CAF0C2A6E2F5300107EDB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C5CAF0A2A6E2F5300107EDB /* LaunchScreen.storyboard */; };
+		8C847E5E2AAEF44D00E1C662 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C847E5D2AAEF44D00E1C662 /* Model.swift */; };
+		8C847E602AAEF5E000E1C662 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C847E5F2AAEF5E000E1C662 /* Repository.swift */; };
+		8C847E622AAEF8AD00E1C662 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C847E612AAEF8AD00E1C662 /* Service.swift */; };
 		8C900B242AA07630008907D0 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C900B232AA07630008907D0 /* Test.swift */; };
 		8C900B272AA078D1008907D0 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 8C900B262AA078D1008907D0 /* RxCocoa */; };
 		8C900B292AA078D1008907D0 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8C900B282AA078D1008907D0 /* RxSwift */; };
@@ -56,6 +59,9 @@
 		8C5CAF082A6E2F5300107EDB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8C5CAF0B2A6E2F5300107EDB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8C5CAF0D2A6E2F5300107EDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8C847E5D2AAEF44D00E1C662 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		8C847E5F2AAEF5E000E1C662 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		8C847E612AAEF8AD00E1C662 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		8C900B232AA07630008907D0 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		8C9142182A971E710069F99E /* NewsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsAPI.swift; sourceTree = "<group>"; };
 		8C91421A2A9745AC0069F99E /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
@@ -129,6 +135,27 @@
 			path = ChuckNorrisJoke;
 			sourceTree = "<group>";
 		};
+		8C847E5B2AAEF39700E1C662 /* NewsTable */ = {
+			isa = PBXGroup;
+			children = (
+				8C847E5C2AAEF3C100E1C662 /* View */,
+			);
+			path = NewsTable;
+			sourceTree = "<group>";
+		};
+		8C847E5C2AAEF3C100E1C662 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8C9142182A971E710069F99E /* NewsAPI.swift */,
+				8C847E5D2AAEF44D00E1C662 /* Model.swift */,
+				8C847E5F2AAEF5E000E1C662 /* Repository.swift */,
+				8C847E612AAEF8AD00E1C662 /* Service.swift */,
+				8C9CC9EF2A7B8F8900A05FDF /* NewsViewController.swift */,
+				8C91421A2A9745AC0069F99E /* NewsTableViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		8C91422C2A9F22060069F99E /* AnimationJSON */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,7 +189,6 @@
 			children = (
 				8C44C4752A6F6C5000044068 /* ChckNorrisJokeAPI.swift */,
 				8C44C4792A70FA6000044068 /* NaverImageAPI.swift */,
-				8C9142182A971E710069F99E /* NewsAPI.swift */,
 				8C44C4732A6F6C1A00044068 /* PaPagoAPI.swift */,
 				8C9142302A9F296B0069F99E /* RapidAPI.swift */,
 				8C9142322A9F29A60069F99E /* NaverDictionaryAPI.swift */,
@@ -235,9 +261,8 @@
 		8C91423B2A9F2DE80069F99E /* News */ = {
 			isa = PBXGroup;
 			children = (
+				8C847E5B2AAEF39700E1C662 /* NewsTable */,
 				8C91423C2A9F2E030069F99E /* News Detail */,
-				8C9CC9EF2A7B8F8900A05FDF /* NewsViewController.swift */,
-				8C91421A2A9745AC0069F99E /* NewsTableViewCell.swift */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -383,9 +408,12 @@
 				8C9142332A9F29A60069F99E /* NaverDictionaryAPI.swift in Sources */,
 				8C9142192A971E710069F99E /* NewsAPI.swift in Sources */,
 				8C44C47A2A70FA6000044068 /* NaverImageAPI.swift in Sources */,
+				8C847E602AAEF5E000E1C662 /* Repository.swift in Sources */,
 				8C44C4782A6F88C000044068 /* ImageGameViewController.swift in Sources */,
+				8C847E5E2AAEF44D00E1C662 /* Model.swift in Sources */,
 				8C2DDC8B2A7E1878004E2D95 /* PrepareViewController.swift in Sources */,
 				8C44C4742A6F6C1A00044068 /* PaPagoAPI.swift in Sources */,
+				8C847E622AAEF8AD00E1C662 /* Service.swift in Sources */,
 				8C94639B2A8B62B500339BDE /* ResultViewController.swift in Sources */,
 				8C9142412A9F57E20069F99E /* UIColor+.swift in Sources */,
 			);
