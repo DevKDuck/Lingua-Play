@@ -54,61 +54,36 @@ class NewsViewController: UIViewController{
         
         
         bindTableView()
-        func bindTableView() {
-
-            //MARK: 이곳을 수정해야 해야함
-            
-            let cities = ["London", "Vienna", "Lisbon"]
-                    
-
-            let configureCell: (TableViewSectionedDataSource<SectionModel<String, String>>, UITableView,IndexPath, String) -> UITableViewCell = { (datasource, tableView, indexPath,  element) in
-
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "NewsTableViewCell", for: indexPath) as? NewsTableViewCell else { return UITableViewCell() }
-
-                cell.titleLabel.text = element
-
-                return cell
-
-            }
-
-            
-
-            let datasource = RxTableViewSectionedReloadDataSource<SectionModel<String, String>>.init(configureCell: configureCell)
-
-            
-
-            datasource.titleForHeaderInSection = { datasource, index in
-
-                return datasource.sectionModels[index].model
-
-            }
-
-            
-
-            let sections = [
-
-                SectionModel<String, String>(model: "first section", items: cities),
-
-                SectionModel<String, String>(model: "second section", items: cities)
-
-            ]
-
-            
-            Observable.just(sections)
-
-                .bind(to: tableView.rx.items(dataSource: datasource))
-
-                .disposed(by: disposeBag)
-
-            
-    
-            
-        }
         viewmodel.reload()
     }
     
-    
+    func bindTableView() {
+
+        let dataSource = RxTableViewSectionedReloadDataSource<SectionModel<String, Model>>(
+            configureCell: { (_, tableView, indexPath, item) in
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "NewsTableViewCell", for: indexPath) as? NewsTableViewCell else {return UITableViewCell()}
+                
+                // Model의 속성을 Cell에 설정
+                cell.titleLabel.text = item.newsTitle
+                cell.descriptionLabel.text = item.newsDescription
+                cell.authorLabel.text = item.newsAuthor
+                cell.img.kf.setImage(with: URL(string: item.newsimageUrl))
+                // 다른 필요한 데이터 설정
+                
+                return cell
+            }
+        )
+        
+        viewmodel.items.asDriver()
+            .map { [SectionModel(model: "Section", items: $0)] }
+            .drive(tableView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+
+        
+    }
 }
+
+
 
 //extension NewsViewController: UITableViewDelegate, UITableViewDataSource{
 //    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
