@@ -10,6 +10,7 @@ import UIKit
 
 class NewsTableViewCell: UITableViewCell{
     
+    
     let authorLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false

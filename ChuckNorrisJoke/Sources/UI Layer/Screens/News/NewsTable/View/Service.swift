@@ -10,31 +10,49 @@ import Foundation
 class Service{
     let repository = Repository()
     
-    var updateModel = Model(newsTitle: [], newsDescription: [], newsAuthor: [], newsimageUrl: [], newscontent: [])
+    var updateModel = [Model]()
     
-    
-    func fetchNews(onCompleted: @escaping (Model) -> Void){
+    func fetchNews(onCompleted: @escaping ([Model]) -> Void){
         
         repository.fetchNews{ [weak self] entity in
-            var titleArray = [String]()
-            var descriptionArray = [String]()
-            var authorArray = [String]()
-            var imgUrlArray = [String]()
-            var contentArray = [String]()
+            var modelList = [Model]()
             
             for model in entity.articles{
-                titleArray.append(model.title)
-                descriptionArray.append(model.description)
-                authorArray.append(model.author)
-                imgUrlArray.append(model.urlToImage)
-                contentArray.append(model.content ?? "Have no content")
+                var m = Model(newsTitle: "", newsDescription: "", newsAuthor: "", newsimageUrl: "", newsContent: "")
+                if let title = model.title{
+                    m.newsTitle = title
+                }else{
+                    m.newsTitle = "Have no Title"
+                }
+                
+                if let description = model.description{
+                    m.newsDescription = description
+                }else{
+                    m.newsDescription = "Have no Description"
+                }
+                
+                if let author = model.author{
+                    m.newsAuthor = author
+                }else{
+                    m.newsAuthor = "Have no author"
+                }
+                if let urlToImage = model.urlToImage{
+                    m.newsimageUrl = urlToImage
+                }else{
+                    m.newsimageUrl = "Have no urlToImage"
+                }
+                
+                if let content = model.content{
+                    m.newsContent = content
+                }else{
+                    m.newsContent = "Have no Content"
+                }
+                modelList.append(m)
             }
             
-            let model = Model(newsTitle: titleArray, newsDescription: descriptionArray, newsAuthor: authorArray, newsimageUrl: imgUrlArray, newscontent: contentArray)
+            self?.updateModel = modelList
             
-            self?.updateModel = model
-            
-            onCompleted(model)
+            onCompleted(modelList)
             
         }
     }

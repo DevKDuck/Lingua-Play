@@ -20,11 +20,11 @@ struct NewsAPI: Codable{
 
 struct Articles: Codable{
     let source: ArticlesSource
-    let author: String
-    let title: String
-    let description: String
+    let author: String?
+    let title: String?
+    let description: String?
     let url: String
-    let urlToImage: String
+    let urlToImage: String?
     let publishedAt: String
     let content: String?
     

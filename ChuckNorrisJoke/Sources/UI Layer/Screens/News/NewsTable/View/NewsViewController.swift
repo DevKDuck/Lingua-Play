@@ -11,10 +11,22 @@ import Kingfisher
 import RxSwift
 import RxCocoa
 import Then
+import RxDataSources
 
 class NewsViewController: UIViewController{
     let disposeBag = DisposeBag()
     let viewmodel = Viewmodel()
+    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(NewsTableViewCell.self,forCellReuseIdentifier: "NewsTableViewCell")
+        tableView.rowHeight = 200
+//        tableView.delegate = self
+//        tableView.dataSource = self
+        
+        return tableView
+    }()
     
     let textlabel = UILabel().then{
         $0.textColor = .darkGray
@@ -24,20 +36,94 @@ class NewsViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(textlabel)
-        textlabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        textlabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        //        view.addSubview(textlabel)
+        //        textlabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        //        textlabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
         
         view.backgroundColor = .white
-        viewmodel.title
-            .bind(to: textlabel.rx.text)
-            .disposed(by: disposeBag)
+        
+        view.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+        ])
+        
+        
+        bindTableView()
+        func bindTableView() {
+
+            //MARK: 이곳을 수정해야 해야함
+            
+            let cities = ["London", "Vienna", "Lisbon"]
+                    
+
+            let configureCell: (TableViewSectionedDataSource<SectionModel<String, String>>, UITableView,IndexPath, String) -> UITableViewCell = { (datasource, tableView, indexPath,  element) in
+
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "NewsTableViewCell", for: indexPath) as? NewsTableViewCell else { return UITableViewCell() }
+
+                cell.titleLabel.text = element
+
+                return cell
+
+            }
+
+            
+
+            let datasource = RxTableViewSectionedReloadDataSource<SectionModel<String, String>>.init(configureCell: configureCell)
+
+            
+
+            datasource.titleForHeaderInSection = { datasource, index in
+
+                return datasource.sectionModels[index].model
+
+            }
+
+            
+
+            let sections = [
+
+                SectionModel<String, String>(model: "first section", items: cities),
+
+                SectionModel<String, String>(model: "second section", items: cities)
+
+            ]
+
+            
+            Observable.just(sections)
+
+                .bind(to: tableView.rx.items(dataSource: datasource))
+
+                .disposed(by: disposeBag)
+
+            
+    
+            
+        }
         viewmodel.reload()
     }
     
     
 }
+
+//extension NewsViewController: UITableViewDelegate, UITableViewDataSource{
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return viewmodel.title.value.count
+//    }
+//    
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        guard let cell = tableView.dequeueReusableCell(withIdentifier: "NewsTableViewCell", for: indexPath) as? NewsTableViewCell else {return UITableViewCell()}
+////        cell.titleLabel.text = viewmodel.title.value[indexPath.row]
+//        return cell
+//    }
+//    
+//    
+//}
+
 
 //class NewsViewController: UITableViewController{
 //
