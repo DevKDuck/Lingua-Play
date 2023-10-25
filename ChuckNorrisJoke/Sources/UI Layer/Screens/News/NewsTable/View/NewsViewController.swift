@@ -55,10 +55,12 @@ class NewsViewController: UIViewController{
         
         bindTableView()
         viewmodel.reload()
+        
+        selectedTableViewCell()
     }
     
     func bindTableView() {
-
+ 
         let dataSource = RxTableViewSectionedReloadDataSource<SectionModel<String, Model>>(
             configureCell: { (_, tableView, indexPath, item) in
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "NewsTableViewCell", for: indexPath) as? NewsTableViewCell else {return UITableViewCell()}
@@ -80,6 +82,26 @@ class NewsViewController: UIViewController{
             .disposed(by: disposeBag)
 
         
+    }
+    
+    func selectedTableViewCell(){
+        tableView.rx.itemSelected
+            .subscribe(onNext: { [weak self]indexPath in
+                
+                // 선택한 항목의 인덱스 경로를 처리
+//                let selectedModel = viewmodel.value[indexPath.row]
+                // 선택한 모델을 사용하여 필요한 작업 수행
+//                print("Selected Model: \(selectedModel.newsTitle)")
+                let vc = NewsDetailContentViewController()
+                
+                vc.selectedModel = self?.viewmodel.items.value[indexPath.row]
+                
+                self?.navigationController?.pushViewController(vc, animated: true)
+                
+                
+            })
+            .disposed(by: disposeBag)
+
     }
 }
 

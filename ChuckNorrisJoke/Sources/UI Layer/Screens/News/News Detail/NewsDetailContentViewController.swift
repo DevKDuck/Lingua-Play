@@ -11,15 +11,16 @@ import Kingfisher
 import FloatingPanel
 import Then
 import SnapKit
+import RxSwift
+import RxCocoa
 
 
 
 class NewsDetailContentViewController: UIViewController, FloatingPanelControllerDelegate{
     
-    var imgUrl: String = ""
     
-    var bottomSheetDescription: String = ""
-    var bottomSheetContent: String = ""
+    var selectedModel: Model?
+    
     var fpc: FloatingPanelController!
     
     
@@ -44,10 +45,13 @@ class NewsDetailContentViewController: UIViewController, FloatingPanelController
     
     var titleLabel = UILabel().then{
 //        $0.text = "Alexandar wears modified helmet in roads races"
+        
         $0.textColor = .white
         $0.font = UIFont(name: "Noto Sans Myanmar", size: 24)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.numberOfLines = 0
+        
+        
         
         var text = ""
         var attributedText = NSMutableAttributedString(string: text)
@@ -70,8 +74,7 @@ class NewsDetailContentViewController: UIViewController, FloatingPanelController
 
         setLayoutConstraints()
         setimgView()
-        setFloatingPanel(description: bottomSheetDescription, content: bottomSheetContent)
-
+        setFloatingPanel(description: selectedModel?.newsDescription ?? "No News Description", content: selectedModel?.newsContent ?? "No News Content")
         
 //        setBottomSheet()
     }
@@ -101,7 +104,13 @@ class NewsDetailContentViewController: UIViewController, FloatingPanelController
     }
     
     func setimgView(){
+        guard let imgUrl = selectedModel?.newsimageUrl else {return}
         imgView.kf.setImage(with: URL(string:imgUrl))
+    }
+    
+    func setTitle(){
+        guard let titleText = selectedModel?.newsTitle else {return}
+        titleLabel.text = titleText
     }
     
     
